@@ -25,12 +25,6 @@ src="https://capsule-render.vercel.app/api?type=waving&color=A020F0&height=120&s
 </p>
 
 
-![Java](https://img.shields.io/badge/Java-21-007396?logo=openjdk&logoColor=white)
-![Spring Boot](https://img.shields.io/badge/Spring%20Boot-3.5-6DB33F?logo=springboot&logoColor=white)
-![SQL Server](https://img.shields.io/badge/SQL%20Server-2019%2B-CC2927?logo=microsoftsqlserver&logoColor=white)
-![Vite](https://img.shields.io/badge/Vite-5-646CFF?logo=vite&logoColor=white)
-![License](https://img.shields.io/badge/license-MIT-green)
-
 ERP de um Sistema Acadêmico Escolar — gestão de alunos, professores, turmas, disciplinas, notas, frequência, financeiro e comunicação.
 
 ---
@@ -86,6 +80,90 @@ ERP-Academic-School-System/
         ├── styles/
         └── templates/
 ```
+
+---
+
+## 🛠️ Tecnologias
+
+<div align="center">
+    <img 
+        alt="Java" 
+        title="Java" 
+        width="40px" 
+        style="padding: 5px;" 
+        src="https://skillicons.dev/icons?i=java" 
+    />
+    <img 
+        alt="Spring" 
+        title="Spring" 
+        width="40px" 
+        style="padding: 5px;" 
+        src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/spring/spring-original.svg" 
+    />
+    <img 
+        alt="JavaScript" 
+        title="JavaScript" 
+        width="40px" 
+        style="padding: 5px;" 
+        src="https://skillicons.dev/icons?i=javascript" 
+    />
+    <img 
+        alt="Vite" 
+        title="Vite" 
+        width="40px" 
+        style="padding: 5px;" 
+        src="https://skillicons.dev/icons?i=vite" 
+    />
+    <img 
+        alt="HTML" 
+        title="HTML" 
+        width="40px" 
+        style="padding: 5px;" 
+        src="https://skillicons.dev/icons?i=html" 
+    />
+    <img 
+        alt="CSS" 
+        title="CSS" 
+        width="40px" 
+        style="padding: 5px;" 
+        src="https://skillicons.dev/icons?i=css" 
+    />
+    <img 
+        alt="SqlServer" 
+        title="SqlServer" 
+        width="40px" 
+        style="padding: 5px;" 
+        src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/microsoftsqlserver/microsoftsqlserver-original.svg" 
+    />
+    <img 
+        alt="Git" 
+        title="Git" 
+        width="40px" 
+        style="padding: 5px;" 
+        src="https://skillicons.dev/icons?i=git" 
+    />
+    <img 
+        alt="GitHub" 
+        title="GitHub" 
+        width="40px" 
+        style="padding: 5px;" 
+        src="https://skillicons.dev/icons?i=github" 
+    />
+    <img 
+        alt="IntelliJ" 
+        title="IntelliJ IDEA" 
+        width="40px" 
+        style="padding: 5px;" 
+        src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/intellij/intellij-original.svg" 
+    />
+    <img 
+        alt="VS Code" 
+        title="VS Code" 
+        width="40px" 
+        style="padding: 5px;" 
+        src="https://skillicons.dev/icons?i=vscode" 
+    />
+</div>
 
 ---
 
