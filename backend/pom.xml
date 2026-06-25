@@ -15,7 +15,7 @@
 	<description>ERP Academic School System - Backend</description>
 
 	<properties>
-		<java.version>21</java.version>
+		<java.version>17</java.version>
 		<modelmapper.version>3.2.1</modelmapper.version>
 		<springdoc.version>2.6.0</springdoc.version>
 		<java-jwt.version>4.4.0</java-jwt.version>
