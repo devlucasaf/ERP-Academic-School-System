@@ -30,7 +30,7 @@ import java.util.UUID;
 @AllArgsConstructor
 @Builder
 @Entity
-@Table(name = "tb_funcionario")
+@Table(name = "funcionario")
 public class Funcionario {
 
     @Id
@@ -39,26 +39,26 @@ public class Funcionario {
     private UUID id;
 
     @OneToOne(fetch = FetchType.LAZY, optional = false)
-    @JoinColumn(name = "usuario_id", nullable = false, unique = true,
-            foreignKey = @ForeignKey(name = "fk_tb_funcionario_usuario"))
+    @JoinColumn(name = "usuarioId", nullable = false, unique = true,
+            foreignKey = @ForeignKey(name = "fkFuncionarioUsuario"))
     private Usuario usuario;
 
     @Enumerated(EnumType.STRING)
     @Column(name = "cargo", nullable = false, length = 30)
     private CargoFuncionario cargo;
 
-    @Column(name = "data_admissao", nullable = false)
+    @Column(name = "dataAdmissao", nullable = false)
     private LocalDate dataAdmissao;
 
     @Column(name = "departamento", length = 100)
     private String departamento;
 
     @CreationTimestamp
-    @Column(name = "criado_em", nullable = false, updatable = false)
+    @Column(name = "criadoEm", nullable = false, updatable = false)
     private LocalDateTime criadoEm;
 
     @UpdateTimestamp
-    @Column(name = "atualizado_em", nullable = false)
+    @Column(name = "atualizadoEm", nullable = false)
     private LocalDateTime atualizadoEm;
 }
 

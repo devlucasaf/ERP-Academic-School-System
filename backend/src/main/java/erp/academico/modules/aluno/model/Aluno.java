@@ -32,7 +32,7 @@ import java.util.UUID;
 @AllArgsConstructor
 @Builder
 @Entity
-@Table(name = "tb_aluno")
+@Table(name = "aluno")
 public class Aluno {
 
     @Id
@@ -41,32 +41,32 @@ public class Aluno {
     private UUID id;
 
     @OneToOne(fetch = FetchType.LAZY, optional = false)
-    @JoinColumn(name = "usuario_id", nullable = false, unique = true,
-            foreignKey = @jakarta.persistence.ForeignKey(name = "fk_tb_aluno_usuario"))
+    @JoinColumn(name = "usuarioId", nullable = false, unique = true,
+            foreignKey = @jakarta.persistence.ForeignKey(name = "fkAlunoUsuario"))
     private Usuario usuario;
 
-    @Column(name = "matricula_ra", nullable = false, unique = true, length = 30)
+    @Column(name = "matriculaRA", nullable = false, unique = true, length = 30)
     private String matriculaRA;
 
-    @Column(name = "data_ingresso", nullable = false)
+    @Column(name = "dataIngresso", nullable = false)
     private LocalDate dataIngresso;
 
     @Enumerated(EnumType.STRING)
     @Column(name = "status", nullable = false, length = 20)
     private StatusAluno status;
 
-    @Column(name = "turma_atual_id")
+    @Column(name = "turmaAtualId")
     private UUID turmaAtualId;
 
     @Column(name = "observacoes", length = 1000)
     private String observacoes;
 
     @CreationTimestamp
-    @Column(name = "criado_em", nullable = false, updatable = false)
+    @Column(name = "criadoEm", nullable = false, updatable = false)
     private LocalDateTime criadoEm;
 
     @UpdateTimestamp
-    @Column(name = "atualizado_em", nullable = false)
+    @Column(name = "atualizadoEm", nullable = false)
     private LocalDateTime atualizadoEm;
 }
 

@@ -10,21 +10,18 @@ import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 import jakarta.persistence.UniqueConstraint;
+
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+
 import org.hibernate.annotations.CreationTimestamp;
 
 import java.time.LocalDateTime;
 import java.util.UUID;
 
-/**
- * Autorrelacionamento de {@link Disciplina} representando dependência
- * de pré-requisito: para cursar {@code disciplina}, é preciso ter cursado
- * {@code prerequisito}.
- */
 @Getter
 @Setter
 @NoArgsConstructor
@@ -32,10 +29,10 @@ import java.util.UUID;
 @Builder
 @Entity
 @Table(
-        name = "tb_disciplina_prerequisito",
+        name = "disciplinaPrerequisito",
         uniqueConstraints = @UniqueConstraint(
-                name = "uk_tb_disciplina_prerequisito",
-                columnNames = {"disciplina_id", "prerequisito_id"})
+                name = "ukDisciplinaPrerequisito",
+                columnNames = {"disciplinaId", "prerequisitoId"})
 )
 public class DisciplinaPrerequisito {
 
@@ -45,17 +42,17 @@ public class DisciplinaPrerequisito {
     private UUID id;
 
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
-    @JoinColumn(name = "disciplina_id", nullable = false,
-            foreignKey = @ForeignKey(name = "fk_tb_disc_prereq_disciplina"))
+    @JoinColumn(name = "disciplinaId", nullable = false,
+            foreignKey = @ForeignKey(name = "fkDisciplinaPrerequisitoDisciplina"))
     private Disciplina disciplina;
 
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
-    @JoinColumn(name = "prerequisito_id", nullable = false,
-            foreignKey = @ForeignKey(name = "fk_tb_disc_prereq_prerequisito"))
+    @JoinColumn(name = "prerequisitoId", nullable = false,
+            foreignKey = @ForeignKey(name = "fkDisciplinaPrerequisitoPrerequisito"))
     private Disciplina prerequisito;
 
     @CreationTimestamp
-    @Column(name = "criado_em", nullable = false, updatable = false)
+    @Column(name = "criadoEm", nullable = false, updatable = false)
     private LocalDateTime criadoEm;
 }
 

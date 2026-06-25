@@ -28,7 +28,7 @@ import java.util.UUID;
 @AllArgsConstructor
 @Builder
 @Entity
-@Table(name = "tb_professor")
+@Table(name = "professor")
 public class Professor {
 
     @Id
@@ -37,31 +37,31 @@ public class Professor {
     private UUID id;
 
     @OneToOne(fetch = FetchType.LAZY, optional = false)
-    @JoinColumn(name = "usuario_id", nullable = false, unique = true,
-            foreignKey = @ForeignKey(name = "fk_tb_professor_usuario"))
+    @JoinColumn(name = "usuarioId", nullable = false, unique = true,
+            foreignKey = @ForeignKey(name = "fkProfessorUsuario"))
     private Usuario usuario;
 
     @Column(name = "formacao", length = 200)
     private String formacao;
 
-    @Column(name = "area_atuacao", length = 150)
+    @Column(name = "areaAtuacao", length = 150)
     private String areaAtuacao;
 
-    @Column(name = "carga_horaria_semanal")
+    @Column(name = "cargaHorariaSemanal")
     private Integer cargaHorariaSemanal;
 
-    @Column(name = "data_admissao", nullable = false)
+    @Column(name = "dataAdmissao", nullable = false)
     private LocalDate dataAdmissao;
 
     @Column(name = "ativo", nullable = false)
     private Boolean ativo;
 
     @CreationTimestamp
-    @Column(name = "criado_em", nullable = false, updatable = false)
+    @Column(name = "criadoEm", nullable = false, updatable = false)
     private LocalDateTime criadoEm;
 
     @UpdateTimestamp
-    @Column(name = "atualizado_em", nullable = false)
+    @Column(name = "atualizadoEm", nullable = false)
     private LocalDateTime atualizadoEm;
 }
 

@@ -32,7 +32,7 @@ import java.util.UUID;
 @AllArgsConstructor
 @Builder
 @Entity
-@Table(name = "tb_responsavel")
+@Table(name = "responsavel")
 public class Responsavel {
 
     @Id
@@ -41,8 +41,8 @@ public class Responsavel {
     private UUID id;
 
     @OneToOne(fetch = FetchType.LAZY, optional = false)
-    @JoinColumn(name = "usuario_id", nullable = false, unique = true,
-            foreignKey = @ForeignKey(name = "fk_tb_responsavel_usuario"))
+    @JoinColumn(name = "usuarioId", nullable = false, unique = true,
+            foreignKey = @ForeignKey(name = "fkResponsavelUsuario"))
     private Usuario usuario;
 
     @Enumerated(EnumType.STRING)
@@ -50,11 +50,11 @@ public class Responsavel {
     private Parentesco parentesco;
 
     @CreationTimestamp
-    @Column(name = "criado_em", nullable = false, updatable = false)
+    @Column(name = "criadoEm", nullable = false, updatable = false)
     private LocalDateTime criadoEm;
 
     @UpdateTimestamp
-    @Column(name = "atualizado_em", nullable = false)
+    @Column(name = "atualizadoEm", nullable = false)
     private LocalDateTime atualizadoEm;
 }
 

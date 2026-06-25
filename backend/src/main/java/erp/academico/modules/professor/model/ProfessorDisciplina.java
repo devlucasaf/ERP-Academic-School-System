@@ -10,11 +10,13 @@ import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 import jakarta.persistence.UniqueConstraint;
+
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+
 import org.hibernate.annotations.CreationTimestamp;
 
 import java.time.LocalDateTime;
@@ -27,10 +29,10 @@ import java.util.UUID;
 @Builder
 @Entity
 @Table(
-        name = "tb_professor_disciplina",
+        name = "professorDisciplina",
         uniqueConstraints = @UniqueConstraint(
-                name = "uk_tb_professor_disciplina",
-                columnNames = {"professor_id", "disciplina_id"})
+                name = "ukProfessorDisciplina",
+                columnNames = {"professorId", "disciplinaId"})
 )
 public class ProfessorDisciplina {
 
@@ -40,15 +42,15 @@ public class ProfessorDisciplina {
     private UUID id;
 
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
-    @JoinColumn(name = "professor_id", nullable = false,
-            foreignKey = @ForeignKey(name = "fk_tb_prof_disc_professor"))
+    @JoinColumn(name = "professorId", nullable = false,
+            foreignKey = @ForeignKey(name = "fkProfessorDisciplinaProfessor"))
     private Professor professor;
 
-    @Column(name = "disciplina_id", nullable = false)
+    @Column(name = "disciplinaId", nullable = false)
     private UUID disciplinaId;
 
     @CreationTimestamp
-    @Column(name = "criado_em", nullable = false, updatable = false)
+    @Column(name = "criadoEm", nullable = false, updatable = false)
     private LocalDateTime criadoEm;
 }
 

@@ -30,10 +30,10 @@ import java.util.UUID;
 @Builder
 @Entity
 @Table(
-        name = "tb_responsavel_aluno",
+        name = "responsavelAluno",
         uniqueConstraints = @UniqueConstraint(
-                name = "uk_tb_responsavel_aluno",
-                columnNames = {"responsavel_id", "aluno_id"})
+                name = "ukResponsavelAluno",
+                columnNames = {"responsavelId", "alunoId"})
 )
 public class ResponsavelAluno {
 
@@ -43,20 +43,20 @@ public class ResponsavelAluno {
     private UUID id;
 
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
-    @JoinColumn(name = "responsavel_id", nullable = false,
-            foreignKey = @ForeignKey(name = "fk_tb_resp_aluno_responsavel"))
+    @JoinColumn(name = "responsavelId", nullable = false,
+            foreignKey = @ForeignKey(name = "fkResponsavelAlunoResponsavel"))
     private Responsavel responsavel;
 
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
-    @JoinColumn(name = "aluno_id", nullable = false,
-            foreignKey = @ForeignKey(name = "fk_tb_resp_aluno_aluno"))
+    @JoinColumn(name = "alunoId", nullable = false,
+            foreignKey = @ForeignKey(name = "fkResponsavelAlunoAluno"))
     private Aluno aluno;
 
     @Column(name = "observacao", length = 500)
     private String observacao;
 
     @CreationTimestamp
-    @Column(name = "criado_em", nullable = false, updatable = false)
+    @Column(name = "criadoEm", nullable = false, updatable = false)
     private LocalDateTime criadoEm;
 }
 

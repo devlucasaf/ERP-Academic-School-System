@@ -1,6 +1,7 @@
 package erp.academico.modules.disciplina.model;
 
 import erp.academico.modules.curso.model.Curso;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
@@ -10,11 +11,13 @@ import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
+
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
@@ -27,7 +30,7 @@ import java.util.UUID;
 @AllArgsConstructor
 @Builder
 @Entity
-@Table(name = "tb_disciplina")
+@Table(name = "disciplina")
 public class Disciplina {
 
     @Id
@@ -44,18 +47,14 @@ public class Disciplina {
     @Column(name = "ementa", length = 4000)
     private String ementa;
 
-    @Column(name = "carga_horaria", nullable = false)
+    @Column(name = "cargaHoraria", nullable = false)
     private Integer cargaHoraria;
 
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
-    @JoinColumn(name = "curso_id", nullable = false,
-            foreignKey = @ForeignKey(name = "fk_tb_disciplina_curso"))
+    @JoinColumn(name = "cursoId", nullable = false,
+            foreignKey = @ForeignKey(name = "fkDisciplinaCurso"))
     private Curso curso;
 
-    /**
-     * Período em que a disciplina é tipicamente ofertada
-     * (semestre ou série, conforme o nível do curso).
-     */
     @Column(name = "periodo", nullable = false)
     private Integer periodo;
 
@@ -63,11 +62,11 @@ public class Disciplina {
     private Boolean ativo;
 
     @CreationTimestamp
-    @Column(name = "criado_em", nullable = false, updatable = false)
+    @Column(name = "criadoEm", nullable = false, updatable = false)
     private LocalDateTime criadoEm;
 
     @UpdateTimestamp
-    @Column(name = "atualizado_em", nullable = false)
+    @Column(name = "atualizadoEm", nullable = false)
     private LocalDateTime atualizadoEm;
 }
 

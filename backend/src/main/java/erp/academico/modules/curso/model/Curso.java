@@ -26,7 +26,7 @@ import java.util.UUID;
 @AllArgsConstructor
 @Builder
 @Entity
-@Table(name = "tb_curso")
+@Table(name = "curso")
 public class Curso {
 
     @Id
@@ -44,21 +44,21 @@ public class Curso {
     @Column(name = "nivel", nullable = false, length = 20)
     private NivelCurso nivel;
 
-    @Column(name = "duracao_semestres", nullable = false)
+    @Column(name = "duracaoSemestres", nullable = false)
     private Integer duracaoSemestres;
 
-    @Column(name = "carga_horaria_total", nullable = false)
+    @Column(name = "cargaHorariaTotal", nullable = false)
     private Integer cargaHorariaTotal;
 
     @Column(name = "ativo", nullable = false)
     private Boolean ativo;
 
     @CreationTimestamp
-    @Column(name = "criado_em", nullable = false, updatable = false)
+    @Column(name = "criadoEm", nullable = false, updatable = false)
     private LocalDateTime criadoEm;
 
     @UpdateTimestamp
-    @Column(name = "atualizado_em", nullable = false)
+    @Column(name = "atualizadoEm", nullable = false)
     private LocalDateTime atualizadoEm;
 }
 

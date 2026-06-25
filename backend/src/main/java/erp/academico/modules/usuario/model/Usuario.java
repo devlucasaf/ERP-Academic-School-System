@@ -26,7 +26,7 @@ import java.util.UUID;
 @AllArgsConstructor
 @Builder
 @Entity
-@Table(name = "tb_usuario")
+@Table(name = "usuario")
 public class Usuario {
 
     @Id
@@ -50,7 +50,7 @@ public class Usuario {
     @Column(name = "telefone", length = 20)
     private String telefone;
 
-    @Column(name = "data_nascimento")
+    @Column(name = "dataNascimento")
     private LocalDate dataNascimento;
 
     @Column(name = "ativo", nullable = false)
@@ -61,11 +61,11 @@ public class Usuario {
     private RoleUsuario role;
 
     @CreationTimestamp
-    @Column(name = "criado_em", nullable = false, updatable = false)
+    @Column(name = "criadoEm", nullable = false, updatable = false)
     private LocalDateTime criadoEm;
 
     @UpdateTimestamp
-    @Column(name = "atualizado_em", nullable = false)
+    @Column(name = "atualizadoEm", nullable = false)
     private LocalDateTime atualizadoEm;
 }
 
