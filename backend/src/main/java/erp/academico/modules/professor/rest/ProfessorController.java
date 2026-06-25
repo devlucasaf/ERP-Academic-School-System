@@ -37,6 +37,7 @@ public class ProfessorController {
 
     private final ProfessorService professorService;
 
+    // --- LISTA PROFESSORES PAGINADOS ---
     @GetMapping
     @Operation(summary = "Lista professores paginados")
     @PreAuthorize("hasAnyRole('ADMIN','COORDENADOR','SECRETARIA')")
@@ -44,6 +45,7 @@ public class ProfessorController {
         return ResponseEntity.ok(professorService.listar(pageable));
     }
 
+    // --- BUSCA PROFESSOR PELO ID ---
     @GetMapping("/{id}")
     @Operation(summary = "Busca professor pelo ID")
     @PreAuthorize("hasAnyRole('ADMIN','COORDENADOR','SECRETARIA')")
@@ -51,6 +53,7 @@ public class ProfessorController {
         return ResponseEntity.ok(professorService.buscarPorId(id));
     }
 
+    // --- CRIA UM PROFESSOR ---
     @PostMapping
     @Operation(summary = "Cria um professor (cria também o usuário associado com role PROFESSOR)")
     @PreAuthorize("hasAnyRole('ADMIN','COORDENADOR')")
@@ -61,6 +64,7 @@ public class ProfessorController {
         return ResponseEntity.created(uri).body(criado);
     }
 
+    // --- ATUALIZA UM PROFESSOR EXISTENTE ---
     @PutMapping("/{id}")
     @Operation(summary = "Atualiza um professor existente")
     @PreAuthorize("hasAnyRole('ADMIN','COORDENADOR')")
@@ -69,6 +73,7 @@ public class ProfessorController {
         return ResponseEntity.ok(professorService.atualizar(id, dto));
     }
 
+    // --- REMOVE UM PROFESSOR ---
     @DeleteMapping("/{id}")
     @Operation(summary = "Remove um professor")
     @PreAuthorize("hasRole('ADMIN')")
@@ -77,8 +82,7 @@ public class ProfessorController {
         return ResponseEntity.noContent().build();
     }
 
-    // --- VÍNCULOS PROFESSOR ---
-
+    // --- LISTA AS DISCIPLINAS LECIONADAS PELO PROFESSOR ---
     @GetMapping("/{id}/disciplinas")
     @Operation(summary = "Lista as disciplinas lecionadas pelo professor")
     @PreAuthorize("hasAnyRole('ADMIN','COORDENADOR','SECRETARIA','PROFESSOR')")
@@ -86,6 +90,7 @@ public class ProfessorController {
         return ResponseEntity.ok(professorService.listarDisciplinas(id));
     }
 
+    // --- VINCULA UMA DISCIPLINA AO PROFESSOR ---
     @PostMapping("/{id}/disciplinas")
     @Operation(summary = "Vincula uma disciplina ao professor")
     @PreAuthorize("hasAnyRole('ADMIN','COORDENADOR')")
@@ -95,6 +100,7 @@ public class ProfessorController {
         return ResponseEntity.status(201).body(professorService.vincularDisciplina(id, dto));
     }
 
+    // --- REMOVE O VÍNCULO ENTRE PROFESSOR E DISCIPLINA ---
     @DeleteMapping("/{id}/disciplinas/{disciplinaId}")
     @Operation(summary = "Remove o vínculo entre professor e disciplina")
     @PreAuthorize("hasAnyRole('ADMIN','COORDENADOR')")
@@ -104,4 +110,3 @@ public class ProfessorController {
         return ResponseEntity.noContent().build();
     }
 }
-

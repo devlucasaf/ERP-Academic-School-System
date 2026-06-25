@@ -38,6 +38,7 @@ public class ResponsavelController {
 
     private final ResponsavelService responsavelService;
 
+    // --- LISTA RESPONSÁVEIS PAGINADOS ---
     @GetMapping
     @Operation(summary = "Lista responsáveis paginados")
     @PreAuthorize("hasAnyRole('ADMIN','COORDENADOR','SECRETARIA')")
@@ -45,6 +46,7 @@ public class ResponsavelController {
         return ResponseEntity.ok(responsavelService.listar(pageable));
     }
 
+    // --- BUSCA RESPONSÁVEL PELO ID ---
     @GetMapping("/{id}")
     @Operation(summary = "Busca responsável pelo ID")
     @PreAuthorize("hasAnyRole('ADMIN','COORDENADOR','SECRETARIA')")
@@ -52,6 +54,7 @@ public class ResponsavelController {
         return ResponseEntity.ok(responsavelService.buscarPorId(id));
     }
 
+    // --- CRIA UM RESPONSÁVEL ---
     @PostMapping
     @Operation(summary = "Cria um responsável (cria também o usuário associado com role RESPONSAVEL)")
     @PreAuthorize("hasAnyRole('ADMIN','SECRETARIA')")
@@ -62,6 +65,7 @@ public class ResponsavelController {
         return ResponseEntity.created(uri).body(criado);
     }
 
+    // --- ATUALIZA UM RESPONSÁVEL EXISTENTE ---
     @PutMapping("/{id}")
     @Operation(summary = "Atualiza um responsável existente")
     @PreAuthorize("hasAnyRole('ADMIN','SECRETARIA')")
@@ -70,6 +74,7 @@ public class ResponsavelController {
         return ResponseEntity.ok(responsavelService.atualizar(id, dto));
     }
 
+    // --- REMOVE UM RESPONSÁVEL ---
     @DeleteMapping("/{id}")
     @Operation(summary = "Remove um responsável")
     @PreAuthorize("hasRole('ADMIN')")
@@ -78,8 +83,7 @@ public class ResponsavelController {
         return ResponseEntity.noContent().build();
     }
 
-    // --- VÍNCULOS RESPONSÁVEL ---
-
+    // --- LISTA OS ALUNOS VINCULADOS AO RESPONSÁVEL ---
     @GetMapping("/{id}/alunos")
     @Operation(summary = "Lista os alunos vinculados ao responsável")
     @PreAuthorize("hasAnyRole('ADMIN','COORDENADOR','SECRETARIA')")
@@ -87,6 +91,7 @@ public class ResponsavelController {
         return ResponseEntity.ok(responsavelService.listarAlunos(id));
     }
 
+    // --- VINCULA UM ALUNO AO RESPONSÁVEL ---
     @PostMapping("/{id}/alunos")
     @Operation(summary = "Vincula um aluno ao responsável")
     @PreAuthorize("hasAnyRole('ADMIN','SECRETARIA')")
@@ -96,6 +101,7 @@ public class ResponsavelController {
         return ResponseEntity.status(201).body(responsavelService.vincularAluno(id, dto));
     }
 
+    // --- REMOVE O VÍNCULO ENTRE RESPONSÁVEL E ALUNO ---
     @DeleteMapping("/{id}/alunos/{alunoId}")
     @Operation(summary = "Remove o vínculo entre responsável e aluno")
     @PreAuthorize("hasAnyRole('ADMIN','SECRETARIA')")
@@ -105,4 +111,3 @@ public class ResponsavelController {
         return ResponseEntity.noContent().build();
     }
 }
-

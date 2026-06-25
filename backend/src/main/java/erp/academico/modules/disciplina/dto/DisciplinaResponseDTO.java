@@ -16,16 +16,16 @@ import java.util.UUID;
 @Builder
 public class DisciplinaResponseDTO {
 
-    private UUID id;
-    private String codigo;
-    private String nome;
-    private String ementa;
-    private Integer cargaHoraria;
-    private UUID cursoId;
-    private String cursoNome;
-    private Integer periodo;
-    private Boolean ativo;
-    private LocalDateTime criadoEm;
-    private LocalDateTime atualizadoEm;
+    private UUID            id;
+    private String          codigo;
+    private String          nome;
+    private String          ementa;
+    private Integer         cargaHoraria;
+    private UUID            cursoId;
+    private String          cursoNome;
+    private Integer         periodo;
+    private Boolean         ativo;
+    private LocalDateTime   criadoEm;
+    private LocalDateTime   atualizadoEm;
 }
 

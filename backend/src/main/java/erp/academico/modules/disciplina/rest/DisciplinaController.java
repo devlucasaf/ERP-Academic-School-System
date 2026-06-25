@@ -105,7 +105,7 @@ public class DisciplinaController {
         return ResponseEntity.status(201).body(disciplinaService.vincularPrerequisito(id, dto));
     }
 
-    // --- REMOVE O VÍNCULO (204) ---
+    // --- REMOVE O VÍNCULO ---
     @DeleteMapping("/{id}/prerequisitos/{prerequisitoId}")
     @Operation(summary = "Remove o vínculo de pré-requisito")
     @PreAuthorize("hasAnyRole('ADMIN','COORDENADOR')")

@@ -16,21 +16,25 @@ import java.util.List;
 @RestControllerAdvice
 public class GlobalExceptionHandler {
 
+    // --- RECURSO NÃO ENCONTRADO ---
     @ExceptionHandler(ResourceNotFoundException.class)
     public ResponseEntity<ErrorResponse> handleResourceNotFound(ResourceNotFoundException ex, HttpServletRequest request) {
         return build(HttpStatus.NOT_FOUND, ex.getMessage(), request);
     }
 
+    // --- REGRA DE NEGÓCIO VIOLADA ---
     @ExceptionHandler(BusinessException.class)
     public ResponseEntity<ErrorResponse> handleBusiness(BusinessException ex, HttpServletRequest request) {
         return build(HttpStatus.BAD_REQUEST, ex.getMessage(), request);
     }
 
+    // --- VALIDAÇÃO CUSTOMIZADA ---
     @ExceptionHandler(ValidationException.class)
     public ResponseEntity<ErrorResponse> handleValidation(ValidationException ex, HttpServletRequest request) {
         return build(HttpStatus.UNPROCESSABLE_ENTITY, ex.getMessage(), request);
     }
 
+    // --- ERROS DE BEAN VALIDATION COM LISTA DE CAMPOS ---
     @ExceptionHandler(MethodArgumentNotValidException.class)
     public ResponseEntity<ErrorResponse> handleMethodArgumentNotValid(MethodArgumentNotValidException ex, HttpServletRequest request) {
         List<FieldErrorItem> fieldErrors = ex.getBindingResult()
@@ -39,6 +43,7 @@ public class GlobalExceptionHandler {
                 .map(this::toFieldErrorItem)
                 .toList();
 
+        // --- MONTA O CORPO DA RESPOSTA INCLUINDO A LISTA DE ERROS POR CAMPO ---
         ErrorResponse body = new ErrorResponse(
                 LocalDateTime.now(),
                 HttpStatus.BAD_REQUEST.value(),
@@ -49,27 +54,32 @@ public class GlobalExceptionHandler {
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(body);
     }
 
+    // --- ARGUMENTO ILEGAL ---
     @ExceptionHandler(IllegalArgumentException.class)
     public ResponseEntity<ErrorResponse> handleIllegalArgument(IllegalArgumentException ex, HttpServletRequest request) {
         return build(HttpStatus.BAD_REQUEST, ex.getMessage(), request);
     }
 
+    // --- USUÁRIO AUTENTICADO MAS SEM PERMISSÃO ---
     @ExceptionHandler(AccessDeniedException.class)
     public ResponseEntity<ErrorResponse> handleAccessDenied(AccessDeniedException ex, HttpServletRequest request) {
         return build(HttpStatus.FORBIDDEN, "Acesso negado.", request);
     }
 
+    // --- FALHA DE AUTENTICAÇÃO ---
     @ExceptionHandler(AuthenticationException.class)
     public ResponseEntity<ErrorResponse> handleAuthentication(AuthenticationException ex, HttpServletRequest request) {
         return build(HttpStatus.UNAUTHORIZED, "Falha de autenticação.", request);
     }
 
+    // --- FALLBACK PARA QUALQUER EXCEÇÃO NÃO TRATADA ACIMA ---
     @ExceptionHandler(Exception.class)
     public ResponseEntity<ErrorResponse> handleGeneric(Exception ex, HttpServletRequest request) {
         return build(HttpStatus.INTERNAL_SERVER_ERROR,
                 "Erro interno do servidor: " + ex.getMessage(), request);
     }
 
+    // --- MONTA A RESPOSTA PADRÃO SEM LISTA DE ERROS POR CAMPO ---
     private ResponseEntity<ErrorResponse> build(HttpStatus status, String message, HttpServletRequest request) {
         ErrorResponse body = new ErrorResponse(
                 LocalDateTime.now(),
@@ -80,6 +90,7 @@ public class GlobalExceptionHandler {
         return ResponseEntity.status(status).body(body);
     }
 
+    // --- MÉTODO AUXILIAR ---
     private FieldErrorItem toFieldErrorItem(FieldError fieldError) {
         return new FieldErrorItem(
                 fieldError.getField(),
@@ -87,4 +98,3 @@ public class GlobalExceptionHandler {
         );
     }
 }
-

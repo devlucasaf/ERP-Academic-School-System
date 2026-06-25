@@ -1,8 +1,10 @@
 package erp.academico.infra.security;
 
 import erp.academico.modules.usuario.model.Usuario;
+
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
+
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -10,9 +12,6 @@ import org.springframework.security.core.userdetails.UserDetails;
 import java.util.Collection;
 import java.util.List;
 
-/**
- * Adaptador de {@link Usuario} para o contrato {@link UserDetails} do Spring Security.
- */
 @Getter
 @RequiredArgsConstructor
 public class UsuarioDetails implements UserDetails {

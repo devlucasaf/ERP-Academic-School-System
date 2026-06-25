@@ -10,7 +10,9 @@ import erp.academico.modules.usuario.dto.UsuarioRequestDTO;
 import erp.academico.modules.usuario.dto.UsuarioResponseDTO;
 import erp.academico.modules.usuario.model.Usuario;
 import erp.academico.modules.usuario.service.UsuarioService;
+
 import lombok.RequiredArgsConstructor;
+
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
@@ -25,6 +27,7 @@ public class FuncionarioService {
     private final FuncionarioRepository funcionarioRepository;
     private final UsuarioService usuarioService;
 
+    // --- LISTA FUNCIONÁRIOS ---
     @Transactional(readOnly = true)
     public Page<FuncionarioResponseDTO> listar(CargoFuncionario cargo, Pageable pageable) {
         Page<Funcionario> page = (cargo == null)
@@ -33,11 +36,13 @@ public class FuncionarioService {
         return page.map(this::toResponse);
     }
 
+    // --- BUSCA FUNCIONÁRIO POR ID ---
     @Transactional(readOnly = true)
     public FuncionarioResponseDTO buscarPorId(UUID id) {
         return toResponse(buscarEntidade(id));
     }
 
+    // --- CRIA UM NOVO FUNCIONÁRIO JUNTO COM O USUÁRIO CORRESPONDENTE ---
     @Transactional
     public FuncionarioResponseDTO criar(FuncionarioRequestDTO dto) {
         Usuario usuario = usuarioService.criarEntidade(UsuarioRequestDTO.builder()
@@ -61,18 +66,18 @@ public class FuncionarioService {
         return toResponse(funcionarioRepository.save(funcionario));
     }
 
+    // --- ATUALIZA OS DADOS DO FUNCIONÁRIO E DO USUÁRIO VINCULADO ---
     @Transactional
     public FuncionarioResponseDTO atualizar(UUID id, FuncionarioRequestDTO dto) {
         Funcionario funcionario = buscarEntidade(id);
-
         Usuario usuario = funcionario.getUsuario();
+
         usuario.setNome(dto.getNome());
         usuario.setEmail(dto.getEmail());
         usuario.setCpf(dto.getCpf());
         usuario.setTelefone(dto.getTelefone());
         usuario.setDataNascimento(dto.getDataNascimento());
 
-        // Se o cargo mudou, atualiza também a role do usuário associado.
         if (!funcionario.getCargo().equals(dto.getCargo())) {
             usuario.setRole(dto.getCargo().toRoleUsuario());
             funcionario.setCargo(dto.getCargo());
@@ -84,17 +89,20 @@ public class FuncionarioService {
         return toResponse(funcionarioRepository.save(funcionario));
     }
 
+    // --- REMOVE UM FUNCIONÁRIO ---
     @Transactional
     public void deletar(UUID id) {
         Funcionario funcionario = buscarEntidade(id);
         funcionarioRepository.delete(funcionario);
     }
 
+    // --- BUSCA A ENTIDADE ---
     private Funcionario buscarEntidade(UUID id) {
         return funcionarioRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("Funcionário", id));
     }
 
+    // --- CONVERTE Funcionario PARA O DTO DE RESPOSTA ---
     private FuncionarioResponseDTO toResponse(Funcionario funcionario) {
         Usuario u = funcionario.getUsuario();
         UsuarioResponseDTO usuarioDto = UsuarioResponseDTO.builder()
@@ -121,4 +129,3 @@ public class FuncionarioService {
                 .build();
     }
 }
-

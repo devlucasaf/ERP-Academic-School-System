@@ -27,6 +27,7 @@ public class AlunoService {
     private final AlunoRepository alunoRepository;
     private final UsuarioService usuarioService;
 
+    // --- LISTA ALUNOS ---
     @Transactional(readOnly = true)
     public Page<AlunoResponseDTO> listar(StatusAluno status, Pageable pageable) {
         Page<Aluno> page = (status == null)
@@ -35,11 +36,13 @@ public class AlunoService {
         return page.map(this::toResponse);
     }
 
+    // --- BUSCA ALUNO POR ID ---
     @Transactional(readOnly = true)
     public AlunoResponseDTO buscarPorId(UUID id) {
         return toResponse(buscarEntidade(id));
     }
 
+    // --- BUSCA ALUNO PELA MATRÍCULA RA ---
     @Transactional(readOnly = true)
     public AlunoResponseDTO buscarPorMatricula(String matriculaRA) {
         Aluno aluno = alunoRepository.findByMatriculaRA(matriculaRA)
@@ -47,12 +50,14 @@ public class AlunoService {
         return toResponse(aluno);
     }
 
+    // --- CRIA UM NOVO ALUNO JUNTO COM O USUÁRIO CORRESPONDENTE ---
     @Transactional
     public AlunoResponseDTO criar(AlunoRequestDTO dto) {
         if (alunoRepository.existsByMatriculaRA(dto.getMatriculaRA())) {
             throw new BusinessException("Já existe um aluno cadastrado com a matrícula: " + dto.getMatriculaRA());
         }
 
+        // --- CRIA O USUÁRIO ASSOCIADO ---
         Usuario usuario = usuarioService.criarEntidade(UsuarioRequestDTO.builder()
                 .nome(dto.getNome())
                 .email(dto.getEmail())
@@ -64,6 +69,7 @@ public class AlunoService {
                 .role(RoleUsuario.ALUNO)
                 .build());
 
+        // --- MONTA E PERSISTE A ENTIDADE ALUNO ---
         Aluno aluno = Aluno.builder()
                 .usuario(usuario)
                 .matriculaRA(dto.getMatriculaRA())
@@ -76,10 +82,12 @@ public class AlunoService {
         return toResponse(alunoRepository.save(aluno));
     }
 
+    // --- ATUALIZA OS DADOS ACADÊMICOS DO ALUNO E DO USUÁRIO VINCULADO ---
     @Transactional
     public AlunoResponseDTO atualizar(UUID id, AlunoRequestDTO dto) {
         Aluno aluno = buscarEntidade(id);
 
+        // --- SE A MATRÍCULA MUDOU, GARANTE QUE A NOVA NÃO COLIDA COM OUTRO ALUNO ---
         if (!aluno.getMatriculaRA().equalsIgnoreCase(dto.getMatriculaRA()) && alunoRepository.existsByMatriculaRA(dto.getMatriculaRA())) {
             throw new BusinessException("Já existe um aluno com a matrícula: " + dto.getMatriculaRA());
         }
@@ -102,17 +110,20 @@ public class AlunoService {
         return toResponse(alunoRepository.save(aluno));
     }
 
+    // --- REMOVE O ALUNO ---
     @Transactional
     public void deletar(UUID id) {
         Aluno aluno = buscarEntidade(id);
         alunoRepository.delete(aluno);
     }
 
+    // --- BUSCA A ENTIDADE ---
     private Aluno buscarEntidade(UUID id) {
         return alunoRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("Aluno", id));
     }
 
+    // --- CONVERTE Aluno PARA O DTO DE RESPOSTA ---
     private AlunoResponseDTO toResponse(Aluno aluno) {
         Usuario u = aluno.getUsuario();
         UsuarioResponseDTO usuarioDto = UsuarioResponseDTO.builder()
@@ -141,4 +152,3 @@ public class AlunoService {
                 .build();
     }
 }
-

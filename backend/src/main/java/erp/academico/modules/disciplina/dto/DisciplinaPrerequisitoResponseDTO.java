@@ -16,11 +16,11 @@ import java.util.UUID;
 @Builder
 public class DisciplinaPrerequisitoResponseDTO {
 
-    private UUID id;
-    private UUID disciplinaId;
-    private UUID prerequisitoId;
-    private String prerequisitoCodigo;
-    private String prerequisitoNome;
-    private LocalDateTime criadoEm;
+    private UUID            id;
+    private UUID            disciplinaId;
+    private UUID            prerequisitoId;
+    private String          prerequisitoCodigo;
+    private String          prerequisitoNome;
+    private LocalDateTime   criadoEm;
 }
 

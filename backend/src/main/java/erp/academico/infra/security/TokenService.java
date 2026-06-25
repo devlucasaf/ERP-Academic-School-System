@@ -5,8 +5,10 @@ import com.auth0.jwt.JWTVerifier;
 import com.auth0.jwt.algorithms.Algorithm;
 import com.auth0.jwt.exceptions.JWTVerificationException;
 import com.auth0.jwt.interfaces.DecodedJWT;
+
 import erp.academico.exception.BusinessException;
 import erp.academico.modules.usuario.model.Usuario;
+
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
@@ -20,6 +22,7 @@ public class TokenService {
     private static final String CLAIM_ROLE = "role";
     private static final String CLAIM_USER_ID = "uid";
     private static final String CLAIM_TYPE = "type";
+
     private static final String TYPE_ACCESS = "access";
     private static final String TYPE_REFRESH = "refresh";
 
@@ -35,6 +38,7 @@ public class TokenService {
     @Value("${security.jwt.refresh-expiration-minutes}")
     private long refreshExpirationMinutes;
 
+    // --- GERA O ACCESS TOKEN ---
     public String gerarToken(Usuario usuario) {
         return JWT.create()
                 .withIssuer(issuer)
@@ -47,6 +51,7 @@ public class TokenService {
                 .sign(algorithm());
     }
 
+    // --- GERA O REFRESH TOKEN USADO PARA RENOVAR O ACCESS TOKEN ---
     public String gerarRefreshToken(Usuario usuario) {
         return JWT.create()
                 .withIssuer(issuer)
@@ -58,9 +63,7 @@ public class TokenService {
                 .sign(algorithm());
     }
 
-    /**
-     * Valida um access token e retorna o subject (email).
-     */
+    // --- VALIDA UM ACCESS TOKEN E RETORNA O SUBJECT ---
     public String validarToken(String token) {
         DecodedJWT decoded = verify(token);
         String type = decoded.getClaim(CLAIM_TYPE).asString();
@@ -70,9 +73,7 @@ public class TokenService {
         return decoded.getSubject();
     }
 
-    /**
-     * Valida um refresh token e retorna o subject (email).
-     */
+    // --- VALIDA UM REFRESH TOKEN E RETORNA O SUBJECT ---
     public String validarRefreshToken(String token) {
         DecodedJWT decoded = verify(token);
         String type = decoded.getClaim(CLAIM_TYPE).asString();
@@ -82,6 +83,7 @@ public class TokenService {
         return decoded.getSubject();
     }
 
+    // --- VERIFICA ASSINATURA E ISSUER DO TOKEN ---
     private DecodedJWT verify(String token) {
         try {
             JWTVerifier verifier = JWT.require(algorithm())
@@ -93,14 +95,15 @@ public class TokenService {
         }
     }
 
+    // --- HMAC256 USANDO O SECRET CONFIGURADO ---
     private Algorithm algorithm() {
         return Algorithm.HMAC256(secret);
     }
 
+    // --- CALCULA O Instant DE EXPIRAÇÃO A PARTIR DE MINUTOS ---
     private Instant expiration(long minutes) {
         return LocalDateTime.now()
                 .plusMinutes(minutes)
                 .toInstant(ZoneOffset.of("-03:00"));
     }
 }
-

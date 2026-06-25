@@ -34,6 +34,7 @@ public class AutenticacaoService {
     private final UsuarioService usuarioService;
     private final UsuarioRepository usuarioRepository;
 
+    // --- AUTENTICA O USUÁRIO POR E-MAIL/SENHA E DEVOLVE OS TOKENS ---
     @Transactional(readOnly = true)
     public LoginResponseDTO login(LoginRequestDTO dto) {
         try {
@@ -48,6 +49,7 @@ public class AutenticacaoService {
         }
     }
 
+    // --- REGISTRA UM NOVO USUÁRIO ---
     @Transactional
     public UsuarioResponseDTO register(RegisterRequestDTO dto) {
         UsuarioRequestDTO request = UsuarioRequestDTO.builder()
@@ -64,6 +66,7 @@ public class AutenticacaoService {
         return usuarioService.criar(request);
     }
 
+    // --- VALIDA UM REFRESH TOKEN ---
     @Transactional(readOnly = true)
     public LoginResponseDTO refresh(RefreshTokenRequestDTO dto) {
         String email = tokenService.validarRefreshToken(dto.getRefreshToken());
@@ -78,6 +81,7 @@ public class AutenticacaoService {
         return montarLoginResponse(usuario);
     }
 
+    // --- GERA OS DOIS TOKENS E MONTA O DTO DE RESPOSTA COM OS DADOS DO USUÁRIO ---
     private LoginResponseDTO montarLoginResponse(Usuario usuario) {
         return LoginResponseDTO.builder()
                 .token(tokenService.gerarToken(usuario))
@@ -86,4 +90,3 @@ public class AutenticacaoService {
                 .build();
     }
 }
-

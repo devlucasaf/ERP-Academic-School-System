@@ -1,5 +1,6 @@
 package erp.academico.modules.usuario.service;
 
+// --- IMPORTS ---
 import erp.academico.exception.BusinessException;
 import erp.academico.exception.ResourceNotFoundException;
 import erp.academico.modules.usuario.dto.UsuarioRequestDTO;
@@ -22,23 +23,28 @@ public class UsuarioService {
     private final UsuarioRepository usuarioRepository;
     private final PasswordEncoder passwordEncoder;
 
+    // --- LISTA USUÁRIOS PAGINADOS ---
     @Transactional(readOnly = true)
     public Page<UsuarioResponseDTO> listar(Pageable pageable) {
         return usuarioRepository.findAll(pageable).map(this::toResponse);
     }
 
+    // --- BUSCA USUÁRIO POR ID ---
     @Transactional(readOnly = true)
     public UsuarioResponseDTO buscarPorId(UUID id) {
         return toResponse(buscarEntidade(id));
     }
 
+    // --- CRIA UM NOVO USUÁRIO ---
     @Transactional
     public UsuarioResponseDTO criar(UsuarioRequestDTO dto) {
         return toResponse(criarEntidade(dto));
     }
 
+    // --- CRIA UM NOVO USUÁRIO E RETORNA A ENTIDADE ---
     @Transactional
     public Usuario criarEntidade(UsuarioRequestDTO dto) {
+        // --- GARANTE UNICIDADE DO E-MAIL ---
         if (usuarioRepository.existsByEmail(dto.getEmail())) {
             throw new BusinessException("Já existe um usuário cadastrado com o e-mail: " + dto.getEmail());
         }
@@ -57,6 +63,7 @@ public class UsuarioService {
         return usuarioRepository.save(usuario);
     }
 
+    // --- ATUALIZA UM USUÁRIO EXISTENTE ---
     @Transactional
     public UsuarioResponseDTO atualizar(UUID id, UsuarioRequestDTO dto) {
         Usuario usuario = buscarEntidade(id);
@@ -83,16 +90,19 @@ public class UsuarioService {
         return toResponse(usuarioRepository.save(usuario));
     }
 
+    // --- REMOVE UM USUÁRIO ---
     @Transactional
     public void deletar(UUID id) {
         Usuario usuario = buscarEntidade(id);
         usuarioRepository.delete(usuario);
     }
 
+    // --- BUSCA A ENTIDADE ---
     private Usuario buscarEntidade(UUID id) {
         return usuarioRepository.findById(id) .orElseThrow(() -> new ResourceNotFoundException("Usuário", id));
     }
 
+    // --- CONVERTE A ENTIDADE Usuario PARA O DTO DE RESPOSTA ---
     private UsuarioResponseDTO toResponse(Usuario usuario) {
         return UsuarioResponseDTO.builder()
                 .id(usuario.getId())
@@ -108,4 +118,3 @@ public class UsuarioService {
                 .build();
     }
 }
-

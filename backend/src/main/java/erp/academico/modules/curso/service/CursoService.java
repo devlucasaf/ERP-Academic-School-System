@@ -21,6 +21,7 @@ public class CursoService {
 
     private final CursoRepository cursoRepository;
 
+    // --- LISTA CURSOS ---
     @Transactional(readOnly = true)
     public Page<CursoResponseDTO> listar(NivelCurso nivel, Pageable pageable) {
         Page<Curso> page = (nivel == null)
@@ -29,17 +30,20 @@ public class CursoService {
         return page.map(this::toResponse);
     }
 
+    // --- BUSCA CURSO POR ID ---
     @Transactional(readOnly = true)
     public CursoResponseDTO buscarPorId(UUID id) {
         return toResponse(buscarEntidade(id));
     }
 
+    // --- EXPÕE A ENTIDADE PARA OUTROS SERVICES ---
     @Transactional(readOnly = true)
     public Curso buscarEntidade(UUID id) {
         return cursoRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("Curso", id));
     }
 
+    // --- CRIA UM NOVO CURSO ---
     @Transactional
     public CursoResponseDTO criar(CursoRequestDTO dto) {
         Curso curso = Curso.builder()
@@ -53,6 +57,7 @@ public class CursoService {
         return toResponse(cursoRepository.save(curso));
     }
 
+    // --- ATUALIZA OS DADOS DE UM CURSO EXISTENTE ---
     @Transactional
     public CursoResponseDTO atualizar(UUID id, CursoRequestDTO dto) {
         Curso curso = buscarEntidade(id);
@@ -68,12 +73,14 @@ public class CursoService {
         return toResponse(cursoRepository.save(curso));
     }
 
+    // --- REMOVE UM CURSO ---
     @Transactional
     public void deletar(UUID id) {
         Curso curso = buscarEntidade(id);
         cursoRepository.delete(curso);
     }
 
+    // --- CONVERTE A ENTIDADE Curso PARA O DTO DE RESPOSTA ---
     private CursoResponseDTO toResponse(Curso curso) {
         return CursoResponseDTO.builder()
                 .id(curso.getId())
@@ -88,4 +95,3 @@ public class CursoService {
                 .build();
     }
 }
-

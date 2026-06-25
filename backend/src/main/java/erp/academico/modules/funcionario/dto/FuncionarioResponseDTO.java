@@ -19,12 +19,12 @@ import java.util.UUID;
 @Builder
 public class FuncionarioResponseDTO {
 
-    private UUID id;
-    private UsuarioResponseDTO usuario;
-    private CargoFuncionario cargo;
-    private LocalDate dataAdmissao;
-    private String departamento;
-    private LocalDateTime criadoEm;
-    private LocalDateTime atualizadoEm;
+    private UUID                id;
+    private UsuarioResponseDTO  usuario;
+    private CargoFuncionario    cargo;
+    private LocalDate           dataAdmissao;
+    private String              departamento;
+    private LocalDateTime       criadoEm;
+    private LocalDateTime       atualizadoEm;
 }
 

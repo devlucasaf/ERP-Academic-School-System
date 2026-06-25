@@ -17,6 +17,7 @@ import erp.academico.modules.usuario.model.Usuario;
 import erp.academico.modules.usuario.service.UsuarioService;
 
 import lombok.RequiredArgsConstructor;
+
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
@@ -33,16 +34,19 @@ public class ProfessorService {
     private final ProfessorDisciplinaRepository professorDisciplinaRepository;
     private final UsuarioService usuarioService;
 
+    // --- LISTA PROFESSORES PAGINADOS ---
     @Transactional(readOnly = true)
     public Page<ProfessorResponseDTO> listar(Pageable pageable) {
         return professorRepository.findAll(pageable).map(this::toResponse);
     }
 
+    // --- BUSCA PROFESSOR POR ID ---
     @Transactional(readOnly = true)
     public ProfessorResponseDTO buscarPorId(UUID id) {
         return toResponse(buscarEntidade(id));
     }
 
+    // --- CRIA UM NOVO PROFESSOR JUNTO COM O USUÁRIO CORRESPONDENTE ---
     @Transactional
     public ProfessorResponseDTO criar(ProfessorRequestDTO dto) {
         Usuario usuario = usuarioService.criarEntidade(UsuarioRequestDTO.builder()
@@ -68,11 +72,12 @@ public class ProfessorService {
         return toResponse(professorRepository.save(professor));
     }
 
+    // --- ATUALIZA OS DADOS DO PROFESSOR E DO USUÁRIO VINCULADO ---
     @Transactional
     public ProfessorResponseDTO atualizar(UUID id, ProfessorRequestDTO dto) {
         Professor professor = buscarEntidade(id);
-
         Usuario usuario = professor.getUsuario();
+
         usuario.setNome(dto.getNome());
         usuario.setEmail(dto.getEmail());
         usuario.setCpf(dto.getCpf());
@@ -82,8 +87,8 @@ public class ProfessorService {
         professor.setFormacao(dto.getFormacao());
         professor.setAreaAtuacao(dto.getAreaAtuacao());
         professor.setCargaHorariaSemanal(dto.getCargaHorariaSemanal());
-
         professor.setDataAdmissao(dto.getDataAdmissao());
+
         if (dto.getAtivo() != null) {
             professor.setAtivo(dto.getAtivo());
         }
@@ -91,14 +96,14 @@ public class ProfessorService {
         return toResponse(professorRepository.save(professor));
     }
 
+    // --- REMOVE O PROFESSOR ---
     @Transactional
     public void deletar(UUID id) {
         Professor professor = buscarEntidade(id);
         professorRepository.delete(professor);
     }
 
-    // --- VÍNCULOS COM DISCIPLINAS ---
-
+    // --- LISTA AS DISCIPLINAS VINCULADAS AO PROFESSOR ---
     @Transactional(readOnly = true)
     public List<ProfessorDisciplinaResponseDTO> listarDisciplinas(UUID professorId) {
         buscarEntidade(professorId);
@@ -108,6 +113,7 @@ public class ProfessorService {
                 .toList();
     }
 
+    // --- VINCULA UMA DISCIPLINA AO PROFESSOR ---
     @Transactional
     public ProfessorDisciplinaResponseDTO vincularDisciplina(UUID professorId, VincularDisciplinaRequestDTO dto) {
         Professor professor = buscarEntidade(professorId);
@@ -124,6 +130,7 @@ public class ProfessorService {
         return toVinculoResponse(professorDisciplinaRepository.save(vinculo));
     }
 
+    // --- REMOVE O VÍNCULO ENTRE PROFESSOR E DISCIPLINA ---
     @Transactional
     public void desvincularDisciplina(UUID professorId, UUID disciplinaId) {
         ProfessorDisciplina vinculo = professorDisciplinaRepository
@@ -133,13 +140,13 @@ public class ProfessorService {
         professorDisciplinaRepository.delete(vinculo);
     }
 
-    // --- HELPERS ---
-
+    // --- BUSCA A ENTIDADE ---
     private Professor buscarEntidade(UUID id) {
         return professorRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("Professor", id));
     }
 
+    // --- CONVERTE Professor PARA O DTO DE RESPOSTA ---
     private ProfessorResponseDTO toResponse(Professor professor) {
         Usuario u = professor.getUsuario();
         UsuarioResponseDTO usuarioDto = UsuarioResponseDTO.builder()
@@ -168,6 +175,7 @@ public class ProfessorService {
                 .build();
     }
 
+    // --- CONVERTE O VÍNCULO PROFESSOR/DISCIPLINA PARA O DTO DE RESPOSTA ---
     private ProfessorDisciplinaResponseDTO toVinculoResponse(ProfessorDisciplina v) {
         return ProfessorDisciplinaResponseDTO.builder()
                 .id(v.getId())
@@ -177,4 +185,3 @@ public class ProfessorService {
                 .build();
     }
 }
-

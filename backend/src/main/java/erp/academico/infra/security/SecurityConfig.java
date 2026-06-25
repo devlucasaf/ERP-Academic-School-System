@@ -17,13 +17,13 @@ import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
 @Configuration
-@EnableMethodSecurity
+@EnableMethodSecurity // --- HABILITA @PreAuthorize / @PostAuthorize NOS CONTROLLERS ---
 @RequiredArgsConstructor
 public class SecurityConfig {
 
     private static final String[] PUBLIC_MATCHERS = {
-            "/auth/**",
-            "/swagger-ui.html",
+            "/auth/**",              // --- LOGIN, REGISTER, REFRESH ---
+            "/swagger-ui.html",      // --- DOCUMENTAÇÃO SWAGGER ---
             "/swagger-ui/**",
             "/v3/api-docs",
             "/v3/api-docs/**",
@@ -34,6 +34,7 @@ public class SecurityConfig {
     private final SecurityFilter securityFilter;
     private final UsuarioDetailsService usuarioDetailsService;
 
+    // --- DEFINE A CADEIA DE FILTROS DE SEGURANÇA DA APLICAÇÃO ---
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http
@@ -53,6 +54,7 @@ public class SecurityConfig {
         return http.build();
     }
 
+    // --- PROVEDOR DE AUTENTICAÇÃO ---
     @Bean
     public DaoAuthenticationProvider authenticationProvider(PasswordEncoder passwordEncoder) {
         DaoAuthenticationProvider provider = new DaoAuthenticationProvider();
@@ -61,11 +63,13 @@ public class SecurityConfig {
         return provider;
     }
 
+    // --- EXPÕE O AuthenticationManager ---
     @Bean
     public AuthenticationManager authenticationManager(AuthenticationConfiguration configuration) throws Exception {
         return configuration.getAuthenticationManager();
     }
 
+    // --- ENCODER DE SENHA ---
     @Bean
     public PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();

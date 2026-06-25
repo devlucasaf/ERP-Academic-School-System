@@ -4,10 +4,14 @@ import erp.academico.modules.funcionario.dto.FuncionarioRequestDTO;
 import erp.academico.modules.funcionario.dto.FuncionarioResponseDTO;
 import erp.academico.modules.funcionario.model.CargoFuncionario;
 import erp.academico.modules.funcionario.service.FuncionarioService;
+
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
+
 import jakarta.validation.Valid;
+
 import lombok.RequiredArgsConstructor;
+
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
@@ -34,6 +38,7 @@ public class FuncionarioController {
 
     private final FuncionarioService funcionarioService;
 
+    // --- LISTA FUNCIONÁRIOS ---
     @GetMapping
     @Operation(summary = "Lista funcionários paginados (opcionalmente filtrando por cargo)")
     @PreAuthorize("hasAnyRole('ADMIN','COORDENADOR')")
@@ -43,6 +48,7 @@ public class FuncionarioController {
         return ResponseEntity.ok(funcionarioService.listar(cargo, pageable));
     }
 
+    // --- BUSCA FUNCIONÁRIO PELO ID ---
     @GetMapping("/{id}")
     @Operation(summary = "Busca funcionário pelo ID")
     @PreAuthorize("hasAnyRole('ADMIN','COORDENADOR')")
@@ -50,6 +56,7 @@ public class FuncionarioController {
         return ResponseEntity.ok(funcionarioService.buscarPorId(id));
     }
 
+    // --- CRIA UM FUNCIONÁRIO ---
     @PostMapping
     @Operation(summary = "Cria um funcionário (cria também o usuário com a role correspondente ao cargo)")
     @PreAuthorize("hasRole('ADMIN')")
@@ -60,6 +67,7 @@ public class FuncionarioController {
         return ResponseEntity.created(uri).body(criado);
     }
 
+    // --- ATUALIZA UM FUNCIONÁRIO EXISTENTE ---
     @PutMapping("/{id}")
     @Operation(summary = "Atualiza um funcionário existente")
     @PreAuthorize("hasRole('ADMIN')")
@@ -68,6 +76,7 @@ public class FuncionarioController {
         return ResponseEntity.ok(funcionarioService.atualizar(id, dto));
     }
 
+    // --- REMOVE UM FUNCIONÁRIO ---
     @DeleteMapping("/{id}")
     @Operation(summary = "Remove um funcionário")
     @PreAuthorize("hasRole('ADMIN')")
@@ -76,4 +85,3 @@ public class FuncionarioController {
         return ResponseEntity.noContent().build();
     }
 }
-

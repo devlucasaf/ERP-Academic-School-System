@@ -35,6 +35,7 @@ public class UsuarioController {
 
     private final UsuarioService usuarioService;
 
+    // --- LISTA USUÁRIOS PAGINADOS ---
     @GetMapping
     @Operation(summary = "Lista usuários paginados")
     @PreAuthorize("hasAnyRole('ADMIN','COORDENADOR','SECRETARIA')")
@@ -42,6 +43,7 @@ public class UsuarioController {
         return ResponseEntity.ok(usuarioService.listar(pageable));
     }
 
+    // --- BUSCA USUÁRIO PELO ID ---
     @GetMapping("/{id}")
     @Operation(summary = "Busca usuário pelo ID")
     @PreAuthorize("hasAnyRole('ADMIN','COORDENADOR','SECRETARIA')")
@@ -49,6 +51,7 @@ public class UsuarioController {
         return ResponseEntity.ok(usuarioService.buscarPorId(id));
     }
 
+    // --- CRIA UM NOVO USUÁRIO ---
     @PostMapping
     @Operation(summary = "Cria um novo usuário")
     @PreAuthorize("hasRole('ADMIN')")
@@ -58,6 +61,7 @@ public class UsuarioController {
         return ResponseEntity.created(uri).body(criado);
     }
 
+    // --- ATUALIZA UM USUÁRIO EXISTENTE ---
     @PutMapping("/{id}")
     @Operation(summary = "Atualiza um usuário existente")
     @PreAuthorize("hasRole('ADMIN')")
@@ -65,6 +69,7 @@ public class UsuarioController {
         return ResponseEntity.ok(usuarioService.atualizar(id, dto));
     }
 
+    // --- REMOVE UM USUÁRIO ---
     @DeleteMapping("/{id}")
     @Operation(summary = "Remove um usuário")
     @PreAuthorize("hasRole('ADMIN')")

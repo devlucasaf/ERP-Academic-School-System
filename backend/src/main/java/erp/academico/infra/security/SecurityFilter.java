@@ -29,6 +29,7 @@ public class SecurityFilter extends OncePerRequestFilter {
                                     @NonNull HttpServletResponse response,
                                     @NonNull FilterChain filterChain) throws ServletException, IOException {
 
+        // --- EXTRAI O TOKEN DO HEADER ---
         String token = extrairToken(request);
         if (token != null) {
             try {
@@ -41,7 +42,6 @@ public class SecurityFilter extends OncePerRequestFilter {
                     SecurityContextHolder.getContext().setAuthentication(authentication);
                 }
             } catch (Exception ignored) {
-                // Token inválido / expirado — segue sem autenticação; SecurityConfig retornará 401.
                 SecurityContextHolder.clearContext();
             }
         }
@@ -49,6 +49,7 @@ public class SecurityFilter extends OncePerRequestFilter {
         filterChain.doFilter(request, response);
     }
 
+    // --- LÊ O HEADER Authorization E REMOVE O PREFIXO "Bearer " ---
     private String extrairToken(HttpServletRequest request) {
         String header = request.getHeader(HttpHeaders.AUTHORIZATION);
         if (header != null && header.startsWith(BEARER_PREFIX)) {
@@ -57,4 +58,3 @@ public class SecurityFilter extends OncePerRequestFilter {
         return null;
     }
 }
-
