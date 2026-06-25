@@ -1,31 +1,31 @@
-CREATE TABLE tb_professor (
-    id                       UNIQUEIDENTIFIER NOT NULL CONSTRAINT pk_tb_professor PRIMARY KEY,
-    usuario_id               UNIQUEIDENTIFIER NOT NULL,
-    formacao                 NVARCHAR(200)    NULL,
-    area_atuacao             NVARCHAR(150)    NULL,
-    carga_horaria_semanal    INT              NULL,
-    data_admissao            DATE             NOT NULL,
-    ativo                    BIT              NOT NULL CONSTRAINT df_tb_professor_ativo         DEFAULT (1),
-    criado_em                DATETIME2(6)     NOT NULL CONSTRAINT df_tb_professor_criado_em     DEFAULT (SYSUTCDATETIME()),
-    atualizado_em            DATETIME2(6)     NOT NULL CONSTRAINT df_tb_professor_atualizado_em DEFAULT (SYSUTCDATETIME()),
+CREATE TABLE professor (
+    id                  UNIQUEIDENTIFIER NOT NULL CONSTRAINT pkProfessor PRIMARY KEY,
+    usuarioId           UNIQUEIDENTIFIER NOT NULL,
+    formacao            NVARCHAR(200)    NULL,
+    areaAtuacao         NVARCHAR(150)    NULL,
+    cargaHorariaSemanal INT              NULL,
+    dataAdmissao        DATE             NOT NULL,
+    ativo               BIT              NOT NULL CONSTRAINT dfProfessorAtivo        DEFAULT (1),
+    criadoEm            DATETIME2(6)     NOT NULL CONSTRAINT dfProfessorCriadoEm     DEFAULT (SYSUTCDATETIME()),
+    atualizadoEm        DATETIME2(6)     NOT NULL CONSTRAINT dfProfessorAtualizadoEm DEFAULT (SYSUTCDATETIME()),
 
-    CONSTRAINT uk_tb_professor_usuario UNIQUE (usuario_id),
-    CONSTRAINT fk_tb_professor_usuario FOREIGN KEY (usuario_id) REFERENCES tb_usuario(id)
+    CONSTRAINT ukProfessorUsuario UNIQUE (usuarioId),
+    CONSTRAINT fkProfessorUsuario FOREIGN KEY (usuarioId) REFERENCES usuario(id)
 );
 
-CREATE INDEX ix_tb_professor_ativo ON tb_professor(ativo);
+CREATE INDEX ixProfessorAtivo ON professor(ativo);
 
-CREATE TABLE tb_professor_disciplina (
-    id              UNIQUEIDENTIFIER NOT NULL CONSTRAINT pk_tb_prof_disc PRIMARY KEY,
-    professor_id    UNIQUEIDENTIFIER NOT NULL,
-    disciplina_id   UNIQUEIDENTIFIER NOT NULL,
-    criado_em       DATETIME2(6)     NOT NULL CONSTRAINT df_tb_prof_disc_criado_em DEFAULT (SYSUTCDATETIME()),
+CREATE TABLE professorDisciplina (
+    id              UNIQUEIDENTIFIER NOT NULL CONSTRAINT pkProfessorDisciplina PRIMARY KEY,
+    professorId     UNIQUEIDENTIFIER NOT NULL,
+    disciplinaId    UNIQUEIDENTIFIER NOT NULL,
+    criadoEm        DATETIME2(6)     NOT NULL CONSTRAINT dfProfessorDisciplinaCriadoEm DEFAULT (SYSUTCDATETIME()),
 
-    CONSTRAINT uk_tb_professor_disciplina     UNIQUE (professor_id, disciplina_id),
-    CONSTRAINT fk_tb_prof_disc_professor      FOREIGN KEY (professor_id) REFERENCES tb_professor(id)
-    -- FK para tb_disciplina será adicionada quando o módulo "disciplina" existir
+    CONSTRAINT ukProfessorDisciplina          UNIQUE (professorId, disciplinaId),
+    CONSTRAINT fkProfessorDisciplinaProfessor FOREIGN KEY (professorId) REFERENCES professor(id)
+    -- --- FK PARA "disciplina" SERÁ ADICIONADA NA V7 (DEPOIS DE CRIAR A TABELA disciplina) ---
 );
 
-CREATE INDEX ix_tb_prof_disc_professor  ON tb_professor_disciplina(professor_id);
-CREATE INDEX ix_tb_prof_disc_disciplina ON tb_professor_disciplina(disciplina_id);
+CREATE INDEX ixProfessorDisciplinaProfessor  ON professorDisciplina(professorId);
+CREATE INDEX ixProfessorDisciplinaDisciplina ON professorDisciplina(disciplinaId);
 

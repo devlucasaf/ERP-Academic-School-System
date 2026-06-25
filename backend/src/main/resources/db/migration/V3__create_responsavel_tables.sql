@@ -1,27 +1,27 @@
-CREATE TABLE tb_responsavel (
-    id                  UNIQUEIDENTIFIER    NOT NULL CONSTRAINT pk_tb_responsavel PRIMARY KEY,
-    usuario_id          UNIQUEIDENTIFIER    NOT NULL,
-    parentesco          NVARCHAR(20)        NOT NULL,
-    criado_em           DATETIME2(6)        NOT NULL CONSTRAINT df_tb_responsavel_criado_em     DEFAULT (SYSUTCDATETIME()),
-    atualizado_em       DATETIME2(6)        NOT NULL CONSTRAINT df_tb_responsavel_atualizado_em DEFAULT (SYSUTCDATETIME()),
+CREATE TABLE responsavel (
+    id              UNIQUEIDENTIFIER NOT NULL CONSTRAINT pkResponsavel PRIMARY KEY,
+    usuarioId       UNIQUEIDENTIFIER NOT NULL,
+    parentesco      NVARCHAR(20)     NOT NULL,
+    criadoEm        DATETIME2(6)     NOT NULL CONSTRAINT dfResponsavelCriadoEm     DEFAULT (SYSUTCDATETIME()),
+    atualizadoEm    DATETIME2(6)     NOT NULL CONSTRAINT dfResponsavelAtualizadoEm DEFAULT (SYSUTCDATETIME()),
 
-    CONSTRAINT uk_tb_responsavel_usuario UNIQUE (usuario_id),
-    CONSTRAINT fk_tb_responsavel_usuario FOREIGN KEY (usuario_id) REFERENCES tb_usuario(id),
-    CONSTRAINT ck_tb_responsavel_parentesco CHECK (parentesco IN ('PAI','MAE','TUTOR','OUTRO'))
+    CONSTRAINT ukResponsavelUsuario    UNIQUE (usuarioId),
+    CONSTRAINT fkResponsavelUsuario    FOREIGN KEY (usuarioId) REFERENCES usuario(id),
+    CONSTRAINT ckResponsavelParentesco CHECK (parentesco IN ('PAI','MAE','TUTOR','OUTRO'))
 );
 
-CREATE TABLE tb_responsavel_aluno (
-    id                  UNIQUEIDENTIFIER    NOT NULL CONSTRAINT pk_tb_responsavel_aluno PRIMARY KEY,
-    responsavel_id      UNIQUEIDENTIFIER    NOT NULL,
-    aluno_id            UNIQUEIDENTIFIER    NOT NULL,
-    observacao          NVARCHAR(500)       NULL,
-    criado_em           DATETIME2(6)        NOT NULL CONSTRAINT df_tb_resp_aluno_criado_em DEFAULT (SYSUTCDATETIME()),
+CREATE TABLE responsavelAluno (
+    id              UNIQUEIDENTIFIER NOT NULL CONSTRAINT pkResponsavelAluno PRIMARY KEY,
+    responsavelId   UNIQUEIDENTIFIER NOT NULL,
+    alunoId         UNIQUEIDENTIFIER NOT NULL,
+    observacao      NVARCHAR(500)    NULL,
+    criadoEm        DATETIME2(6)     NOT NULL CONSTRAINT dfResponsavelAlunoCriadoEm DEFAULT (SYSUTCDATETIME()),
 
-    CONSTRAINT uk_tb_responsavel_aluno          UNIQUE (responsavel_id, aluno_id),
-    CONSTRAINT fk_tb_resp_aluno_responsavel     FOREIGN KEY (responsavel_id) REFERENCES tb_responsavel(id),
-    CONSTRAINT fk_tb_resp_aluno_aluno           FOREIGN KEY (aluno_id)       REFERENCES tb_aluno(id)
+    CONSTRAINT ukResponsavelAluno              UNIQUE (responsavelId, alunoId),
+    CONSTRAINT fkResponsavelAlunoResponsavel   FOREIGN KEY (responsavelId) REFERENCES responsavel(id),
+    CONSTRAINT fkResponsavelAlunoAluno         FOREIGN KEY (alunoId)       REFERENCES aluno(id)
 );
 
-CREATE INDEX ix_tb_resp_aluno_responsavel ON tb_responsavel_aluno(responsavel_id);
-CREATE INDEX ix_tb_resp_aluno_aluno       ON tb_responsavel_aluno(aluno_id);
+CREATE INDEX ixResponsavelAlunoResponsavel ON responsavelAluno(responsavelId);
+CREATE INDEX ixResponsavelAlunoAluno       ON responsavelAluno(alunoId);
 

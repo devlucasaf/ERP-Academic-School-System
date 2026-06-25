@@ -1,15 +1,15 @@
-CREATE TABLE tb_funcionario (
-    id              UNIQUEIDENTIFIER NOT NULL CONSTRAINT pk_tb_funcionario PRIMARY KEY,
-    usuario_id      UNIQUEIDENTIFIER NOT NULL,
+CREATE TABLE funcionario (
+    id              UNIQUEIDENTIFIER NOT NULL CONSTRAINT pkFuncionario PRIMARY KEY,
+    usuarioId       UNIQUEIDENTIFIER NOT NULL,
     cargo           NVARCHAR(30)     NOT NULL,
-    data_admissao   DATE             NOT NULL,
+    dataAdmissao    DATE             NOT NULL,
     departamento    NVARCHAR(100)    NULL,
-    criado_em       DATETIME2(6)     NOT NULL CONSTRAINT df_tb_funcionario_criado_em     DEFAULT (SYSUTCDATETIME()),
-    atualizado_em   DATETIME2(6)     NOT NULL CONSTRAINT df_tb_funcionario_atualizado_em DEFAULT (SYSUTCDATETIME()),
+    criadoEm        DATETIME2(6)     NOT NULL CONSTRAINT dfFuncionarioCriadoEm     DEFAULT (SYSUTCDATETIME()),
+    atualizadoEm    DATETIME2(6)     NOT NULL CONSTRAINT dfFuncionarioAtualizadoEm DEFAULT (SYSUTCDATETIME()),
 
-    CONSTRAINT uk_tb_funcionario_usuario UNIQUE (usuario_id),
-    CONSTRAINT fk_tb_funcionario_usuario FOREIGN KEY (usuario_id) REFERENCES tb_usuario(id),
-    CONSTRAINT ck_tb_funcionario_cargo   CHECK (cargo IN (
+    CONSTRAINT ukFuncionarioUsuario UNIQUE (usuarioId),
+    CONSTRAINT fkFuncionarioUsuario FOREIGN KEY (usuarioId) REFERENCES usuario(id),
+    CONSTRAINT ckFuncionarioCargo   CHECK (cargo IN (
         'COORDENADOR',
         'SECRETARIA',
         'BIBLIOTECARIO',
@@ -18,6 +18,6 @@ CREATE TABLE tb_funcionario (
     ))
 );
 
-CREATE INDEX ix_tb_funcionario_cargo        ON tb_funcionario(cargo);
-CREATE INDEX ix_tb_funcionario_departamento ON tb_funcionario(departamento);
+CREATE INDEX ixFuncionarioCargo        ON funcionario(cargo);
+CREATE INDEX ixFuncionarioDepartamento ON funcionario(departamento);
 
