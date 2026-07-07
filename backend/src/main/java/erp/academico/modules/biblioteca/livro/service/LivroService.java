@@ -95,13 +95,14 @@ public class LivroService {
         return toResponse(livroRepository.save(livro));
     }
 
-    // --- REMOVE LIVRO (SÓ SE NÃO HOUVER EXEMPLARES) ---
+    // --- REMOVE LIVRO ---
     @Transactional
     public void deletar(UUID id) {
         Livro livro = buscarEntidade(id);
         if (exemplarRepository.countByLivroId(id) > 0) {
             throw new BusinessException("Não é possível excluir livro com exemplares cadastrados.");
         }
+
         if (livro.getCapaUrl() != null) {
             storageService.delete(livro.getCapaUrl());
         }
@@ -115,7 +116,9 @@ public class LivroService {
     }
 
     private void validarIsbnUnico(String isbn, UUID idAtual) {
-        if (isbn == null || isbn.isBlank()) return;
+        if (isbn == null || isbn.isBlank()) {
+            return;
+        }
         livroRepository.findByIsbn(isbn).ifPresent(existente -> {
             if (idAtual == null || !existente.getId().equals(idAtual)) {
                 throw new BusinessException("Já existe um livro cadastrado com o ISBN informado.");

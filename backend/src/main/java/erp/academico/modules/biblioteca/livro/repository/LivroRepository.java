@@ -16,7 +16,6 @@ public interface LivroRepository extends JpaRepository<Livro, UUID> {
 
     Optional<Livro> findByIsbn(String isbn);
 
-    // --- BUSCA AVANÇADA COM FILTROS OPCIONAIS ---
     @Query("""
             SELECT l FROM Livro l
              WHERE (:titulo    IS NULL OR LOWER(l.titulo)    LIKE LOWER(CONCAT('%', :titulo, '%')))

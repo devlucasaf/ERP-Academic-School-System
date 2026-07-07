@@ -12,7 +12,6 @@ import org.hibernate.annotations.UpdateTimestamp;
 import java.time.LocalDateTime;
 import java.util.UUID;
 
-// --- LIVRO DO ACERVO DA BIBLIOTECA ---
 @Getter
 @Setter
 @NoArgsConstructor

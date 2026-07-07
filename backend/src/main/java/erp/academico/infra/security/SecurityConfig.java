@@ -17,13 +17,13 @@ import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
 @Configuration
-@EnableMethodSecurity // --- HABILITA @PreAuthorize / @PostAuthorize NOS CONTROLLERS ---
+@EnableMethodSecurity
 @RequiredArgsConstructor
 public class SecurityConfig {
 
     private static final String[] PUBLIC_MATCHERS = {
-            "/auth/**",              // --- LOGIN, REGISTER, REFRESH ---
-            "/swagger-ui.html",      // --- DOCUMENTAÇÃO SWAGGER ---
+            "/auth/**",
+            "/swagger-ui.html",
             "/swagger-ui/**",
             "/v3/api-docs",
             "/v3/api-docs/**",

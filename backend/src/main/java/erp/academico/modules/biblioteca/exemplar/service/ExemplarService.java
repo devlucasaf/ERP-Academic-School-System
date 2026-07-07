@@ -9,7 +9,9 @@ import erp.academico.modules.biblioteca.exemplar.model.StatusExemplar;
 import erp.academico.modules.biblioteca.exemplar.repository.ExemplarRepository;
 import erp.academico.modules.biblioteca.livro.model.Livro;
 import erp.academico.modules.biblioteca.livro.service.LivroService;
+
 import lombok.RequiredArgsConstructor;
+
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
@@ -40,7 +42,7 @@ public class ExemplarService {
                 .orElseThrow(() -> new ResourceNotFoundException("Exemplar", codigo)));
     }
 
-    // --- CRIA UM NOVO EXEMPLAR (GERA CÓDIGO DE BARRAS SE NÃO INFORMADO) ---
+    // --- CRIA UM NOVO EXEMPLAR ---
     @Transactional
     public ExemplarResponseDTO criar(ExemplarRequestDTO dto) {
         Livro livro = livroService.buscarEntidade(dto.getLivroId());

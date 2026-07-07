@@ -1,18 +1,20 @@
 package erp.academico.modules.biblioteca.exemplar.model;
 
 import erp.academico.modules.biblioteca.livro.model.Livro;
+
 import jakarta.persistence.*;
+
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+
 import org.hibernate.annotations.CreationTimestamp;
 
 import java.time.LocalDateTime;
 import java.util.UUID;
 
-// --- EXEMPLAR FÍSICO DE UM LIVRO DO ACERVO ---
 @Getter
 @Setter
 @NoArgsConstructor

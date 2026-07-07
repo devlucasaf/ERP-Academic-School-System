@@ -13,7 +13,6 @@ import org.hibernate.annotations.CreationTimestamp;
 import java.time.LocalDateTime;
 import java.util.UUID;
 
-// --- EMPRÉSTIMO DE UM EXEMPLAR PARA UM USUÁRIO ---
 @Getter
 @Setter
 @NoArgsConstructor

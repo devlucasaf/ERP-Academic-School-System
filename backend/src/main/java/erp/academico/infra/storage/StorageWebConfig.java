@@ -8,8 +8,6 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
 import java.nio.file.Paths;
 
-// --- EXPÕE O DIRETÓRIO DE STORAGE LOCAL COMO RECURSO HTTP ESTÁTICO ---
-// --- EX.: /api/files/atividades/uuid.pdf -> {basePath}/atividades/uuid.pdf ---
 @Configuration
 @RequiredArgsConstructor
 public class StorageWebConfig implements WebMvcConfigurer {

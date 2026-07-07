@@ -10,7 +10,6 @@ import lombok.Setter;
 
 import java.util.UUID;
 
-// --- REGISTRA UM NOVO EMPRÉSTIMO ---
 @Getter
 @Setter
 @NoArgsConstructor
@@ -18,7 +17,6 @@ import java.util.UUID;
 @Builder
 public class EmprestimoRequestDTO {
 
-    // --- IDENTIFICAÇÃO DO EXEMPLAR VIA CÓDIGO DE BARRAS OU ID ---
     private UUID exemplarId;
     private String codigoBarras;
 

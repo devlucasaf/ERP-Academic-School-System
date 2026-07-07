@@ -23,8 +23,10 @@ import erp.academico.modules.biblioteca.reserva.repository.ReservaRepository;
 import erp.academico.modules.usuario.model.RoleUsuario;
 import erp.academico.modules.usuario.model.Usuario;
 import erp.academico.modules.usuario.repository.UsuarioRepository;
+
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -40,7 +42,6 @@ import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
-// --- ORQUESTRA EMPRÉSTIMO, DEVOLUÇÃO, RENOVAÇÃO E GERAÇÃO DE MULTAS ---
 @Slf4j
 @Service
 @RequiredArgsConstructor
@@ -68,9 +69,11 @@ public class EmprestimoService {
             throw new BusinessException("Exemplar não está disponível para empréstimo. Status atual: "
                     + exemplar.getStatus());
         }
+
         if (multaRepository.existePendenteDoUsuario(usuario.getId())) {
             throw new BusinessException("Usuário possui multa pendente e não pode realizar novos empréstimos.");
         }
+
         long ativos = emprestimoRepository.countByUsuarioIdAndStatus(usuario.getId(), StatusEmprestimo.ATIVO)
                 + emprestimoRepository.countByUsuarioIdAndStatus(usuario.getId(), StatusEmprestimo.ATRASADO);
         if (ativos >= cfg.getMaxEmprestimosSimultaneos()) {
@@ -132,7 +135,6 @@ public class EmprestimoService {
 
         if (primeiroDaFila.isPresent()) {
             exemplar.setStatus(StatusExemplar.RESERVADO);
-            // --- NOTIFICAR (log por ora; integração com módulo de comunicação futura) ---
             log.info("Notificando usuário {} que o livro '{}' está disponível para retirada.",
                     primeiroDaFila.get().getUsuario().getEmail(),
                     exemplar.getLivro().getTitulo());
@@ -153,12 +155,15 @@ public class EmprestimoService {
         if (emp.getStatus() == StatusEmprestimo.DEVOLVIDO) {
             throw new BusinessException("Empréstimo já devolvido não pode ser renovado.");
         }
+
         if (emp.getRenovacoes() >= cfg.getMaxRenovacoes()) {
             throw new BusinessException("Limite de renovações atingido (" + cfg.getMaxRenovacoes() + ").");
         }
+
         if (multaRepository.existePendenteDoUsuario(emp.getUsuario().getId())) {
             throw new BusinessException("Usuário possui multa pendente. Renovação bloqueada.");
         }
+
         long aguardando = reservaRepository.countByLivroIdAndStatus(
                 emp.getExemplar().getLivro().getId(), StatusReserva.AGUARDANDO);
         if (aguardando > 0) {
@@ -185,7 +190,7 @@ public class EmprestimoService {
         return toResponse(buscarEntidade(id));
     }
 
-    // --- JOB DIÁRIO: MARCA COMO ATRASADO EMPRÉSTIMOS COM PRAZO VENCIDO ---
+    // --- MARCA COMO ATRASADO EMPRÉSTIMOS COM PRAZO VENCIDO ---
     @Transactional
     public int marcarEmprestimosVencidos() {
         List<Emprestimo> vencidos = emprestimoRepository
@@ -221,7 +226,9 @@ public class EmprestimoService {
     }
 
     private int calcularDiasAtraso(LocalDateTime previsto, LocalDateTime devolvido) {
-        if (!devolvido.isAfter(previsto)) return 0;
+        if (!devolvido.isAfter(previsto)) {
+            return 0;
+        }
         return (int) Math.ceil(Duration.between(previsto, devolvido).toHours() / 24.0);
     }
 
@@ -271,12 +278,14 @@ public class EmprestimoService {
         BigDecimal valorMulta = null;
         LocalDateTime baseComparacao = e.getDataDevolucaoEfetiva() != null
                 ? e.getDataDevolucaoEfetiva() : LocalDateTime.now();
+
         if (baseComparacao.isAfter(e.getDataDevolucaoPrevista())) {
             diasAtraso = calcularDiasAtraso(e.getDataDevolucaoPrevista(), baseComparacao);
         }
         Optional<Multa> multaOpt = multaRepository.findAll().stream()
                 .filter(m -> m.getEmprestimo().getId().equals(e.getId()))
                 .findFirst();
+
         if (multaOpt.isPresent()) {
             valorMulta = multaOpt.get().getValor();
         }

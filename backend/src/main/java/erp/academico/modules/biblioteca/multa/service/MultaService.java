@@ -41,6 +41,7 @@ public class MultaService {
         if (m.getStatus() != StatusMulta.PENDENTE) {
             throw new BusinessException("Somente multas PENDENTES podem ser pagas.");
         }
+
         m.setStatus(StatusMulta.PAGA);
         m.setPagaEm(LocalDateTime.now());
         return toResponse(multaRepository.save(m));
@@ -53,6 +54,7 @@ public class MultaService {
         if (m.getStatus() == StatusMulta.PAGA) {
             throw new BusinessException("Não é possível cancelar multa já paga.");
         }
+
         m.setStatus(StatusMulta.CANCELADA);
         return toResponse(multaRepository.save(m));
     }

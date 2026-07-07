@@ -47,7 +47,7 @@ public class LivroController {
         return ResponseEntity.ok(livroService.buscarPorId(id));
     }
 
-    // --- CRIA LIVRO COM UPLOAD DE CAPA (OPCIONAL) ---
+    // --- CRIA LIVRO COM UPLOAD DE CAPA ---
     @PostMapping(consumes = { MediaType.MULTIPART_FORM_DATA_VALUE })
     @Operation(summary = "Cadastra novo livro no acervo")
     @PreAuthorize("hasAnyRole('BIBLIOTECARIO','ADMIN')")

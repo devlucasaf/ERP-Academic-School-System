@@ -18,7 +18,6 @@ public interface EmprestimoRepository extends JpaRepository<Emprestimo, UUID> {
 
     List<Emprestimo> findByUsuarioIdAndStatus(UUID usuarioId, StatusEmprestimo status);
 
-    // --- EMPRÉSTIMOS AINDA ATIVOS COM PRAZO JÁ VENCIDO ---
     List<Emprestimo> findByStatusAndDataDevolucaoPrevistaBefore(StatusEmprestimo status, LocalDateTime data);
 }
 

@@ -19,8 +19,6 @@ import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
 import java.util.UUID;
 
-// --- IMPLEMENTAÇÃO LOCAL DO STORAGE: SALVA OS ARQUIVOS NO FILESYSTEM (DEV) ---
-// --- ATIVA SE app.storage.type = "local" (DEFAULT). EM PROD BASTA TROCAR PARA "s3". ---
 @Slf4j
 @Service
 @RequiredArgsConstructor
@@ -43,7 +41,7 @@ public class LocalStorageService implements StorageService {
         }
     }
 
-    // --- ARMAZENA O ARQUIVO EM {basePath}/{subDir}/{uuid-nomeOriginal} E RETORNA A URL PÚBLICA ---
+    // --- ARMAZENA O ARQUIVO E RETORNA A URL PÚBLICA ---
     @Override
     public String store(MultipartFile file, String subDir) {
         if (file == null || file.isEmpty()) {
@@ -74,17 +72,19 @@ public class LocalStorageService implements StorageService {
         }
     }
 
-    // --- REMOVE O ARQUIVO A PARTIR DA URL PÚBLICA RETORNADA POR store(...) ---
+    // --- REMOVE O ARQUIVO A PARTIR DA URL PÚBLICA RETORNADA ---
     @Override
     public void delete(String url) {
         if (url == null || url.isBlank()) {
             return;
         }
+
         String prefix = properties.getLocal().getPublicBaseUrl();
         if (!url.startsWith(prefix)) {
             log.warn("Tentativa de deletar URL fora do storage local: {}", url);
             return;
         }
+
         String relative = url.substring(prefix.length()).replaceFirst("^/+", "");
         try {
             Path target = baseDir.resolve(relative).normalize();

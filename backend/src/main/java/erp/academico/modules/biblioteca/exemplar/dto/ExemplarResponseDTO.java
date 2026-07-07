@@ -1,6 +1,7 @@
 package erp.academico.modules.biblioteca.exemplar.dto;
 
 import erp.academico.modules.biblioteca.exemplar.model.StatusExemplar;
+
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;

@@ -41,6 +41,7 @@ public class ReservaService {
         if (disponiveis > 0) {
             throw new BusinessException("Existe(m) exemplar(es) disponível(is) para este livro. Faça o empréstimo diretamente.");
         }
+
         if (reservaRepository.existsByLivroIdAndUsuarioIdAndStatus(livro.getId(), autenticado.getId(), StatusReserva.AGUARDANDO)) {
             throw new BusinessException("Você já possui uma reserva ativa para este livro.");
         }
