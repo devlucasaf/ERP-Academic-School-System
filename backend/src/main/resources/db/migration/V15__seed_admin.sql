@@ -8,7 +8,6 @@
    TROQUE a senha no primeiro login em ambientes reais.
    ============================================================ */
 
--- --- INSERE O ADMIN APENAS SE AINDA NÃO EXISTIR ---
 IF NOT EXISTS (SELECT 1 FROM usuario WHERE email = 'admin@escola.com')
 BEGIN
     INSERT INTO usuario (id, nome, email, senha, ativo, role, criadoEm, atualizadoEm)
