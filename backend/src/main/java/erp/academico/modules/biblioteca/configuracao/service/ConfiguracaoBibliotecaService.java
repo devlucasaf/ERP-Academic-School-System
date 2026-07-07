@@ -25,13 +25,15 @@ public class ConfiguracaoBibliotecaService {
     // --- ATUALIZA OS PARÂMETROS GLOBAIS ---
     @Transactional
     public ConfiguracaoBiblioteca atualizar(ConfiguracaoBibliotecaDTO dto) {
-        ConfiguracaoBiblioteca cfg = obter();
-        cfg.setPrazoEmprestimoAluno(dto.getPrazoEmprestimoAluno());
-        cfg.setPrazoEmprestimoProfessor(dto.getPrazoEmprestimoProfessor());
-        cfg.setMaxEmprestimosSimultaneos(dto.getMaxEmprestimosSimultaneos());
-        cfg.setMaxRenovacoes(dto.getMaxRenovacoes());
-        cfg.setValorMultaDia(dto.getValorMultaDia());
-        return repository.save(cfg);
+        ConfiguracaoBiblioteca configuracaoBiblioteca = obter();
+
+        configuracaoBiblioteca.setPrazoEmprestimoAluno(dto.getPrazoEmprestimoAluno());
+        configuracaoBiblioteca.setPrazoEmprestimoProfessor(dto.getPrazoEmprestimoProfessor());
+        configuracaoBiblioteca.setMaxEmprestimosSimultaneos(dto.getMaxEmprestimosSimultaneos());
+        configuracaoBiblioteca.setMaxRenovacoes(dto.getMaxRenovacoes());
+        configuracaoBiblioteca.setValorMultaDia(dto.getValorMultaDia());
+
+        return repository.save(configuracaoBiblioteca);
     }
 }
 

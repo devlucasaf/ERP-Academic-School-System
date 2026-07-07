@@ -13,7 +13,6 @@ import org.hibernate.annotations.CreationTimestamp;
 import java.time.LocalDateTime;
 import java.util.UUID;
 
-// --- RESERVA DE UM LIVRO POR UM USUÁRIO, COM POSIÇÃO NA FILA ---
 @Getter
 @Setter
 @NoArgsConstructor

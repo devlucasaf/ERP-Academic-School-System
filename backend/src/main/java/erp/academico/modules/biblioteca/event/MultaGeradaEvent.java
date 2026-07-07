@@ -7,8 +7,6 @@ import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.UUID;
 
-// --- EVENTO DISPARADO QUANDO UMA MULTA É GERADA ---
-// --- SERÁ CONSUMIDO PELO MÓDULO FINANCEIRO (INTEGRAÇÃO FUTURA) ---
 @Getter
 @RequiredArgsConstructor
 public class MultaGeradaEvent {

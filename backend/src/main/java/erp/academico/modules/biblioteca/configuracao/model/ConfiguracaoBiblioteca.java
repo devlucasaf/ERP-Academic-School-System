@@ -12,7 +12,6 @@ import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.UUID;
 
-// --- CONFIGURAÇÕES GLOBAIS DA BIBLIOTECA (LINHA ÚNICA) ---
 @Getter
 @Setter
 @NoArgsConstructor
