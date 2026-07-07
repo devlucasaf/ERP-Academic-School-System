@@ -37,7 +37,8 @@ export function showOk(container, msg) {
 }
 
 export function formatDate(iso) {
-    if (!iso) return '-';
+    if (!iso) {
+        return '-';}
     const d = new Date(iso);
     return d.toLocaleString('pt-BR');
 }
