@@ -32,7 +32,7 @@ ERP de um Sistema Acadêmico Escolar — gestão de alunos, professores, turmas,
 ## 🧱 Stack
 
 ### Backend
-- **Java 21** + **Spring Boot 3.5**
+- **Java 17** + **Spring Boot 3.5**
 - **Spring Web**, **Spring Data JPA**, **Spring Security**, **Spring Validation**, **Spring Mail**
 - **SQL Server** (driver `mssql-jdbc`)
 - **Flyway** (migrations)
@@ -169,10 +169,11 @@ ERP-Academic-School-System/
 
 ## ⚙️ Pré-requisitos
 
-- **JDK 21**
+- **JDK 17**
 - **Maven 3.9+** (ou use o wrapper `./mvnw`)
 - **Node.js 18+** e **npm**
-- **SQL Server** rodando em `localhost:1433` com o banco `erp_academic_db` criado
+- **SQL Server 2019+** rodando em `localhost:1433` (com autenticação SQL/mixed mode habilitada)
+- **SSMS** (SQL Server Management Studio) para executar o script inicial
 
 ---
 
@@ -184,18 +185,48 @@ git clone https://github.com/<seu-usuario>/ERP-Academic-School-System.git
 cd ERP-Academic-School-System
 ```
 
-### 2. Banco de dados
-Crie o database no SQL Server:
-```sql
-CREATE DATABASE erp_academic_db;
-```
+### 2. Banco de dados (SQL Server + SSMS)
 
-### 3. Backend
+O projeto usa **Flyway** para versionar o schema. Você só precisa criar o **banco, o login e as permissões** uma única vez — as tabelas são criadas automaticamente pela aplicação.
 
-Defina as variáveis de ambiente (PowerShell):
+**Passo a passo no SSMS:**
+
+1. Abra o **SQL Server Management Studio** e conecte-se à sua instância como administrador (ex.: login `sa`).
+2. Abra o arquivo [`scripts/setup-database.sql`](scripts/setup-database.sql) (menu **File > Open > File...**).
+3. Execute o script (**F5**). Ele cria:
+   - o banco **`erp_academic_db`** (se não existir);
+   - o login SQL **`erp_academic_user`** com senha `Erp@Academic#2025!`;
+   - o usuário de banco correspondente com permissão **`db_owner`**.
+4. Garanta que a instância esteja em **"SQL Server and Windows Authentication mode"**:
+   - clique com o botão direito na instância > **Properties > Security**;
+   - selecione **"SQL Server and Windows Authentication mode"** e **reinicie o serviço** do SQL Server.
+
+> 💡 Em produção, troque a senha do script e defina as variáveis `DB_USER` / `DB_PASS`
+> (veja a seção do backend) em vez de usar os valores padrão.
+
+### 3. Como o Flyway aplica as migrations
+
+Ao subir o Spring Boot, o **Flyway roda automaticamente** e aplica, em ordem, todos os
+scripts em `backend/src/main/resources/db/migration/` que ainda não foram executados:
+
+- Config em `application.yml` (`spring.flyway`): `locations: classpath:db/migration`,
+  `baseline-on-migrate: true`, `validate-on-migrate: true`.
+- Cada migration `V1 … V15` é aplicada **uma única vez**; o Flyway registra o histórico
+  na tabela `flyway_schema_history` (criada por ele) e valida o checksum a cada boot.
+- **Não edite** uma migration já aplicada — isso causa erro de checksum. Para mudanças,
+  crie uma nova migration `V16__...sql`.
+- A migration **`V15__seed_admin.sql`** cria o usuário administrador inicial:
+  - **email:** `admin@escola.com`
+  - **senha:** `admin123` (armazenada como hash BCrypt)
+
+  Troque essa senha após o primeiro login.
+
+### 4. Backend
+
+Defina as variáveis de ambiente (PowerShell) — opcional em dev, pois há defaults no `application.yml`:
 ```powershell
-$env:DB_USER = "sa"
-$env:DB_PASS = "SuaSenhaForte"
+$env:DB_USER = "erp_academic_user"
+$env:DB_PASS = "Erp@Academic#2025!"
 $env:JWT_SECRET = "alguma-chave-secreta-bem-grande"
 ```
 
@@ -208,7 +239,7 @@ cd backend
 API disponível em: **http://localhost:8080/api**
 Swagger UI: **http://localhost:8080/api/swagger-ui.html**
 
-### 4. Frontend
+### 5. Frontend
 
 ```powershell
 cd frontend
