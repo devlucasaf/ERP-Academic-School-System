@@ -6,7 +6,6 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 
-// --- JOB AGENDADO: DIARIAMENTE (03:00) MARCA EMPRÉSTIMOS VENCIDOS COMO ATRASADO ---
 @Slf4j
 @Component
 @RequiredArgsConstructor
