@@ -1,4 +1,3 @@
-<!-- --- TELA DE RESPONSÁVEIS (SECRETARIA) --- -->
 <section class="card">
     <div class="toolbar toolbar-between">
         <h1>Responsáveis</h1>
@@ -6,20 +5,31 @@
     </div>
 
     <form id="formFiltro" class="toolbar">
-        <label class="field">Filtrar na página<input name="busca" placeholder="nome, e-mail..." /></label>
+        <label class="field">
+            Filtrar na página
+            <input
+                    name="busca"
+                    placeholder="nome, e-mail..."
+            />
+        </label>
         <button type="submit" class="btn">Aplicar</button>
     </form>
 
     <table>
         <thead>
-            <tr><th>Nome</th><th>E-mail</th><th>Telefone</th><th>Parentesco</th><th></th></tr>
+            <tr>
+                <th>Nome</th>
+                <th>E-mail</th>
+                <th>Telefone</th>
+                <th>Parentesco</th>
+                <th></th>
+            </tr>
         </thead>
         <tbody id="tbody"></tbody>
     </table>
     <div class="toolbar paginacao" id="paginacao"></div>
 </section>
 
-<!-- --- TEMPLATE: LINHA DA TABELA --- -->
 <template id="linha">
     <tr>
         <td data-campo="nome"></td>
@@ -32,11 +42,13 @@
         </td>
     </tr>
 </template>
+
 <template id="linhaVazia">
-    <tr><td colspan="5">Nenhum responsável encontrado.</td></tr>
+    <tr>
+        <td colspan="5">Nenhum responsável encontrado.</td>
+    </tr>
 </template>
 
-<!-- --- MODAL DE CRIAR/EDITAR --- -->
 <div class="modal-overlay" id="modal" hidden>
     <div class="modal">
         <div class="modal-header">
@@ -44,11 +56,36 @@
             <button class="icon-btn" id="btnFechar" aria-label="Fechar">✕</button>
         </div>
         <form id="formResponsavel" class="form-grid">
-            <div class="field">Nome<input name="nome" required /></div>
-            <div class="field">E-mail<input name="email" type="email" required /></div>
-            <div class="field">CPF<input name="cpf" /></div>
-            <div class="field">Telefone<input name="telefone" /></div>
-            <div class="field">Nascimento<input name="dataNascimento" type="date" /></div>
+            <div class="field">
+                Nome
+                <input
+                        name="nome"
+                        required
+                />
+            </div>
+            <div class="field">
+                E-mail
+                <input
+                        name="email"
+                        type="email"
+                        required
+                />
+            </div>
+            <div class="field">
+                CPF
+                <input name="cpf" />
+            </div>
+            <div class="field">
+                Telefone
+                <input name="telefone" />
+            </div>
+            <div class="field">
+                Nascimento
+                <input
+                        name="dataNascimento"
+                        type="date"
+                />
+            </div>
             <div class="field">Parentesco
                 <select name="parentesco" required>
                     <option value="PAI">PAI</option>

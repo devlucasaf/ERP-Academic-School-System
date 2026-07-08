@@ -1,4 +1,3 @@
-<!-- --- TELA DE PROFESSORES (SECRETARIA) --- -->
 <section class="card">
     <div class="toolbar toolbar-between">
         <h1>Professores</h1>
@@ -6,20 +5,33 @@
     </div>
 
     <form id="formFiltro" class="toolbar">
-        <label class="field">Filtrar na página<input name="busca" placeholder="nome, e-mail, formação..." /></label>
+        <label class="field">
+            Filtrar na página
+            <input
+                    name="busca"
+                    placeholder="nome, e-mail, formação..."
+            />
+        </label>
         <button type="submit" class="btn">Aplicar</button>
     </form>
 
     <table>
         <thead>
-            <tr><th>Nome</th><th>E-mail</th><th>Formação</th><th>Área</th><th>Admissão</th><th>Ativo</th><th></th></tr>
+            <tr>
+                <th>Nome</th>
+                <th>E-mail</th>
+                <th>Formação</th>
+                <th>Área</th>
+                <th>Admissão</th>
+                <th>Ativo</th>
+                <th></th>
+            </tr>
         </thead>
         <tbody id="tbody"></tbody>
     </table>
     <div class="toolbar paginacao" id="paginacao"></div>
 </section>
 
-<!-- --- TEMPLATE: LINHA DA TABELA --- -->
 <template id="linha">
     <tr>
         <td data-campo="nome"></td>
@@ -34,11 +46,13 @@
         </td>
     </tr>
 </template>
+
 <template id="linhaVazia">
-    <tr><td colspan="7">Nenhum professor encontrado.</td></tr>
+    <tr>
+        <td colspan="7">Nenhum professor encontrado.</td>
+    </tr>
 </template>
 
-<!-- --- MODAL DE CRIAR/EDITAR --- -->
 <div class="modal-overlay" id="modal" hidden>
     <div class="modal">
         <div class="modal-header">
@@ -46,16 +60,75 @@
             <button class="icon-btn" id="btnFechar" aria-label="Fechar">✕</button>
         </div>
         <form id="formProfessor" class="form-grid">
-            <div class="field">Nome<input name="nome" required /></div>
-            <div class="field">E-mail<input name="email" type="email" required /></div>
-            <div class="field">CPF<input name="cpf" /></div>
-            <div class="field">Telefone<input name="telefone" /></div>
-            <div class="field">Nascimento<input name="dataNascimento" type="date" /></div>
-            <div class="field">Formação<input name="formacao" /></div>
-            <div class="field">Área de atuação<input name="areaAtuacao" /></div>
-            <div class="field">Carga horária semanal<input name="cargaHorariaSemanal" type="number" min="1" /></div>
-            <div class="field">Data de admissão<input name="dataAdmissao" type="date" required /></div>
-            <label class="field field-inline"><input name="ativo" type="checkbox" checked /> Ativo</label>
+            <div class="field">
+                Nome
+                <input
+                        name="nome"
+                        required
+                />
+            </div>
+
+            <div class="field">
+                E-mail
+                <input
+                        name="email"
+                        type="email"
+                        required
+                />
+            </div>
+
+            <div class="field">
+                CPF
+                <input name="cpf" />
+            </div>
+
+            <div class="field">
+                Telefone
+                <input name="telefone" />
+            </div>
+
+            <div class="field">
+                Nascimento
+                <input
+                        name="dataNascimento"
+                        type="date"
+                />
+            </div>
+
+            <div class="field">
+                Formação
+                <input name="formacao" />
+            </div>
+
+            <div class="field">
+                Área de atuação
+                <input name="areaAtuacao" />
+            </div>
+            <div class="field">
+                Carga horária semanal
+                <input
+                        name="cargaHorariaSemanal"
+                        type="number"
+                        min="1"
+                />
+            </div>
+            <div class="field">
+                Data de admissão
+                <input
+                        name="dataAdmissao"
+                        type="date"
+                        required
+                />
+            </div>
+
+            <label class="field field-inline">
+                <input
+                        name="ativo"
+                        type="checkbox"
+                        checked
+                />
+                Ativo
+            </label>
             <p class="msg-error field-full" id="modalMsg" hidden></p>
             <div class="toolbar field-full toolbar-between">
                 <span class="muted">A senha é gerada automaticamente e enviada por e-mail.</span>

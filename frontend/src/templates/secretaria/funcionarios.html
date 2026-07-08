@@ -1,4 +1,3 @@
-<!-- --- TELA DE FUNCIONÁRIOS (SECRETARIA) --- -->
 <section class="card">
     <div class="toolbar toolbar-between">
         <h1>Funcionários</h1>
@@ -16,7 +15,13 @@
                 <option value="ADMIN">ADMIN</option>
             </select>
         </label>
-        <label class="field">Filtrar na página<input name="busca" placeholder="nome, e-mail..." /></label>
+        <label class="field">
+            Filtrar na página
+            <input
+                    name="busca"
+                    placeholder="nome, e-mail..."
+            />
+        </label>
         <button type="submit" class="btn">Aplicar</button>
     </form>
 
@@ -29,7 +34,6 @@
     <div class="toolbar paginacao" id="paginacao"></div>
 </section>
 
-<!-- --- TEMPLATE: LINHA DA TABELA --- -->
 <template id="linha">
     <tr>
         <td data-campo="nome"></td>
@@ -43,11 +47,13 @@
         </td>
     </tr>
 </template>
+
 <template id="linhaVazia">
-    <tr><td colspan="6">Nenhum funcionário encontrado.</td></tr>
+    <tr>
+        <td colspan="6">Nenhum funcionário encontrado.</td>
+    </tr>
 </template>
 
-<!-- --- MODAL DE CRIAR/EDITAR --- -->
 <div class="modal-overlay" id="modal" hidden>
     <div class="modal">
         <div class="modal-header">
@@ -55,12 +61,38 @@
             <button class="icon-btn" id="btnFechar" aria-label="Fechar">✕</button>
         </div>
         <form id="formFuncionario" class="form-grid">
-            <div class="field">Nome<input name="nome" required /></div>
-            <div class="field">E-mail<input name="email" type="email" required /></div>
-            <div class="field">CPF<input name="cpf" /></div>
-            <div class="field">Telefone<input name="telefone" /></div>
-            <div class="field">Nascimento<input name="dataNascimento" type="date" /></div>
-            <div class="field">Cargo
+            <div class="field">
+                Nome
+                <input
+                        name="nome"
+                        required
+                />
+            </div>
+            <div class="field">
+                E-mail
+                <input
+                        name="email"
+                        type="email"
+                        required
+                />
+            </div>
+            <div class="field">
+                CPF
+                <input name="cpf" />
+            </div>
+            <div class="field">
+                Telefone
+                <input name="telefone" />
+            </div>
+            <div class="field">
+                Nascimento
+                <input
+                        name="dataNascimento"
+                        type="date"
+                />
+            </div>
+            <div class="field">
+                Cargo
                 <select name="cargo" required>
                     <option value="COORDENADOR">COORDENADOR</option>
                     <option value="SECRETARIA">SECRETARIA</option>
@@ -69,8 +101,18 @@
                     <option value="ADMIN">ADMIN</option>
                 </select>
             </div>
-            <div class="field">Data de admissão<input name="dataAdmissao" type="date" required /></div>
-            <div class="field">Departamento<input name="departamento" /></div>
+            <div class="field">
+                Data de admissão
+                <input
+                        name="dataAdmissao"
+                        type="date"
+                        required
+                />
+            </div>
+            <div class="field">
+                Departamento
+                <input name="departamento" />
+            </div>
             <p class="msg-error field-full" id="modalMsg" hidden></p>
             <div class="toolbar field-full toolbar-between">
                 <span class="muted">A senha é gerada automaticamente e enviada por e-mail.</span>
