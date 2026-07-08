@@ -9,7 +9,6 @@ import org.springframework.boot.CommandLineRunner;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
 
-// --- CRIA O USUARIO ADMIN INICIAL SE AINDA NAO EXISTIR (SUBSTITUI O SEED SQL) ---
 @Slf4j
 @Component
 @RequiredArgsConstructor
@@ -23,7 +22,6 @@ public class AdminSeeder implements CommandLineRunner {
 
     @Override
     public void run(String... args) {
-        // --- IDEMPOTENTE: SO CRIA UMA VEZ ---
         if (usuarioRepository.existsByEmail(ADMIN_EMAIL)) {
             return;
         }

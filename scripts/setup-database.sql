@@ -1,16 +1,4 @@
-/* ============================================================
-   ERP-Academic-School-System - SETUP INICIAL DO BANCO
-   Execute este script UMA ÚNICA VEZ no SSMS conectado como
-   um login administrador (ex.: 'sa') do SQL Server 2019+.
-
-   O que ele faz:
-     1. Cria o banco  "erp_academic_db"  (se ainda não existir)
-     2. Cria o login  "erp_academic_user" (autenticação SQL)
-     3. Cria o usuário do banco e concede db_owner
-     4. Garante que a autenticação SQL (mixed mode) esteja ativa
-   ============================================================ */
-
--- --- 1. CRIA O BANCO SE NÃO EXISTIR ---
+-- --- CRIA O BANCO ---
 IF DB_ID('erp_academic_db') IS NULL
 BEGIN
     CREATE DATABASE erp_academic_db;
@@ -20,7 +8,6 @@ ELSE
     PRINT 'Banco erp_academic_db ja existe. Nenhuma acao.';
 GO
 
---     TROQUE a senha abaixo em ambientes reais!
 IF NOT EXISTS (SELECT 1 FROM sys.server_principals WHERE name = 'erp_academic_user')
 BEGIN
     CREATE LOGIN erp_academic_user
@@ -33,7 +20,7 @@ ELSE
     PRINT 'Login erp_academic_user ja existe. Nenhuma acao.';
 GO
 
--- --- 3. CRIA O USUÁRIO DO BANCO E CONCEDE db_owner ---
+-- --- CRIA O USUÁRIO DO BANCO E CONCEDE ---
 USE erp_academic_db;
 GO
 
