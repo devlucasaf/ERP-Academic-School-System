@@ -1,13 +1,17 @@
-// --- FÁBRICA DE DASHBOARDS PLACEHOLDER (PREENCHE TÍTULO E BOAS-VINDAS) ---
-import { getUser } from '../../auth.js';
+import { obterUsuario } from "../../auth.js";
 
-export function makeDashboard(titulo) {
-    return function mount(root) {
-        const usuario = getUser();
-        const tituloEl = root.querySelector('[data-cell="titulo"]');
-        const welcomeEl = root.querySelector('[data-cell="welcome"]');
-        if (tituloEl) tituloEl.textContent = titulo;
-        if (welcomeEl) welcomeEl.textContent = `Bem-vindo, ${usuario?.nome || 'usuário'}!`;
+export function criarDashboard(titulo) {
+    return function montar(raiz) {
+        const usuario = obterUsuario();
+        const tituloElemento = raiz.querySelector("[data-campo='titulo']");
+        const boasVindasElemento = raiz.querySelector("[data-campo='boasVindas']");
+        if (tituloElemento) {
+            tituloElemento.textContent = titulo;
+        }
+
+        if (boasVindasElemento) {
+            boasVindasElemento.textContent = `Bem-vindo, ${usuario?.nome || "usuário"}!`;
+        }
     };
 }
 

@@ -1,41 +1,39 @@
-// --- LÓGICA DA TELA DE LOGIN ---
-import { login, dashboardForRole } from '../../auth.js';
-import { toast } from '../../util.js';
+import { autenticar, dashboardDoPerfil } from "../../auth.js";
+import { notificar } from "../../util.js";
 
-// --- MONTA A TELA: LIGA O SUBMIT DO FORMULÁRIO ---
-export function mount(root) {
-    const form = root.querySelector('#formLogin');
-    const msg = root.querySelector('#loginMsg');
-    const btn = root.querySelector('#btnEntrar');
+// --- LIGA O SUBMIT DO FORMULÁRIO ---
+export function montar(raiz) {
+    const formulario = raiz.querySelector("#formularioLogin");
+    const mensagem = raiz.querySelector("#mensagemLogin");
+    const botao = raiz.querySelector("#btnEntrar");
 
-    form.addEventListener('submit', async (e) => {
-        e.preventDefault();
-        msg.hidden = true;
+    formulario.addEventListener("submit", async (evento) => {
+        evento.preventDefault();
+        mensagem.hidden = true;
 
-        const email = form.email.value.trim();
-        const senha = form.senha.value;
+        const email = formulario.email.value.trim();
+        const senha = formulario.senha.value;
 
         // --- VALIDAÇÃO SIMPLES ---
         if (!email || !senha) {
-            msg.textContent = 'Informe e-mail e senha.';
-            msg.hidden = false;
+            mensagem.textContent = "Informe e-mail e senha.";
+            mensagem.hidden = false;
             return;
         }
 
-        btn.disabled = true;
-        btn.textContent = 'Entrando...';
+        botao.disabled = true;
+        botao.textContent = "Entrando...";
         try {
-            // --- AUTENTICA E REDIRECIONA CONFORME A ROLE ---
-            const usuario = await login(email, senha);
-            toast(`Bem-vindo, ${usuario.nome}!`, 'success');
-            location.hash = dashboardForRole(usuario.role);
-        } catch (err) {
-            msg.textContent = err.message;
-            msg.hidden = false;
-            toast(err.message, 'error');
+            const usuario = await autenticar(email, senha);
+            notificar(`Bem-vindo, ${usuario.nome}!`, "success");
+            location.hash = dashboardDoPerfil(usuario.role);
+        } catch (erro) {
+            mensagem.textContent = erro.message;
+            mensagem.hidden = false;
+            notificar(erro.message, "error");
         } finally {
-            btn.disabled = false;
-            btn.textContent = 'Entrar';
+            botao.disabled = false;
+            botao.textContent = "Entrar";
         }
     });
 }

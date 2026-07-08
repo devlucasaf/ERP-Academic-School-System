@@ -1,5 +1,4 @@
-// --- DASHBOARD DA BIBLIOTECA ---
-import { makeDashboard } from '../shared/dashboard.js';
+import { criarDashboard } from "../shared/dashboard.js";
 
-export const mount = makeDashboard('Painel da Biblioteca');
+export const montar = criarDashboard("Painel da Biblioteca");
 

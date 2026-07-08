@@ -1,226 +1,250 @@
-// --- ROUTER POR HASH COM GUARDA POR ROLE, LAYOUT E TEMA ---
 import {
-    isAuthenticated,
-    getUser,
-    hasRole,
-    dashboardForRole,
-    logout
-} from './auth.js';
-import { toast } from './util.js';
+    estaAutenticado,
+    obterUsuario,
+    possuiPerfil,
+    dashboardDoPerfil,
+    encerrarSessao
+} from "./auth.js";
+import { notificar } from "./util.js";
 
-// --- CARREGA OS TEMPLATES HTML COMO TEXTO (FUNCIONA EM DEV E BUILD) ---
-const TEMPLATES = import.meta.glob('/src/templates/{shared,auth,dashboards}/**/*.html', {
-    query: '?raw',
-    import: 'default'
+const MODELOS = import.meta.glob("/src/templates/{shared,auth,dashboards,secretaria}/**/*.html", {
+    query: "?raw",
+    import: "default"
 });
 
-async function carregarTemplate(caminho) {
-    const loader = TEMPLATES[`/src/templates/${caminho}`];
-    if (!loader) throw new Error(`Template não encontrado: ${caminho}`);
-    return loader();
+async function carregarModelo(caminho) {
+    const carregador = MODELOS[`/src/templates/${caminho}`];
+    if (!carregador) {
+        throw new Error(`Modelo não encontrado: ${caminho}`);
+    }
+    return carregador();
 }
 
 // --- TABELA DE ROTAS ---
-// public: acessível sem login | roles: papéis autorizados | layout: 'app' (padrão) ou 'blank'
-const ROUTES = {
-    '#/login': {
-        template: 'auth/login.html',
-        module: () => import('./pages/auth/login.js'),
-        public: true,
-        layout: 'blank',
-        title: 'Entrar'
+const ROTAS = {
+    "#/login": {
+        modelo: "auth/login.html",
+        modulo: () => import("./pages/auth/login.js"),
+        publico: true,
+        modo: "limpo",
+        titulo: "Entrar"
     },
-    '#/aluno/dashboard': {
-        template: 'dashboards/dashboard.html',
-        module: () => import('./pages/aluno/dashboard.js'),
-        roles: ['ALUNO'],
-        title: 'Painel do Aluno'
+
+    "#/aluno/dashboard": {
+        modelo: "dashboards/dashboard.html",
+        modulo: () => import("./pages/aluno/dashboard.js"),
+        perfis: ["ALUNO"],
+        titulo: "Painel do Aluno"
     },
-    '#/professor/dashboard': {
-        template: 'dashboards/dashboard.html',
-        module: () => import('./pages/professor/dashboard.js'),
-        roles: ['PROFESSOR'],
-        title: 'Painel do Professor'
+
+    "#/professor/dashboard": {
+        modelo: "dashboards/dashboard.html",
+        modulo: () => import("./pages/professor/dashboard.js"),
+        perfis: ["PROFESSOR"],
+        titulo: "Painel do Professor"
     },
-    '#/coordenacao/dashboard': {
-        template: 'dashboards/dashboard.html',
-        module: () => import('./pages/coordenacao/dashboard.js'),
-        roles: ['COORDENADOR'],
-        title: 'Painel da Coordenação'
+
+    "#/coordenacao/dashboard": {
+        modelo: "dashboards/dashboard.html",
+        modulo: () => import("./pages/coordenacao/dashboard.js"),
+        perfis: ["COORDENADOR"],
+        titulo: "Painel da Coordenação"
     },
-    '#/secretaria/dashboard': {
-        template: 'dashboards/dashboard.html',
-        module: () => import('./pages/secretaria/dashboard.js'),
-        roles: ['SECRETARIA'],
-        title: 'Painel da Secretaria'
+
+    "#/secretaria/dashboard": {
+        modelo: "dashboards/dashboard.html",
+        modulo: () => import("./pages/secretaria/dashboard.js"),
+        perfis: ["SECRETARIA"],
+        titulo: "Painel da Secretaria"
     },
-    '#/biblioteca/dashboard': {
-        template: 'dashboards/dashboard.html',
-        module: () => import('./pages/biblioteca/dashboard.js'),
-        roles: ['BIBLIOTECARIO'],
-        title: 'Painel da Biblioteca'
+
+    "#/biblioteca/dashboard": {
+        modelo: "dashboards/dashboard.html",
+        modulo: () => import("./pages/biblioteca/dashboard.js"),
+        perfis: ["BIBLIOTECARIO"],
+        titulo: "Painel da Biblioteca"
     },
-    '#/financeiro/dashboard': {
-        template: 'dashboards/dashboard.html',
-        module: () => import('./pages/financeiro/dashboard.js'),
-        roles: ['FINANCEIRO'],
-        title: 'Painel Financeiro'
+
+    "#/financeiro/dashboard": {
+        modelo: "dashboards/dashboard.html",
+        modulo: () => import("./pages/financeiro/dashboard.js"),
+        perfis: ["FINANCEIRO"],
+        titulo: "Painel Financeiro"
     },
-    '#/responsavel/dashboard': {
-        template: 'dashboards/dashboard.html',
-        module: () => import('./pages/responsavel/dashboard.js'),
-        roles: ['RESPONSAVEL'],
-        title: 'Painel do Responsável'
+
+    "#/responsavel/dashboard": {
+        modelo: "dashboards/dashboard.html",
+        modulo: () => import("./pages/responsavel/dashboard.js"),
+        perfis: ["RESPONSAVEL"],
+        titulo: "Painel do Responsável"
     },
-    '#/admin/dashboard': {
-        template: 'dashboards/dashboard.html',
-        module: () => import('./pages/admin/dashboard.js'),
-        roles: ['ADMIN'],
-        title: 'Painel do Administrador'
+
+    "#/admin/dashboard": {
+        modelo: "dashboards/dashboard.html",
+        modulo: () => import("./pages/admin/dashboard.js"),
+        perfis: ["ADMIN"],
+        titulo: "Painel do Administrador"
+    },
+
+    // --- CADASTROS DA SECRETARIA ---
+    "#/secretaria/alunos": {
+        modelo: "secretaria/alunos.html",
+        modulo: () => import("./pages/secretaria/alunos.js"),
+        perfis: ["SECRETARIA", "COORDENADOR", "ADMIN"],
+        titulo: "Alunos"
+    },
+    "#/secretaria/professores": {
+        modelo: "secretaria/professores.html",
+        modulo: () => import("./pages/secretaria/professores.js"),
+        perfis: ["SECRETARIA", "COORDENADOR", "ADMIN"],
+        titulo: "Professores"
+    },
+    "#/secretaria/responsaveis": {
+        modelo: "secretaria/responsaveis.html",
+        modulo: () => import("./pages/secretaria/responsaveis.js"),
+        perfis: ["SECRETARIA", "COORDENADOR", "ADMIN"],
+        titulo: "Responsáveis"
+    },
+    "#/secretaria/funcionarios": {
+        modelo: "secretaria/funcionarios.html",
+        modulo: () => import("./pages/secretaria/funcionarios.js"),
+        perfis: ["SECRETARIA", "COORDENADOR", "ADMIN"],
+        titulo: "Funcionários"
     }
 };
 
-// ============================================================
-// --- TEMA (CLARO/ESCURO) ---
-// ============================================================
-const THEME_KEY = 'theme';
+// --- TEMA ---
+const CHAVE_TEMA = "theme";
 
 function aplicarTemaSalvo() {
-    const tema = localStorage.getItem(THEME_KEY) || 'light';
-    document.documentElement.setAttribute('data-theme', tema);
+    const tema = localStorage.getItem(CHAVE_TEMA) || "light";
+    document.documentElement.setAttribute("data-theme", tema);
 }
 
 function alternarTema() {
-    const atual = document.documentElement.getAttribute('data-theme') === 'dark' ? 'dark' : 'light';
-    const novo = atual === 'dark' ? 'light' : 'dark';
-    document.documentElement.setAttribute('data-theme', novo);
-    localStorage.setItem(THEME_KEY, novo);
+    const atual = document.documentElement.getAttribute("data-theme") === "dark" ? "dark" : "light";
+    const novo = atual === "dark" ? "light" : "dark";
+    document.documentElement.setAttribute("data-theme", novo);
+    localStorage.setItem(CHAVE_TEMA, novo);
 }
 
-// ============================================================
-// --- LAYOUT DA APLICAÇÃO (SIDEBAR + HEADER) ---
-// ============================================================
+// --- LAYOUT DA APLICAÇÃO ---
 let layoutMontado = false;
 
 async function garantirLayout() {
-    const app = document.getElementById('app');
+    const app = document.getElementById("app");
 
-    if (!layoutMontado || !document.getElementById('content')) {
-        app.className = 'app-shell';
-        app.innerHTML = await carregarTemplate('shared/shell.html');
-        document.getElementById('sidebar').innerHTML = await carregarTemplate('shared/sidebar.html');
-        document.getElementById('topbar').innerHTML = await carregarTemplate('shared/header.html');
-        ligarEventosHeader();
+    if (!layoutMontado || !document.getElementById("conteudo")) {
+        app.className = "app-shell";
+        app.innerHTML = await carregarModelo("shared/shell.html");
+        document.getElementById("menuLateral").innerHTML = await carregarModelo("shared/sidebar.html");
+        document.getElementById("cabecalho").innerHTML = await carregarModelo("shared/header.html");
+        ligarEventosCabecalho();
         layoutMontado = true;
     }
 
     atualizarInfoUsuario();
-    filtrarMenuPorRole();
+    filtrarMenuPorPerfil();
 }
 
-// --- LIGA OS BOTÕES DO HEADER (TEMA, SAIR, MENU) ---
-function ligarEventosHeader() {
-    document.getElementById('btnTheme')?.addEventListener('click', alternarTema);
-    document.getElementById('btnLogout')?.addEventListener('click', () => {
-        logout();
-        location.hash = '#/login';
+// --- LIGA OS BOTÕES DO CABEÇALHO ---
+function ligarEventosCabecalho() {
+    document.getElementById("btnTema")?.addEventListener("click", alternarTema);
+    document.getElementById("btnSair")?.addEventListener("click", () => {
+        encerrarSessao();
+        location.hash = "#/login";
     });
-    document.getElementById('btnSidebarToggle')?.addEventListener('click', () => {
-        document.getElementById('app').classList.toggle('sidebar-open');
+    document.getElementById("btnAlternarMenu")?.addEventListener("click", () => {
+        document.getElementById("app").classList.toggle("sidebar-open");
     });
 }
 
-// --- PREENCHE O NOME DO USUÁRIO NO HEADER ---
+// --- PREENCHE O NOME DO USUÁRIO NO CABEÇALHO ---
 function atualizarInfoUsuario() {
-    const usuario = getUser();
-    document.querySelectorAll('[data-user-nome]').forEach(el => {
-        el.textContent = usuario?.nome || '';
+    const usuario = obterUsuario();
+    document.querySelectorAll("[data-usuario-nome]").forEach(elemento => {
+        elemento.textContent = usuario?.nome || "";
     });
 }
 
-// --- EXIBE APENAS OS ITENS DE MENU PERMITIDOS PARA A ROLE ATUAL ---
-function filtrarMenuPorRole() {
-    const usuario = getUser();
-    const role = usuario?.role;
-    document.querySelectorAll('[data-roles]').forEach(el => {
-        const permitidas = el.getAttribute('data-roles').split(',').map(r => r.trim());
-        el.hidden = !role || !permitidas.includes(role);
+// --- EXIBE APENAS OS ITENS DE MENU PERMITIDOS PARA O PERFIL ATUAL ---
+function filtrarMenuPorPerfil() {
+    const usuario = obterUsuario();
+    const perfil = usuario?.role;
+    document.querySelectorAll("[data-perfis]").forEach(elemento => {
+        const permitidos = elemento.getAttribute("data-perfis").split(",").map(p => p.trim());
+        elemento.hidden = !perfil || !permitidos.includes(perfil);
     });
 }
 
 // --- DESTACA O LINK ATIVO E ATUALIZA O TÍTULO DA PÁGINA ---
 function marcarRotaAtiva(hash, titulo) {
-    document.querySelectorAll('.sidebar-nav .nav-link').forEach(a => {
-        a.classList.toggle('active', a.getAttribute('href') === hash);
+    document.querySelectorAll(".sidebar-nav .nav-link").forEach(link => {
+        link.classList.toggle("active", link.getAttribute("href") === hash);
     });
-    const tituloEl = document.querySelector('[data-page-title]');
-    if (tituloEl) tituloEl.textContent = titulo || '';
+
+    const tituloElemento = document.querySelector("[data-titulo-pagina]");
+    if (tituloElemento) {
+        tituloElemento.textContent = titulo || "";
+    }
 }
 
-// ============================================================
 // --- RENDERIZAÇÃO DA ROTA ATUAL ---
-// ============================================================
-async function render() {
-    const hash = location.hash || '#/';
+async function renderizar() {
+    const hash = location.hash || "#/";
 
-    // --- RAIZ: REDIRECIONA CONFORME AUTENTICAÇÃO ---
-    if (hash === '#/' || hash === '') {
-        location.hash = isAuthenticated() ? dashboardForRole(getUser().role) : '#/login';
+    if (hash === "#/" || hash === "") {
+        location.hash = estaAutenticado() ? dashboardDoPerfil(obterUsuario().role) : "#/login";
         return;
     }
 
-    const route = ROUTES[hash];
+    const rota = ROTAS[hash];
 
-    // --- ROTA INEXISTENTE ---
-    if (!route) {
-        location.hash = isAuthenticated() ? dashboardForRole(getUser().role) : '#/login';
+    if (!rota) {
+        location.hash = estaAutenticado() ? dashboardDoPerfil(obterUsuario().role) : "#/login";
         return;
     }
 
-    // --- GUARDA: EXIGE AUTENTICAÇÃO ---
-    if (!route.public && !isAuthenticated()) {
-        location.hash = '#/login';
+    if (!rota.publico && !estaAutenticado()) {
+        location.hash = "#/login";
         return;
     }
 
-    // --- GUARDA: JÁ LOGADO NÃO VÊ O LOGIN ---
-    if (route.public && hash === '#/login' && isAuthenticated()) {
-        location.hash = dashboardForRole(getUser().role);
+    if (rota.publico && hash === "#/login" && estaAutenticado()) {
+        location.hash = dashboardDoPerfil(obterUsuario().role);
         return;
     }
 
-    // --- GUARDA: EXIGE ROLE ESPECÍFICA ---
-    if (route.roles && !hasRole(route.roles)) {
-        toast('Você não tem permissão para acessar esta área.', 'error');
-        location.hash = dashboardForRole(getUser()?.role);
+    if (rota.perfis && !possuiPerfil(rota.perfis)) {
+        notificar("Você não tem permissão para acessar esta área.", "error");
+        location.hash = dashboardDoPerfil(obterUsuario()?.role);
         return;
     }
 
-    const app = document.getElementById('app');
+    const app = document.getElementById("app");
 
-    if (route.layout === 'blank') {
-        // --- LAYOUT SEM SIDEBAR (LOGIN) ---
+    if (rota.modo === "limpo") {
         layoutMontado = false;
-        app.className = 'auth-screen';
-        app.innerHTML = await carregarTemplate(route.template);
-        const mod = await route.module();
-        mod.mount?.(app, { route });
+        app.className = "auth-screen";
+        app.innerHTML = await carregarModelo(rota.modelo);
+        const modulo = await rota.modulo();
+        modulo.montar?.(app, {
+            rota
+        });
     } else {
-        // --- LAYOUT COMPLETO ---
         await garantirLayout();
-        const content = document.getElementById('content');
-        content.innerHTML = await carregarTemplate(route.template);
-        marcarRotaAtiva(hash, route.title);
-        document.getElementById('app').classList.remove('sidebar-open');
-        const mod = await route.module();
-        mod.mount?.(content, { route });
+        const conteudo = document.getElementById("conteudo");
+        conteudo.innerHTML = await carregarModelo(rota.modelo);
+        marcarRotaAtiva(hash, rota.titulo);
+        document.getElementById("app").classList.remove("sidebar-open");
+        const modulo = await rota.modulo();
+        modulo.montar?.(conteudo, {
+            rota
+        });
     }
 }
 
-// ============================================================
-// --- INICIALIZAÇÃO ---
-// ============================================================
 aplicarTemaSalvo();
-window.addEventListener('hashchange', render);
-window.addEventListener('DOMContentLoaded', render);
+window.addEventListener("hashchange", renderizar);
+window.addEventListener("DOMContentLoaded", renderizar);
 

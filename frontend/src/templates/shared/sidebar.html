@@ -1,32 +1,39 @@
-<!-- --- SIDEBAR DINÂMICA: CADA ITEM É EXIBIDO CONFORME data-roles --- -->
+<!-- --- SIDEBAR DINÂMICA: CADA ITEM É EXIBIDO CONFORME data-perfis --- -->
 <div class="sidebar-brand">ERP Acadêmico</div>
 <nav class="sidebar-nav">
 
-    <!-- --- DASHBOARDS (UM POR PERFIL) --- -->
-    <a class="nav-link" href="#/admin/dashboard" data-roles="ADMIN">Dashboard</a>
-    <a class="nav-link" href="#/aluno/dashboard" data-roles="ALUNO">Dashboard</a>
-    <a class="nav-link" href="#/professor/dashboard" data-roles="PROFESSOR">Dashboard</a>
-    <a class="nav-link" href="#/coordenacao/dashboard" data-roles="COORDENADOR">Dashboard</a>
-    <a class="nav-link" href="#/secretaria/dashboard" data-roles="SECRETARIA">Dashboard</a>
-    <a class="nav-link" href="#/biblioteca/dashboard" data-roles="BIBLIOTECARIO">Dashboard</a>
-    <a class="nav-link" href="#/financeiro/dashboard" data-roles="FINANCEIRO">Dashboard</a>
-    <a class="nav-link" href="#/responsavel/dashboard" data-roles="RESPONSAVEL">Dashboard</a>
+    <!-- --- DASHBOARDS --- -->
+    <a class="nav-link" href="#/admin/dashboard" data-perfis="ADMIN">Dashboard</a>
+    <a class="nav-link" href="#/aluno/dashboard" data-perfis="ALUNO">Dashboard</a>
+    <a class="nav-link" href="#/professor/dashboard" data-perfis="PROFESSOR">Dashboard</a>
+    <a class="nav-link" href="#/coordenacao/dashboard" data-perfis="COORDENADOR">Dashboard</a>
+    <a class="nav-link" href="#/secretaria/dashboard" data-perfis="SECRETARIA">Dashboard</a>
+    <a class="nav-link" href="#/biblioteca/dashboard" data-perfis="BIBLIOTECARIO">Dashboard</a>
+    <a class="nav-link" href="#/financeiro/dashboard" data-perfis="FINANCEIRO">Dashboard</a>
+    <a class="nav-link" href="#/responsavel/dashboard" data-perfis="RESPONSAVEL">Dashboard</a>
+
+    <!-- --- CADASTROS --- -->
+    <span class="nav-section" data-perfis="SECRETARIA,COORDENADOR,ADMIN">Cadastros</span>
+    <a class="nav-link" href="#/secretaria/alunos" data-perfis="SECRETARIA,COORDENADOR,ADMIN">Alunos</a>
+    <a class="nav-link" href="#/secretaria/professores" data-perfis="SECRETARIA,COORDENADOR,ADMIN">Professores</a>
+    <a class="nav-link" href="#/secretaria/responsaveis" data-perfis="SECRETARIA,COORDENADOR,ADMIN">Responsáveis</a>
+    <a class="nav-link" href="#/secretaria/funcionarios" data-perfis="SECRETARIA,COORDENADOR,ADMIN">Funcionários</a>
 
     <!-- --- MÓDULO BIBLIOTECA (GESTÃO) --- -->
-    <span class="nav-section" data-roles="BIBLIOTECARIO,ADMIN">Biblioteca</span>
-    <a class="nav-link" href="/src/templates/biblioteca/acervo.html" data-roles="BIBLIOTECARIO,ADMIN">Acervo</a>
-    <a class="nav-link" href="/src/templates/biblioteca/exemplares.html" data-roles="BIBLIOTECARIO,ADMIN">Exemplares</a>
-    <a class="nav-link" href="/src/templates/biblioteca/emprestimos.html" data-roles="BIBLIOTECARIO,ADMIN">Empréstimos</a>
-    <a class="nav-link" href="/src/templates/biblioteca/devolucoes.html" data-roles="BIBLIOTECARIO,ADMIN">Devoluções</a>
-    <a class="nav-link" href="/src/templates/biblioteca/reservas.html" data-roles="BIBLIOTECARIO,ADMIN">Reservas</a>
-    <a class="nav-link" href="/src/templates/biblioteca/multas.html" data-roles="BIBLIOTECARIO,ADMIN">Multas</a>
-    <a class="nav-link" href="/src/templates/biblioteca/configuracoes.html" data-roles="BIBLIOTECARIO,ADMIN">Configurações</a>
+    <span class="nav-section" data-perfis="BIBLIOTECARIO,ADMIN">Biblioteca</span>
+    <a class="nav-link" href="/src/templates/biblioteca/acervo.html" data-perfis="BIBLIOTECARIO,ADMIN">Acervo</a>
+    <a class="nav-link" href="/src/templates/biblioteca/exemplares.html" data-perfis="BIBLIOTECARIO,ADMIN">Exemplares</a>
+    <a class="nav-link" href="/src/templates/biblioteca/emprestimos.html" data-perfis="BIBLIOTECARIO,ADMIN">Empréstimos</a>
+    <a class="nav-link" href="/src/templates/biblioteca/devolucoes.html" data-perfis="BIBLIOTECARIO,ADMIN">Devoluções</a>
+    <a class="nav-link" href="/src/templates/biblioteca/reservas.html" data-perfis="BIBLIOTECARIO,ADMIN">Reservas</a>
+    <a class="nav-link" href="/src/templates/biblioteca/multas.html" data-perfis="BIBLIOTECARIO,ADMIN">Multas</a>
+    <a class="nav-link" href="/src/templates/biblioteca/configuracoes.html" data-perfis="BIBLIOTECARIO,ADMIN">Configurações</a>
 
     <!-- --- BIBLIOTECA (ALUNO) --- -->
-    <span class="nav-section" data-roles="ALUNO">Biblioteca</span>
-    <a class="nav-link" href="/src/templates/aluno/biblioteca/consultar.html" data-roles="ALUNO">Consultar acervo</a>
-    <a class="nav-link" href="/src/templates/aluno/biblioteca/meus-emprestimos.html" data-roles="ALUNO">Meus empréstimos</a>
-    <a class="nav-link" href="/src/templates/aluno/biblioteca/minhas-reservas.html" data-roles="ALUNO">Minhas reservas</a>
+    <span class="nav-section" data-perfis="ALUNO">Biblioteca</span>
+    <a class="nav-link" href="/src/templates/aluno/biblioteca/consultar.html" data-perfis="ALUNO">Consultar acervo</a>
+    <a class="nav-link" href="/src/templates/aluno/biblioteca/meus-emprestimos.html" data-perfis="ALUNO">Meus empréstimos</a>
+    <a class="nav-link" href="/src/templates/aluno/biblioteca/minhas-reservas.html" data-perfis="ALUNO">Minhas reservas</a>
 
 </nav>
 

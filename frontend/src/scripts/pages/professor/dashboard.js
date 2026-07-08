@@ -1,5 +1,4 @@
-// --- DASHBOARD DO PROFESSOR ---
-import { makeDashboard } from '../shared/dashboard.js';
+import { criarDashboard } from "../shared/dashboard.js";
 
-export const mount = makeDashboard('Painel do Professor');
+export const montar = criarDashboard("Painel do Professor");
 

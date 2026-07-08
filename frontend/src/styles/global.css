@@ -31,7 +31,7 @@ a {
     text-decoration: none;
 }
 
-/* --- VARIÁVEIS: TEMA CLARO (PADRÃO) --- */
+/* --- TEMA CLARO --- */
 :root {
     /* CORES DE MARCA */
     --color-primary: #1e3a8a;
@@ -78,7 +78,7 @@ a {
     --topbar-height: 60px;
 }
 
-/* --- VARIÁVEIS: TEMA ESCURO --- */
+/* --- TEMA ESCURO --- */
 :root[data-theme="dark"] {
     --bg-body: #0b1120;
     --bg-surface: #111827;
@@ -105,10 +105,23 @@ body {
     line-height: 1.5;
 }
 
-h1 { font-size: var(--fs-xl); }
-h2 { font-size: var(--fs-lg); }
+h1 {
+    font-size: var(--fs-xl);
+}
 
-.muted { color: var(--text-muted); }
-.text-center { text-align: center; }
-[hidden] { display: none !important; }
+h2 {
+    font-size: var(--fs-lg);
+}
+
+.muted {
+    color: var(--text-muted);
+}
+
+.text-center {
+    text-align: center;
+}
+
+[hidden] {
+    display: none !important;
+}
 

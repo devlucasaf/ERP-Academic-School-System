@@ -15,13 +15,36 @@ button.btn {
     transition: background .15s ease, opacity .15s ease;
 }
 
-.btn:hover { background: var(--color-primary-hover); }
-.btn:disabled { opacity: .6; cursor: not-allowed; }
-.btn-block { width: 100%; }
-.btn-sm { padding: .4rem .75rem; font-size: var(--fs-sm); }
-.btn.secondary { background: #6b7280; }
-.btn.danger { background: var(--color-danger); }
-.btn.ghost { background: transparent; color: var(--text-primary); }
+.btn:hover {
+    background: var(--color-primary-hover);
+}
+
+.btn:disabled {
+    opacity: .6;
+    cursor: not-allowed;
+}
+
+.btn-block {
+    width: 100%;
+}
+
+.btn-sm {
+    padding: .4rem .75rem;
+    font-size: var(--fs-sm);
+}
+
+.btn.secondary {
+    background: #6b7280;
+}
+
+.btn.danger {
+    background: var(--color-danger);
+}
+
+.btn.ghost {
+    background: transparent;
+    color: var(--text-primary);
+}
 
 .icon-btn {
     background: transparent;
@@ -33,7 +56,9 @@ button.btn {
     color: inherit;
 }
 
-.icon-btn:hover { background: rgba(0, 0, 0, .06); }
+.icon-btn:hover {
+    background: rgba(0, 0, 0, .06);
+}
 
 /* --- CAMPOS DE FORMULÁRIO --- */
 .field {
@@ -44,7 +69,9 @@ button.btn {
     margin-bottom: var(--space-md);
 }
 
-.field label { font-weight: 600; }
+.field label {
+    font-weight: 600;
+}
 
 input,
 select,
@@ -63,7 +90,10 @@ textarea:focus {
     outline-offset: 1px;
 }
 
-textarea { min-height: 90px; resize: vertical; }
+textarea {
+    min-height: 90px;
+    resize: vertical;
+}
 
 /* --- CARDS --- */
 .card {
@@ -76,7 +106,10 @@ textarea { min-height: 90px; resize: vertical; }
 }
 
 .card h1,
-.card h2 { color: var(--color-primary); margin-bottom: var(--space-sm); }
+.card h2 {
+    color: var(--color-primary);
+    margin-bottom: var(--space-sm);
+}
 
 /* --- TABELAS --- */
 table {
@@ -93,7 +126,9 @@ td {
     font-size: var(--fs-sm);
 }
 
-th { background: var(--bg-elevated); }
+th {
+    background: var(--bg-elevated);
+}
 
 /* --- MODAIS --- */
 .modal-overlay {
@@ -147,15 +182,38 @@ th { background: var(--bg-elevated); }
     transition: opacity .25s ease, transform .25s ease;
 }
 
-.toast.show { opacity: 1; transform: translateX(0); }
-.toast-info { background: var(--color-primary); }
-.toast-success { background: var(--color-success); }
-.toast-error { background: var(--color-danger); }
-.toast-warning { background: var(--color-warning); color: #1f2937; }
+.toast.show {
+    opacity: 1;
+    transform: translateX(0);
+}
+
+.toast-info {
+    background: var(--color-primary);
+}
+
+.toast-success {
+    background: var(--color-success);
+}
+
+.toast-error {
+    background: var(--color-danger);
+}
+
+.toast-warning {
+    background: var(--color-warning);
+    color: #1f2937;
+}
 
 /* --- MENSAGENS INLINE --- */
-.msg-error { color: var(--color-danger); font-size: var(--fs-sm); }
-.msg-ok { color: var(--color-success); font-size: var(--fs-sm); }
+.msg-error {
+    color: var(--color-danger);
+    font-size: var(--fs-sm);
+}
+
+.msg-ok {
+    color: var(--color-success);
+    font-size: var(--fs-sm);
+}
 
 /* --- BADGES --- */
 .badge {
@@ -164,5 +222,59 @@ th { background: var(--bg-elevated); }
     font-size: .75rem;
     color: #fff;
     background: var(--color-primary);
+}
+
+/* --- BARRA DE FERRAMENTAS / FILTROS --- */
+.toolbar {
+    display: flex;
+    gap: var(--space-sm);
+    flex-wrap: wrap;
+    align-items: end;
+    margin-bottom: var(--space-md);
+}
+
+.toolbar-between {
+    justify-content: space-between;
+    align-items: center;
+}
+
+.paginacao {
+    align-items: center;
+    margin-top: var(--space-md);
+    margin-bottom: 0;
+}
+
+/* --- AÇÕES DE LINHA DA TABELA --- */
+td.acoes {
+    white-space: nowrap;
+    display: flex;
+    gap: var(--space-xs);
+}
+
+/* --- GRID DE FORMULÁRIO --- */
+.form-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: var(--space-md);
+}
+
+.form-grid .field {
+    margin-bottom: 0;
+}
+
+.field-full {
+    grid-column: 1 / -1;
+}
+
+.field-inline {
+    flex-direction: row;
+    align-items: center;
+    gap: var(--space-sm);
+}
+
+@media (max-width: 640px) {
+    .form-grid {
+        grid-template-columns: 1fr;
+    }
 }
 

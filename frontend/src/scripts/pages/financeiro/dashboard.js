@@ -1,5 +1,4 @@
-// --- DASHBOARD FINANCEIRO ---
-import { makeDashboard } from '../shared/dashboard.js';
+import { criarDashboard } from "../shared/dashboard.js";
 
-export const mount = makeDashboard('Painel Financeiro');
+export const montar = criarDashboard("Painel Financeiro");
 

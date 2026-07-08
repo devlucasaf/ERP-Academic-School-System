@@ -1,5 +1,4 @@
-// --- DASHBOARD DA SECRETARIA ---
-import { makeDashboard } from '../shared/dashboard.js';
+import { criarDashboard } from "../shared/dashboard.js";
 
-export const mount = makeDashboard('Painel da Secretaria');
+export const montar = criarDashboard("Painel da Secretaria");
 

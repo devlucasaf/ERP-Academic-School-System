@@ -1,17 +1,27 @@
-// --- REMOTE DE AUTENTICAÇÃO (ENDPOINTS /api/auth/*) ---
-import { api } from '../../util.js';
+import { api } from "../../util.js";
 
-export const authApi = {
-    // --- AUTENTICA E RETORNA { token, refreshToken, usuario } ---
-    login: (credenciais) => api('/auth/login', { method: 'POST', body: credenciais }),
+export const autenticacaoApi = {
+    // --- AUTENTICA E RETORNA ---
+    autenticar: (credenciais) => api("/auth/login", {
+        metodo: "POST",
+        corpo: credenciais
+    }),
 
-    // --- REGISTRA UM NOVO USUÁRIO (REQUER ADMIN) ---
-    register: (dados) => api('/auth/register', { method: 'POST', body: dados }),
+    // --- REGISTRA UM NOVO USUÁRIO ---
+    registrar: (dados) => api("/auth/register", {
+        metodo: "POST",
+        corpo: dados
+    }),
 
     // --- RETORNA OS DADOS DO USUÁRIO AUTENTICADO ---
-    me: () => api('/auth/me'),
+    usuarioLogado: () => api("/auth/me"),
 
     // --- RENOVA O ACCESS TOKEN A PARTIR DO REFRESH TOKEN ---
-    refresh: (refreshToken) => api('/auth/refresh', { method: 'POST', body: { refreshToken } })
+    renovar: (refreshToken) => api("/auth/refresh", {
+        metodo: "POST",
+        corpo: {
+            refreshToken
+        }
+    })
 };
 
