@@ -3,6 +3,8 @@ package erp.academico.modules.usuario.service;
 // --- IMPORTS ---
 import erp.academico.exception.BusinessException;
 import erp.academico.exception.ResourceNotFoundException;
+import erp.academico.infra.email.EmailService;
+import erp.academico.infra.security.GeradorSenhaTemporaria;
 import erp.academico.modules.usuario.dto.UsuarioRequestDTO;
 import erp.academico.modules.usuario.dto.UsuarioResponseDTO;
 import erp.academico.modules.usuario.model.Usuario;
@@ -22,6 +24,8 @@ public class UsuarioService {
 
     private final UsuarioRepository usuarioRepository;
     private final PasswordEncoder passwordEncoder;
+    private final GeradorSenhaTemporaria geradorSenhaTemporaria;
+    private final EmailService emailService;
 
     // --- LISTA USUÁRIOS PAGINADOS ---
     @Transactional(readOnly = true)
@@ -49,10 +53,14 @@ public class UsuarioService {
             throw new BusinessException("Já existe um usuário cadastrado com o e-mail: " + dto.getEmail());
         }
 
+        // --- SE A SENHA NÃO FOI INFORMADA, GERA UMA SENHA TEMPORÁRIA ---
+        boolean senhaGerada = dto.getSenha() == null || dto.getSenha().isBlank();
+        String senhaFinal = senhaGerada ? geradorSenhaTemporaria.gerar() : dto.getSenha();
+
         Usuario usuario = Usuario.builder()
                 .nome(dto.getNome())
                 .email(dto.getEmail())
-                .senha(passwordEncoder.encode(dto.getSenha()))
+                .senha(passwordEncoder.encode(senhaFinal))
                 .cpf(dto.getCpf())
                 .telefone(dto.getTelefone())
                 .dataNascimento(dto.getDataNascimento())
@@ -60,7 +68,14 @@ public class UsuarioService {
                 .role(dto.getRole())
                 .build();
 
-        return usuarioRepository.save(usuario);
+        Usuario salvo = usuarioRepository.save(usuario);
+
+        // --- "ENVIA" A SENHA TEMPORÁRIA POR E-MAIL (APENAS LOG POR ENQUANTO) ---
+        if (senhaGerada) {
+            emailService.enviarSenhaTemporaria(salvo.getEmail(), salvo.getNome(), senhaFinal);
+        }
+
+        return salvo;
     }
 
     // --- ATUALIZA UM USUÁRIO EXISTENTE ---
