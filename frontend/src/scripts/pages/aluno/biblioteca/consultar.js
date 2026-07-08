@@ -1,72 +1,85 @@
-import { livroApi } from '../../../remotes/biblioteca/livros.js';
-import { reservaApi } from '../../../remotes/biblioteca/reservas.js';
-import { renderHeader } from '../../biblioteca/_shared.js';
+import { livroApi } from "../../../remotes/biblioteca/livros.js";
+import { reservaApi } from "../../../remotes/biblioteca/reservas.js";
+import { renderHeader } from "../../biblioteca/_shared.js";
 
-renderHeader('Portal do Aluno - Biblioteca', 'aluno');
-const app = document.getElementById('app');
+// --- CABECALHO E REFERENCIAS DE ELEMENTOS ---
+renderHeader("Portal do Aluno - Biblioteca", "aluno");
 
-app.innerHTML = `
-    <section class="card">
-        <h2>Consultar acervo</h2>
-        <form id="form" class="toolbar">
-            <label>Título<input name="titulo" /></label>
-            <label>Autor<input name="autor" /></label>
-            <label>Categoria<input name="categoria" /></label>
-            <label>ISBN<input name="isbn" /></label>
-            <button type="submit">Buscar</button>
-        </form>
-    </section>
-    <section class="card">
-        <div id="resultado"></div>
-        <div id="paginacao" class="toolbar" style="margin-top:.75rem"></div>
-    </section>
-`;
+const form          = document.getElementById("form");
+const tbody         = document.getElementById("tbody");
+const infoPagina    = document.getElementById("infoPagina");
+const btnPrev       = document.getElementById("prev");
+const btnNext       = document.getElementById("next");
+const tplDisponivel = document.getElementById("rowDisponivel");
+const tplReservar   = document.getElementById("rowReservar");
+const tplVazio      = document.getElementById("rowVazio");
 
 let paginaAtual = 0;
 let filtroAtual = {};
 
+// --- BUSCA O ACERVO COM FILTROS E PAGINACAO ---
 async function buscar() {
-    const params = { ...filtroAtual, page: paginaAtual, size: 10 };
-    const page = await livroApi.buscar(params);
+    const page = await livroApi.buscar({
+        ...filtroAtual,
+        page: paginaAtual,
+        size: 10
+    });
     const livros = page.content || [];
-    document.getElementById('resultado').innerHTML = `
-        <table>
-            <thead><tr><th>Título</th><th>Autor</th><th>Categoria</th><th>Disponíveis</th><th></th></tr></thead>
-            <tbody>
-                ${livros.map(l => `
-                    <tr>
-                        <td>${l.titulo}</td><td>${l.autor}</td><td>${l.categoria || '-'}</td>
-                        <td>${l.exemplaresDisponiveis}/${l.totalExemplares}</td>
-                        <td>${l.exemplaresDisponiveis === 0
-                            ? `<button data-reservar="${l.id}">Reservar</button>`
-                            : '<span class="badge DISPONIVEL">Disponível</span>'}</td>
-                    </tr>`).join('') || '<tr><td colspan="5">Nada encontrado.</td></tr>'}
-            </tbody>
-        </table>
-    `;
-    document.getElementById('paginacao').innerHTML = `
-        <button ${page.first ? 'disabled' : ''} id="prev" class="secondary">← Anterior</button>
-        <span>Página ${page.number + 1} de ${page.totalPages || 1}</span>
-        <button ${page.last ? 'disabled' : ''} id="next" class="secondary">Próxima →</button>
-    `;
-    document.getElementById('prev').addEventListener('click', () => { paginaAtual--; buscar(); });
-    document.getElementById('next').addEventListener('click', () => { paginaAtual++; buscar(); });
-    document.querySelectorAll('[data-reservar]').forEach(b => b.addEventListener('click', async () => {
-        try {
-            const r = await reservaApi.reservar({ livroId: b.dataset.reservar });
-            alert(`Reservado! Posição na fila: ${r.posicaoFila}`);
-        } catch (err) { alert(err.message); }
-    }));
+    renderLinhas(livros);
+
+    infoPagina.textContent = `Página ${page.number + 1} de ${page.totalPages || 1}`;
+    btnPrev.disabled = page.first;
+    btnNext.disabled = page.last;
 }
 
-document.getElementById('form').addEventListener('submit', (e) => {
+// --- MONTA AS LINHAS ESCOLHENDO O TEMPLATE CONFORME DISPONIBILIDADE ---
+function renderLinhas(livros) {
+    tbody.replaceChildren();
+    if (!livros.length) {
+        tbody.appendChild(tplVazio.content.cloneNode(true));
+        return;
+    }
+
+    for (const l of livros) {
+        const disponivel = l.exemplaresDisponiveis > 0;
+        const row = (disponivel ? tplDisponivel : tplReservar).content.cloneNode(true);
+        row.querySelector("[data-cell='titulo']").textContent = l.titulo;
+        row.querySelector("[data-cell='autor']").textContent = l.autor;
+        row.querySelector("[data-cell='categoria']").textContent = l.categoria || "-";
+        row.querySelector("[data-cell='disponiveis']").textContent =
+            `${l.exemplaresDisponiveis}/${l.totalExemplares}`;
+
+        if (!disponivel) {
+            row.querySelector("[data-action='reservar']").addEventListener("click", () => onReservar(l.id));
+        }
+        tbody.appendChild(row);
+    }
+}
+
+async function onReservar(livroId) {
+    try {
+        const r = await reservaApi.reservar({ livroId });
+        alert(`Reservado! Posição na fila: ${r.posicaoFila}`);
+    } catch (err) {
+        alert(err.message);
+    }
+}
+
+form.addEventListener("submit", (e) => {
     e.preventDefault();
     filtroAtual = {};
     const f = new FormData(e.target);
-    for (const [k, v] of f.entries()) if (v) filtroAtual[k] = v;
+    for (const [k, v] of f.entries()) {
+        if (v) {
+            filtroAtual[k] = v;
+        }
+    }
     paginaAtual = 0;
     buscar();
 });
+
+btnPrev.addEventListener("click", () => { paginaAtual--; buscar(); });
+btnNext.addEventListener("click", () => { paginaAtual++; buscar(); });
 
 buscar();
 

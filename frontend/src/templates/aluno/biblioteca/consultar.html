@@ -8,23 +8,39 @@
     <body>
         <header></header>
         <main id="app" class="container">
-            <!-- --- FILTROS DE BUSCA --- -->
             <section class="card">
                 <h2>Consultar acervo</h2>
                 <form id="form" class="toolbar">
-                    <label>Título<input name="titulo" /></label>
-                    <label>Autor<input name="autor" /></label>
-                    <label>Categoria<input name="categoria" /></label>
-                    <label>ISBN<input name="isbn" /></label>
+                    <label>
+                        Título
+                        <input name="titulo" />
+                    </label>
+                    <label>
+                        Autor
+                        <input name="autor" />
+                    </label>
+                    <label>
+                        Categoria
+                        <input name="categoria" />
+                    </label>
+                    <label>
+                        ISBN
+                        <input name="isbn" />
+                    </label>
                     <button type="submit">Buscar</button>
                 </form>
             </section>
 
-            <!-- --- RESULTADOS + PAGINACAO --- -->
             <section class="card">
                 <table>
                     <thead>
-                        <tr><th>Título</th><th>Autor</th><th>Categoria</th><th>Disponíveis</th><th></th></tr>
+                    <tr>
+                        <th>Título</th>
+                        <th>Autor</th>
+                        <th>Categoria</th>
+                        <th>Disponíveis</th>
+                        <th></th>
+                    </tr>
                     </thead>
                     <tbody id="tbody"></tbody>
                 </table>
@@ -36,30 +52,34 @@
             </section>
         </main>
 
-        <!-- --- TEMPLATE: LINHA DISPONIVEL --- -->
         <template id="rowDisponivel">
             <tr>
                 <td data-cell="titulo"></td>
                 <td data-cell="autor"></td>
                 <td data-cell="categoria"></td>
                 <td data-cell="disponiveis"></td>
-                <td><span class="badge DISPONIVEL">Disponível</span></td>
+                <td>
+                    <span class="badge DISPONIVEL">Disponível</span>
+                </td>
             </tr>
         </template>
 
-        <!-- --- TEMPLATE: LINHA SEM EXEMPLAR (PERMITE RESERVAR) --- -->
         <template id="rowReservar">
             <tr>
                 <td data-cell="titulo"></td>
                 <td data-cell="autor"></td>
                 <td data-cell="categoria"></td>
                 <td data-cell="disponiveis"></td>
-                <td><button data-action="reservar">Reservar</button></td>
+                <td>
+                    <button data-action="reservar">Reservar</button>
+                </td>
             </tr>
         </template>
 
         <template id="rowVazio">
-            <tr><td colspan="5">Nada encontrado.</td></tr>
+            <tr>
+                <td colspan="5">Nada encontrado.</td>
+            </tr>
         </template>
 
         <script type="module" src="../../../scripts/pages/aluno/biblioteca/consultar.js"></script>

@@ -1,66 +1,59 @@
-import { emprestimoApi } from '../../remotes/biblioteca/emprestimos.js';
-import { exemplarApi } from '../../remotes/biblioteca/exemplares.js';
-import { renderHeader, badge, formatDate, money } from './_shared.js';
+import { emprestimoApi } from "../../remotes/biblioteca/emprestimos.js";
+import { exemplarApi } from "../../remotes/biblioteca/exemplares.js";
+import { renderHeader, badge, formatDate, money, showOk, showError } from "./_shared.js";
 
-renderHeader('Biblioteca - Empréstimos');
-const app = document.getElementById('app');
+// --- CABECALHO E REFERENCIAS DE ELEMENTOS ---
+renderHeader("Biblioteca - Empréstimos");
 
-app.innerHTML = `
-    <section class="card">
-        <h2>Novo empréstimo</h2>
-        <form id="formEmp" class="toolbar">
-            <label>Código de barras do exemplar<input name="codigoBarras" required autofocus /></label>
-            <label>ID do usuário (aluno/professor)<input name="usuarioId" required /></label>
-            <button type="submit">Registrar</button>
-            <span id="msg"></span>
-        </form>
-    </section>
-    <section class="card">
-        <h2>Consultar empréstimos por usuário</h2>
-        <form id="formCons" class="toolbar">
-            <label>ID do usuário<input name="usuarioId" required /></label>
-            <button type="submit">Listar</button>
-        </form>
-        <table>
-            <thead><tr>
-                <th>Livro</th><th>Código</th><th>Empréstimo</th><th>Prev. devolução</th>
-                <th>Devolvido em</th><th>Status</th><th>Renovações</th><th>Multa</th>
-            </tr></thead>
-            <tbody id="tbody"></tbody>
-        </table>
-    </section>
-`;
+const formEmp   = document.getElementById("formEmp");
+const formCons  = document.getElementById("formCons");
+const msg       = document.getElementById("msg");
+const tbody     = document.getElementById("tbody");
+const tplRow    = document.getElementById("rowEmp");
+const tplVazio  = document.getElementById("rowVazio");
 
-document.getElementById('formEmp').addEventListener('submit', async (e) => {
+// --- REGISTRA UM NOVO EMPRESTIMO ---
+formEmp.addEventListener("submit", async (e) => {
     e.preventDefault();
-    const msg = document.getElementById('msg');
     try {
-        // --- BUSCA EXEMPLAR PARA CONVERTER O CÓDIGO EM ID ---
         const ex = await exemplarApi.buscarPorCodigo(e.target.codigoBarras.value.trim());
         const emp = await emprestimoApi.registrar({
             exemplarId: ex.id,
             usuarioId: e.target.usuarioId.value.trim()
         });
-        msg.innerHTML = `<span class="msg-ok">Empréstimo #${emp.id.substring(0,8)} registrado. Devolução prevista: ${formatDate(emp.dataDevolucaoPrevista)}</span>`;
+        showOk(msg, `Empréstimo #${emp.id.substring(0, 8)} registrado. ` +
+            `Devolução prevista: ${formatDate(emp.dataDevolucaoPrevista)}`);
         e.target.reset();
-    } catch (err) { msg.innerHTML = `<span class="msg-error">${err.message}</span>`; }
+    } catch (err) {
+        showError(msg, err.message);
+    }
 });
 
-document.getElementById('formCons').addEventListener('submit', async (e) => {
+// --- LISTA EMPRESTIMOS DE UM USUARIO ---
+formCons.addEventListener("submit", async (e) => {
     e.preventDefault();
     const usuarioId = e.target.usuarioId.value.trim();
-    const page = await emprestimoApi.listarPorUsuario(usuarioId, { size: 50, sort: 'dataEmprestimo,desc' });
-    const rows = (page.content || []).map(emp => `
-        <tr>
-            <td>${emp.livroTitulo}</td>
-            <td>${emp.exemplarCodigoBarras}</td>
-            <td>${formatDate(emp.dataEmprestimo)}</td>
-            <td>${formatDate(emp.dataDevolucaoPrevista)}</td>
-            <td>${formatDate(emp.dataDevolucaoEfetiva)}</td>
-            <td>${badge(emp.status)}</td>
-            <td>${emp.renovacoes}</td>
-            <td>${money(emp.valorMulta)}</td>
-        </tr>`).join('');
-    document.getElementById('tbody').innerHTML = rows || '<tr><td colspan="8">Nenhum empréstimo.</td></tr>';
+    const page = await emprestimoApi.listarPorUsuario(usuarioId, {
+        size: 50,
+        sort: "dataEmprestimo,desc"
+    });
+    const emprestimos = page.content || [];
+    tbody.replaceChildren();
+    if (!emprestimos.length) {
+        tbody.appendChild(tplVazio.content.cloneNode(true));
+        return;
+    }
+    for (const emp of emprestimos) {
+        const row = tplRow.content.cloneNode(true);
+        row.querySelector("[data-cell='livro']").textContent = emp.livroTitulo;
+        row.querySelector("[data-cell='codigo']").textContent = emp.exemplarCodigoBarras;
+        row.querySelector("[data-cell='emprestimo']").textContent = formatDate(emp.dataEmprestimo);
+        row.querySelector("[data-cell='prev']").textContent = formatDate(emp.dataDevolucaoPrevista);
+        row.querySelector("[data-cell='devolvido']").textContent = formatDate(emp.dataDevolucaoEfetiva);
+        row.querySelector("[data-cell='status']").appendChild(badge(emp.status));
+        row.querySelector("[data-cell='renovacoes']").textContent = emp.renovacoes;
+        row.querySelector("[data-cell='multa']").textContent = money(emp.valorMulta);
+        tbody.appendChild(row);
+    }
 });
 

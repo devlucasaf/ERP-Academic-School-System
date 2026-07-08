@@ -1,62 +1,73 @@
-import { multaApi } from '../../remotes/biblioteca/multas.js';
-import { renderHeader, badge, formatDate, money } from './_shared.js';
+import { multaApi } from "../../remotes/biblioteca/multas.js";
+import { renderHeader, badge, formatDate, money } from "./_shared.js";
 
-renderHeader('Biblioteca - Multas');
-const app = document.getElementById('app');
+// --- CABECALHO E REFERENCIAS DE ELEMENTOS ---
+renderHeader("Biblioteca - Multas");
 
-app.innerHTML = `
-    <section class="card">
-        <h2>Multas</h2>
-        <form id="formFiltro" class="toolbar">
-            <label>Status
-                <select name="status">
-                    <option value="PENDENTE" selected>PENDENTE</option>
-                    <option value="PAGA">PAGA</option>
-                    <option value="CANCELADA">CANCELADA</option>
-                </select>
-            </label>
-            <button type="submit">Listar</button>
-        </form>
-        <table>
-            <thead><tr>
-                <th>Usuário</th><th>Livro</th><th>Dias atraso</th><th>Valor</th>
-                <th>Gerada</th><th>Paga</th><th>Status</th><th></th>
-            </tr></thead>
-            <tbody id="tbody"></tbody>
-        </table>
-    </section>
-`;
+const formFiltro    = document.getElementById("formFiltro");
+const tbody         = document.getElementById("tbody");
+const tplRow        = document.getElementById("rowMulta");
+const tplVazio      = document.getElementById("rowVazio");
 
-async function listar(status = 'PENDENTE') {
+// --- LISTA AS MULTAS PELO STATUS SELECIONADO ---
+async function listar(status = "PENDENTE") {
     const page = await multaApi.listar({ status, size: 50 });
-    document.getElementById('tbody').innerHTML = (page.content || []).map(m => `
-        <tr>
-            <td>${m.usuarioNome}</td>
-            <td>${m.livroTitulo}</td>
-            <td>${m.diasAtraso}</td>
-            <td>${money(m.valor)}</td>
-            <td>${formatDate(m.geradaEm)}</td>
-            <td>${formatDate(m.pagaEm)}</td>
-            <td>${badge(m.status)}</td>
-            <td>${m.status === 'PENDENTE'
-                ? `<button data-pagar="${m.id}">Baixar pagto.</button>
-                   <button data-cancel="${m.id}" class="danger">Cancelar</button>` : ''}</td>
-        </tr>`).join('') || '<tr><td colspan="8">Nenhuma multa.</td></tr>';
+    const multas = page.content || [];
+    tbody.replaceChildren();
+    if (!multas.length) {
+        tbody.appendChild(tplVazio.content.cloneNode(true));
+        return;
+    }
+    for (const m of multas) {
+        const row = tplRow.content.cloneNode(true);
+        row.querySelector("[data-cell='usuario']").textContent = m.usuarioNome;
+        row.querySelector("[data-cell='livro']").textContent = m.livroTitulo;
+        row.querySelector("[data-cell='diasAtraso']").textContent = m.diasAtraso;
+        row.querySelector("[data-cell='valor']").textContent = money(m.valor);
+        row.querySelector("[data-cell='gerada']").textContent = formatDate(m.geradaEm);
+        row.querySelector("[data-cell='paga']").textContent = formatDate(m.pagaEm);
+        row.querySelector("[data-cell='status']").appendChild(badge(m.status));
 
-    document.querySelectorAll('[data-pagar]').forEach(b => b.addEventListener('click', async () => {
-        try { await multaApi.pagar(b.dataset.pagar); listar(status); }
-        catch (err) { alert(err.message); }
-    }));
-    document.querySelectorAll('[data-cancel]').forEach(b => b.addEventListener('click', async () => {
-        if (!confirm('Cancelar multa?')) return;
-        try { await multaApi.cancelar(b.dataset.cancel); listar(status); }
-        catch (err) { alert(err.message); }
-    }));
+        const acoes = row.querySelector("[data-cell='acoes']");
+        const btnPagar = acoes.querySelector("[data-action='pagar']");
+        const btnCancelar = acoes.querySelector("[data-action='cancelar']");
+
+        if (m.status === "PENDENTE") {
+            btnPagar.addEventListener("click", () => onPagar(m.id, status));
+            btnCancelar.addEventListener("click", () => onCancelar(m.id, status));
+        } else {
+            acoes.replaceChildren();
+        }
+        tbody.appendChild(row);
+    }
 }
 
-document.getElementById('formFiltro').addEventListener('submit', (e) => {
+async function onPagar(id, status) {
+    try {
+        await multaApi.pagar(id);
+        listar(status);
+    } catch (err) {
+        alert(err.message);
+    }
+}
+
+async function onCancelar(id, status) {
+    if (!confirm("Cancelar multa?")) {
+        return;
+    }
+
+    try {
+        await multaApi.cancelar(id);
+        listar(status);
+    } catch (err) {
+        alert(err.message);
+    }
+}
+
+formFiltro.addEventListener("submit", (e) => {
     e.preventDefault();
     listar(e.target.status.value);
 });
+
 listar();
 

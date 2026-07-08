@@ -1,71 +1,99 @@
 // --- CLIENTE HTTP GENÉRICO USADO POR TODOS OS REMOTES ---
-const API_BASE = '/api';
+const BASE_API = "/api";
 
-function getToken() {
-    return localStorage.getItem('token');
+// --- LÊ O TOKEN ARMAZENADO ---
+function obterToken() {
+    return localStorage.getItem("token");
 }
 
-function buildHeaders(extra = {}, isJson = true) {
-    const headers = { ...extra };
-    if (isJson) headers['Content-Type'] = 'application/json';
-    const token = getToken();
-    if (token) headers['Authorization'] = `Bearer ${token}`;
-    return headers;
-}
-
-async function handle(response) {
-    if (response.status === 204) return null;
-    const text = await response.text();
-    const data = text ? JSON.parse(text) : null;
-    if (!response.ok) {
-        const msg = (data && (data.message || data.error)) || `Erro ${response.status}`;
-        throw new Error(msg);
+// --- MONTA OS CABEÇALHOS DA REQUISIÇÃO (JSON + AUTENTICAÇÃO) ---
+function montarCabecalhos(extras = {}, ehJson = true) {
+    const cabecalhos = { ...extras };
+    if (ehJson) {
+        cabecalhos["Content-Type"] = "application/json";
     }
-    return data;
+    const token = obterToken();
+
+    if (token) {
+        cabecalhos["Authorization"] = `Bearer ${token}`;
+    }
+    return cabecalhos;
+}
+
+// --- TRATA A RESPOSTA E LANÇA ERRO QUANDO NÃO OK ---
+async function tratarResposta(resposta) {
+    if (resposta.status === 204) {
+        return null;
+    }
+    const texto = await resposta.text();
+    const dados = texto ? JSON.parse(texto) : null;
+
+    if (!resposta.ok) {
+        const mensagem = (dados && (dados.message || dados.error)) || `Erro ${resposta.status}`;
+        throw new Error(mensagem);
+    }
+    return dados;
 }
 
 export const http = {
-    get: (path, params) => {
-        const qs = params ? '?' + new URLSearchParams(params).toString() : '';
-        return fetch(`${API_BASE}${path}${qs}`, { headers: buildHeaders() }).then(handle);
+    get: (caminho, parametros) => {
+        const queryString = parametros ? "?" + new URLSearchParams(parametros).toString() : "";
+        return fetch(`${BASE_API}${caminho}${queryString}`, {
+            headers: montarCabecalhos()
+        }).then(tratarResposta);
     },
-    post: (path, body) =>
-        fetch(`${API_BASE}${path}`, {
-            method: 'POST',
-            headers: buildHeaders(),
-            body: body ? JSON.stringify(body) : undefined
-        }).then(handle),
-    put: (path, body) =>
-        fetch(`${API_BASE}${path}`, {
-            method: 'PUT',
-            headers: buildHeaders(),
-            body: body ? JSON.stringify(body) : undefined
-        }).then(handle),
-    del: (path) =>
-        fetch(`${API_BASE}${path}`, {
-            method: 'DELETE',
-            headers: buildHeaders()
-        }).then(handle),
-    // --- ENVIO MULTIPART COM CAMPO "dados" JSON + ARQUIVO ---
-    postMultipart: (path, dadosObj, arquivo, fileFieldName = 'arquivo', dadosFieldName = 'dados') => {
-        const fd = new FormData();
-        fd.append(dadosFieldName, new Blob([JSON.stringify(dadosObj)], { type: 'application/json' }));
-        if (arquivo) fd.append(fileFieldName, arquivo);
-        return fetch(`${API_BASE}${path}`, {
-            method: 'POST',
-            headers: buildHeaders({}, false),
-            body: fd
-        }).then(handle);
+
+    post: (caminho, corpo) =>
+        fetch(`${BASE_API}${caminho}`, {
+            method: "POST",
+            headers: montarCabecalhos(),
+            body: corpo ? JSON.stringify(corpo) : undefined
+        }).then(tratarResposta),
+
+    put: (caminho, corpo) =>
+        fetch(`${BASE_API}${caminho}`, {
+            method: "PUT",
+            headers: montarCabecalhos(),
+            body: corpo ? JSON.stringify(corpo) : undefined
+        }).then(tratarResposta),
+
+    del: (caminho) =>
+        fetch(`${BASE_API}${caminho}`, {
+            method: "DELETE",
+            headers: montarCabecalhos()
+        }).then(tratarResposta),
+
+    // --- ENVIO MULTIPART ---
+    postMultipart: (caminho, dadosObjeto, arquivo, campoArquivo = "arquivo", campoDados = "dados") => {
+        const formData = new FormData();
+        formData.append(campoDados, new Blob([JSON.stringify(dadosObjeto)], {
+            type: "application/json"
+        }));
+
+        if (arquivo) {
+            formData.append(campoArquivo, arquivo);
+        }
+        return fetch(`${BASE_API}${caminho}`, {
+            method: "POST",
+            headers: montarCabecalhos({}, false),
+            body: formData
+        }).then(tratarResposta);
     },
-    putMultipart: (path, dadosObj, arquivo, fileFieldName = 'arquivo', dadosFieldName = 'dados') => {
-        const fd = new FormData();
-        fd.append(dadosFieldName, new Blob([JSON.stringify(dadosObj)], { type: 'application/json' }));
-        if (arquivo) fd.append(fileFieldName, arquivo);
-        return fetch(`${API_BASE}${path}`, {
-            method: 'PUT',
-            headers: buildHeaders({}, false),
-            body: fd
-        }).then(handle);
+
+    putMultipart: (caminho, dadosObjeto, arquivo, campoArquivo = "arquivo", campoDados = "dados") => {
+        const formData = new FormData();
+        formData.append(campoDados, new Blob([JSON.stringify(dadosObjeto)], {
+            type: "application/json"
+        }));
+
+        if (arquivo) {
+            formData.append(campoArquivo, arquivo);
+        }
+        return fetch(`${BASE_API}${caminho}`, {
+            method: "PUT",
+            headers: montarCabecalhos({}, false),
+            body: formData
+        }).then(tratarResposta);
     }
 };
 

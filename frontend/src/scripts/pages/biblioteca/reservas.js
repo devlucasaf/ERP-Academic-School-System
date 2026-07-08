@@ -1,39 +1,46 @@
-import { reservaApi } from '../../remotes/biblioteca/reservas.js';
-import { renderHeader, badge, formatDate } from './_shared.js';
+import { reservaApi } from "../../remotes/biblioteca/reservas.js";
+import { renderHeader, badge, formatDate } from "./_shared.js";
 
-renderHeader('Biblioteca - Reservas');
-const app = document.getElementById('app');
+// --- CABECALHO E REFERENCIAS DE ELEMENTOS ---
+renderHeader("Biblioteca - Reservas");
 
-app.innerHTML = `
-    <section class="card">
-        <h2>Fila de reservas de um livro</h2>
-        <form id="formFila" class="toolbar">
-            <label>ID do livro<input name="livroId" required /></label>
-            <button type="submit">Ver fila</button>
-        </form>
-        <table>
-            <thead><tr><th>Pos.</th><th>Usuário</th><th>Data</th><th>Status</th><th></th></tr></thead>
-            <tbody id="tbody"></tbody>
-        </table>
-    </section>
-`;
+const formFila  = document.getElementById("formFila");
+const tbody     = document.getElementById("tbody");
+const tplRow    = document.getElementById("rowReserva");
+const tplVazio  = document.getElementById("rowVazio");
 
-document.getElementById('formFila').addEventListener('submit', async (e) => {
-    e.preventDefault();
-    const lista = await reservaApi.filaDoLivro(e.target.livroId.value.trim());
-    document.getElementById('tbody').innerHTML = lista.map(r => `
-        <tr>
-            <td>${r.posicaoFila}</td>
-            <td>${r.usuarioNome}</td>
-            <td>${formatDate(r.dataReserva)}</td>
-            <td>${badge(r.status)}</td>
-            <td><button data-cancel="${r.id}" class="danger">Cancelar</button></td>
-        </tr>`).join('') || '<tr><td colspan="5">Fila vazia.</td></tr>';
-    document.querySelectorAll('[data-cancel]').forEach(b => b.addEventListener('click', async () => {
-        if (!confirm('Cancelar reserva?')) return;
-        try { await reservaApi.cancelar(b.dataset.cancel);
-            document.getElementById('formFila').dispatchEvent(new Event('submit')); }
-        catch (err) { alert(err.message); }
-    }));
-});
+// --- CARREGA A FILA DE RESERVAS DO LIVRO ---
+async function carregarFila() {
+    const lista = await reservaApi.filaDoLivro(formFila.livroId.value.trim());
+    tbody.replaceChildren();
+    if (!lista.length) {
+        tbody.appendChild(tplVazio.content.cloneNode(true));
+        return;
+    }
+
+    for (const r of lista) {
+        const row = tplRow.content.cloneNode(true);
+        row.querySelector("[data-cell='posicao']").textContent = r.posicaoFila;
+        row.querySelector("[data-cell='usuario']").textContent = r.usuarioNome;
+        row.querySelector("[data-cell='data']").textContent = formatDate(r.dataReserva);
+        row.querySelector("[data-cell='status']").appendChild(badge(r.status));
+        row.querySelector("[data-action='cancelar']").addEventListener("click", () => onCancelar(r.id));
+        tbody.appendChild(row);
+    }
+}
+
+async function onCancelar(id) {
+    if (!confirm("Cancelar reserva?")) {
+        return;
+    }
+
+    try {
+        await reservaApi.cancelar(id);
+        carregarFila();
+    } catch (err) {
+        alert(err.message);
+    }
+}
+
+formFila.addEventListener("submit", (e) => { e.preventDefault(); carregarFila(); });
 

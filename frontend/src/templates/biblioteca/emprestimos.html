@@ -8,29 +8,49 @@
     <body>
         <header></header>
         <main id="app" class="container">
-            <!-- --- NOVO EMPRESTIMO --- -->
             <section class="card">
                 <h2>Novo empréstimo</h2>
                 <form id="formEmp" class="toolbar">
-                    <label>Código de barras do exemplar<input name="codigoBarras" required autofocus /></label>
-                    <label>ID do usuário (aluno/professor)<input name="usuarioId" required /></label>
+                    <label>Código de barras do exemplar
+                        <input
+                                name="codigoBarras"
+                                required
+                                autofocus
+                        />
+                    </label>
+                    <label>ID do usuário (aluno/professor)
+                        <input
+                                name="usuarioId"
+                                required
+                        />
+                    </label>
                     <button type="submit">Registrar</button>
                     <span id="msg"></span>
                 </form>
             </section>
 
-            <!-- --- CONSULTA POR USUARIO --- -->
             <section class="card">
                 <h2>Consultar empréstimos por usuário</h2>
                 <form id="formCons" class="toolbar">
-                    <label>ID do usuário<input name="usuarioId" required /></label>
+                    <label>ID do usuário
+                        <input
+                                name="usuarioId"
+                                required
+                        />
+                    </label>
                     <button type="submit">Listar</button>
                 </form>
                 <table>
                     <thead>
                         <tr>
-                            <th>Livro</th><th>Código</th><th>Empréstimo</th><th>Prev. devolução</th>
-                            <th>Devolvido em</th><th>Status</th><th>Renovações</th><th>Multa</th>
+                            <th>Livro</th>
+                            <th>Código</th>
+                            <th>Empréstimo</th>
+                            <th>Prev. devolução</th>
+                            <th>Devolvido em</th>
+                            <th>Status</th>
+                            <th>Renovações</th>
+                            <th>Multa</th>
                         </tr>
                     </thead>
                     <tbody id="tbody"></tbody>
@@ -38,7 +58,6 @@
             </section>
         </main>
 
-        <!-- --- TEMPLATE: LINHA DE EMPRESTIMO --- -->
         <template id="rowEmp">
             <tr>
                 <td data-cell="livro"></td>
@@ -51,8 +70,11 @@
                 <td data-cell="multa"></td>
             </tr>
         </template>
+
         <template id="rowVazio">
-            <tr><td colspan="8">Nenhum empréstimo.</td></tr>
+            <tr>
+                <td colspan="8">Nenhum empréstimo.</td>
+            </tr>
         </template>
 
         <script type="module" src="../../scripts/pages/biblioteca/emprestimos.js"></script>
