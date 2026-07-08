@@ -60,7 +60,7 @@ public class AlunoController {
 
     @PostMapping
     @Operation(summary = "Cria um aluno (cria também o usuário associado com role ALUNO)")
-    @PreAuthorize("hasAnyRole('ADMIN','SECRETARIA')")
+    @PreAuthorize("hasAnyRole('ADMIN','COORDENADOR','SECRETARIA')")
     public ResponseEntity<AlunoResponseDTO> criar(@Valid @RequestBody AlunoRequestDTO dto, UriComponentsBuilder uriBuilder) {
         AlunoResponseDTO criado = alunoService.criar(dto);
         URI uri = uriBuilder.path("/alunos/{id}").buildAndExpand(criado.getId()).toUri();
@@ -69,14 +69,14 @@ public class AlunoController {
 
     @PutMapping("/{id}")
     @Operation(summary = "Atualiza um aluno existente")
-    @PreAuthorize("hasAnyRole('ADMIN','SECRETARIA')")
+    @PreAuthorize("hasAnyRole('ADMIN','COORDENADOR','SECRETARIA')")
     public ResponseEntity<AlunoResponseDTO> atualizar(@PathVariable UUID id, @Valid @RequestBody AlunoRequestDTO dto) {
         return ResponseEntity.ok(alunoService.atualizar(id, dto));
     }
 
     @DeleteMapping("/{id}")
     @Operation(summary = "Remove um aluno")
-    @PreAuthorize("hasRole('ADMIN')")
+    @PreAuthorize("hasAnyRole('ADMIN','COORDENADOR','SECRETARIA')")
     public ResponseEntity<Void> deletar(@PathVariable UUID id) {
         alunoService.deletar(id);
         return ResponseEntity.noContent().build();

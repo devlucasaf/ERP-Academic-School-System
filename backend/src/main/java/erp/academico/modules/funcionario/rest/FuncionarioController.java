@@ -41,7 +41,7 @@ public class FuncionarioController {
     // --- LISTA FUNCIONÁRIOS ---
     @GetMapping
     @Operation(summary = "Lista funcionários paginados (opcionalmente filtrando por cargo)")
-    @PreAuthorize("hasAnyRole('ADMIN','COORDENADOR')")
+    @PreAuthorize("hasAnyRole('ADMIN','COORDENADOR','SECRETARIA')")
     public ResponseEntity<Page<FuncionarioResponseDTO>> listar(
             @RequestParam(required = false) CargoFuncionario cargo,
             Pageable pageable) {
@@ -51,7 +51,7 @@ public class FuncionarioController {
     // --- BUSCA FUNCIONÁRIO PELO ID ---
     @GetMapping("/{id}")
     @Operation(summary = "Busca funcionário pelo ID")
-    @PreAuthorize("hasAnyRole('ADMIN','COORDENADOR')")
+    @PreAuthorize("hasAnyRole('ADMIN','COORDENADOR','SECRETARIA')")
     public ResponseEntity<FuncionarioResponseDTO> buscarPorId(@PathVariable UUID id) {
         return ResponseEntity.ok(funcionarioService.buscarPorId(id));
     }
@@ -59,7 +59,7 @@ public class FuncionarioController {
     // --- CRIA UM FUNCIONÁRIO ---
     @PostMapping
     @Operation(summary = "Cria um funcionário (cria também o usuário com a role correspondente ao cargo)")
-    @PreAuthorize("hasRole('ADMIN')")
+    @PreAuthorize("hasAnyRole('ADMIN','COORDENADOR','SECRETARIA')")
     public ResponseEntity<FuncionarioResponseDTO> criar(@Valid @RequestBody FuncionarioRequestDTO dto,
                                                         UriComponentsBuilder uriBuilder) {
         FuncionarioResponseDTO criado = funcionarioService.criar(dto);
@@ -70,7 +70,7 @@ public class FuncionarioController {
     // --- ATUALIZA UM FUNCIONÁRIO EXISTENTE ---
     @PutMapping("/{id}")
     @Operation(summary = "Atualiza um funcionário existente")
-    @PreAuthorize("hasRole('ADMIN')")
+    @PreAuthorize("hasAnyRole('ADMIN','COORDENADOR','SECRETARIA')")
     public ResponseEntity<FuncionarioResponseDTO> atualizar(@PathVariable UUID id,
                                                             @Valid @RequestBody FuncionarioRequestDTO dto) {
         return ResponseEntity.ok(funcionarioService.atualizar(id, dto));
@@ -79,7 +79,7 @@ public class FuncionarioController {
     // --- REMOVE UM FUNCIONÁRIO ---
     @DeleteMapping("/{id}")
     @Operation(summary = "Remove um funcionário")
-    @PreAuthorize("hasRole('ADMIN')")
+    @PreAuthorize("hasAnyRole('ADMIN','COORDENADOR','SECRETARIA')")
     public ResponseEntity<Void> deletar(@PathVariable UUID id) {
         funcionarioService.deletar(id);
         return ResponseEntity.noContent().build();

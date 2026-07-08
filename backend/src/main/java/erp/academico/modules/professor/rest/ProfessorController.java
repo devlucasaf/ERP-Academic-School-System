@@ -40,7 +40,7 @@ public class ProfessorController {
     // --- LISTA PROFESSORES PAGINADOS ---
     @GetMapping
     @Operation(summary = "Lista professores paginados")
-    @PreAuthorize("hasAnyRole('ADMIN','COORDENADOR','SECRETARIA')")
+    @PreAuthorize("hasAnyRole('ADMIN','COORDENADOR','SECRETARIA','PROFESSOR')")
     public ResponseEntity<Page<ProfessorResponseDTO>> listar(Pageable pageable) {
         return ResponseEntity.ok(professorService.listar(pageable));
     }
@@ -48,7 +48,7 @@ public class ProfessorController {
     // --- BUSCA PROFESSOR PELO ID ---
     @GetMapping("/{id}")
     @Operation(summary = "Busca professor pelo ID")
-    @PreAuthorize("hasAnyRole('ADMIN','COORDENADOR','SECRETARIA')")
+    @PreAuthorize("hasAnyRole('ADMIN','COORDENADOR','SECRETARIA','PROFESSOR')")
     public ResponseEntity<ProfessorResponseDTO> buscarPorId(@PathVariable UUID id) {
         return ResponseEntity.ok(professorService.buscarPorId(id));
     }
@@ -56,7 +56,7 @@ public class ProfessorController {
     // --- CRIA UM PROFESSOR ---
     @PostMapping
     @Operation(summary = "Cria um professor (cria também o usuário associado com role PROFESSOR)")
-    @PreAuthorize("hasAnyRole('ADMIN','COORDENADOR')")
+    @PreAuthorize("hasAnyRole('ADMIN','COORDENADOR','SECRETARIA')")
     public ResponseEntity<ProfessorResponseDTO> criar(@Valid @RequestBody ProfessorRequestDTO dto,
                                                       UriComponentsBuilder uriBuilder) {
         ProfessorResponseDTO criado = professorService.criar(dto);
@@ -67,7 +67,7 @@ public class ProfessorController {
     // --- ATUALIZA UM PROFESSOR EXISTENTE ---
     @PutMapping("/{id}")
     @Operation(summary = "Atualiza um professor existente")
-    @PreAuthorize("hasAnyRole('ADMIN','COORDENADOR')")
+    @PreAuthorize("hasAnyRole('ADMIN','COORDENADOR','SECRETARIA')")
     public ResponseEntity<ProfessorResponseDTO> atualizar(@PathVariable UUID id,
                                                           @Valid @RequestBody ProfessorRequestDTO dto) {
         return ResponseEntity.ok(professorService.atualizar(id, dto));
@@ -76,7 +76,7 @@ public class ProfessorController {
     // --- REMOVE UM PROFESSOR ---
     @DeleteMapping("/{id}")
     @Operation(summary = "Remove um professor")
-    @PreAuthorize("hasRole('ADMIN')")
+    @PreAuthorize("hasAnyRole('ADMIN','COORDENADOR','SECRETARIA')")
     public ResponseEntity<Void> deletar(@PathVariable UUID id) {
         professorService.deletar(id);
         return ResponseEntity.noContent().build();

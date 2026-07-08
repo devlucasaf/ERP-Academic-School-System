@@ -30,7 +30,7 @@ public class FuncionarioRequestDTO {
     @Size(max = 150)
     private String email;
 
-    @NotBlank(message = "A senha é obrigatória.")
+    // --- SENHA OPCIONAL: SE VAZIA, O SISTEMA GERA UMA TEMPORÁRIA E ENVIA POR E-MAIL ---
     @Size(min = 6, max = 100)
     private String senha;
 

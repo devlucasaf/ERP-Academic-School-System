@@ -57,7 +57,7 @@ public class ResponsavelController {
     // --- CRIA UM RESPONSÁVEL ---
     @PostMapping
     @Operation(summary = "Cria um responsável (cria também o usuário associado com role RESPONSAVEL)")
-    @PreAuthorize("hasAnyRole('ADMIN','SECRETARIA')")
+    @PreAuthorize("hasAnyRole('ADMIN','COORDENADOR','SECRETARIA')")
     public ResponseEntity<ResponsavelResponseDTO> criar(@Valid @RequestBody ResponsavelRequestDTO dto,
                                                         UriComponentsBuilder uriBuilder) {
         ResponsavelResponseDTO criado = responsavelService.criar(dto);
@@ -68,7 +68,7 @@ public class ResponsavelController {
     // --- ATUALIZA UM RESPONSÁVEL EXISTENTE ---
     @PutMapping("/{id}")
     @Operation(summary = "Atualiza um responsável existente")
-    @PreAuthorize("hasAnyRole('ADMIN','SECRETARIA')")
+    @PreAuthorize("hasAnyRole('ADMIN','COORDENADOR','SECRETARIA')")
     public ResponseEntity<ResponsavelResponseDTO> atualizar(@PathVariable UUID id,
                                                             @Valid @RequestBody ResponsavelRequestDTO dto) {
         return ResponseEntity.ok(responsavelService.atualizar(id, dto));
@@ -77,7 +77,7 @@ public class ResponsavelController {
     // --- REMOVE UM RESPONSÁVEL ---
     @DeleteMapping("/{id}")
     @Operation(summary = "Remove um responsável")
-    @PreAuthorize("hasRole('ADMIN')")
+    @PreAuthorize("hasAnyRole('ADMIN','COORDENADOR','SECRETARIA')")
     public ResponseEntity<Void> deletar(@PathVariable UUID id) {
         responsavelService.deletar(id);
         return ResponseEntity.noContent().build();

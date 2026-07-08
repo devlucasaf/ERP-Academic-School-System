@@ -30,7 +30,7 @@ public class ProfessorRequestDTO {
     @Size(max = 150)
     private String email;
 
-    @NotBlank(message = "A senha é obrigatória.")
+    // --- SENHA OPCIONAL ---
     @Size(min = 6, max = 100)
     private String senha;
 
