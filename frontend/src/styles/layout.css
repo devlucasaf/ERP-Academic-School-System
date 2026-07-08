@@ -1,0 +1,141 @@
+/* --- SHELL DA APLICAÇÃO (SIDEBAR + MAIN) --- */
+.app-shell {
+    display: grid;
+    grid-template-columns: var(--sidebar-width) 1fr;
+    min-height: 100vh;
+}
+
+/* --- SIDEBAR FIXA À ESQUERDA --- */
+.sidebar {
+    position: sticky;
+    top: 0;
+    align-self: start;
+    height: 100vh;
+    background: var(--bg-sidebar);
+    color: var(--text-sidebar);
+    padding: var(--space-md);
+    overflow-y: auto;
+}
+
+.sidebar-brand {
+    font-size: var(--fs-lg);
+    font-weight: 700;
+    color: #fff;
+    padding: var(--space-sm) var(--space-sm) var(--space-lg);
+}
+
+.sidebar-nav {
+    display: flex;
+    flex-direction: column;
+    gap: .15rem;
+}
+
+.sidebar-nav .nav-section {
+    text-transform: uppercase;
+    font-size: .7rem;
+    letter-spacing: .05em;
+    color: var(--text-muted);
+    margin: var(--space-md) var(--space-sm) var(--space-xs);
+}
+
+.sidebar-nav .nav-link {
+    padding: .55rem .75rem;
+    border-radius: var(--radius-sm);
+    color: var(--text-sidebar);
+    font-size: var(--fs-sm);
+}
+
+.sidebar-nav .nav-link:hover { background: var(--bg-sidebar-hover); }
+.sidebar-nav .nav-link.active { background: var(--color-primary); color: #fff; }
+
+/* --- COLUNA PRINCIPAL --- */
+.app-main {
+    display: flex;
+    flex-direction: column;
+    min-width: 0;
+}
+
+/* --- HEADER NO TOPO --- */
+.topbar {
+    height: var(--topbar-height);
+    display: flex;
+    align-items: center;
+    gap: var(--space-md);
+    padding: 0 var(--space-lg);
+    background: var(--bg-surface);
+    border-bottom: 1px solid var(--border-color);
+    position: sticky;
+    top: 0;
+    z-index: 500;
+}
+
+.topbar-title { font-weight: 600; }
+.topbar-actions {
+    margin-left: auto;
+    display: flex;
+    align-items: center;
+    gap: var(--space-md);
+}
+
+.user-nome { font-size: var(--fs-sm); font-weight: 600; }
+
+/* --- ÁREA DE CONTEÚDO --- */
+.content {
+    padding: var(--space-lg);
+    flex: 1;
+    max-width: 1200px;
+    width: 100%;
+    margin: 0 auto;
+}
+
+/* --- TELA DE LOGIN (SEM SIDEBAR) --- */
+.auth-screen {
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: var(--space-lg);
+    background:
+        radial-gradient(1200px 600px at 20% -10%, rgba(30, 58, 138, .25), transparent),
+        var(--bg-body);
+}
+
+.auth-card {
+    width: 100%;
+    max-width: 380px;
+    background: var(--bg-surface);
+    border: 1px solid var(--border-color);
+    border-radius: var(--radius-lg);
+    box-shadow: var(--shadow-lg);
+    padding: var(--space-xl);
+}
+
+.auth-card h1 {
+    font-size: var(--fs-lg);
+    color: var(--color-primary);
+    margin-bottom: var(--space-xs);
+    text-align: center;
+}
+
+.auth-card .subtitle {
+    text-align: center;
+    color: var(--text-muted);
+    font-size: var(--fs-sm);
+    margin-bottom: var(--space-lg);
+}
+
+/* --- RESPONSIVO: SIDEBAR RECOLHÍVEL --- */
+@media (max-width: 820px) {
+    .app-shell { grid-template-columns: 1fr; }
+    .sidebar {
+        position: fixed;
+        left: 0;
+        top: 0;
+        z-index: 900;
+        width: var(--sidebar-width);
+        transform: translateX(-100%);
+        transition: transform .2s ease;
+    }
+    .app-shell.sidebar-open .sidebar { transform: translateX(0); }
+}
+

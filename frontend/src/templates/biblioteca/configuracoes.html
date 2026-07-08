@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+    <head>
+        <meta charset="UTF-8" />
+        <title>Biblioteca - Configurações</title>
+        <link rel="stylesheet" href="/src/styles/main.css" />
+    </head>
+    <body>
+        <header></header>
+        <main id="app" class="container">
+            <section class="card">
+                <h2>Parâmetros gerais</h2>
+                <form id="form" class="grid">
+                    <label>Prazo empréstimo aluno (dias)
+                        <input type="number" name="prazoEmprestimoAluno" required min="1" />
+                    </label>
+                    <label>Prazo empréstimo professor (dias)
+                        <input type="number" name="prazoEmprestimoProfessor" required min="1" />
+                    </label>
+                    <label>Máx. empréstimos simultâneos
+                        <input type="number" name="maxEmprestimosSimultaneos" required min="1" />
+                    </label>
+                    <label>Máx. renovações
+                        <input type="number" name="maxRenovacoes" required min="0" />
+                    </label>
+                    <label>Valor da multa por dia (R$)
+                        <input type="number" step="0.01" name="valorMultaDia" required min="0" />
+                    </label>
+                    <div class="toolbar" style="grid-column:1/-1">
+                        <button type="submit">Salvar</button>
+                        <span id="msg"></span>
+                    </div>
+                </form>
+            </section>
+        </main>
+
+        <script type="module" src="../../scripts/pages/biblioteca/configuracoes.js"></script>
+    </body>
+</html>
+

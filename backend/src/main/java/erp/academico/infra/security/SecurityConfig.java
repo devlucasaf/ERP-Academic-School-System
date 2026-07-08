@@ -21,8 +21,10 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 @RequiredArgsConstructor
 public class SecurityConfig {
 
+    // --- ROTAS PÚBLICAS REGISTER E /me EXIGEM AUTENTICAÇÃO ---
     private static final String[] PUBLIC_MATCHERS = {
-            "/auth/**",
+            "/auth/login",
+            "/auth/refresh",
             "/swagger-ui.html",
             "/swagger-ui/**",
             "/v3/api-docs",

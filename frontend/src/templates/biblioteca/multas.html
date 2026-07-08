@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+    <head>
+        <meta charset="UTF-8" />
+        <title>Biblioteca - Multas</title>
+        <link rel="stylesheet" href="/src/styles/main.css" />
+    </head>
+    <body>
+        <header></header>
+        <main id="app" class="container">
+            <section class="card">
+                <h2>Multas</h2>
+                <form id="formFiltro" class="toolbar">
+                    <label>Status
+                        <select name="status">
+                            <option value="PENDENTE" selected>PENDENTE</option>
+                            <option value="PAGA">PAGA</option>
+                            <option value="CANCELADA">CANCELADA</option>
+                        </select>
+                    </label>
+                    <button type="submit">Listar</button>
+                </form>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Usuário</th><th>Livro</th><th>Dias atraso</th><th>Valor</th>
+                            <th>Gerada</th><th>Paga</th><th>Status</th><th></th>
+                        </tr>
+                    </thead>
+                    <tbody id="tbody"></tbody>
+                </table>
+            </section>
+        </main>
+
+        <!-- --- TEMPLATE: LINHA DE MULTA --- -->
+        <template id="rowMulta">
+            <tr>
+                <td data-cell="usuario"></td>
+                <td data-cell="livro"></td>
+                <td data-cell="diasAtraso"></td>
+                <td data-cell="valor"></td>
+                <td data-cell="gerada"></td>
+                <td data-cell="paga"></td>
+                <td data-cell="status"></td>
+                <td data-cell="acoes">
+                    <button data-action="pagar">Baixar pagto.</button>
+                    <button data-action="cancelar" class="danger">Cancelar</button>
+                </td>
+            </tr>
+        </template>
+        <template id="rowVazio">
+            <tr><td colspan="8">Nenhuma multa.</td></tr>
+        </template>
+
+        <script type="module" src="../../scripts/pages/biblioteca/multas.js"></script>
+    </body>
+</html>
+

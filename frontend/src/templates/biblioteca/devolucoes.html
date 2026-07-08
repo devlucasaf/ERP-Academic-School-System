@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+    <head>
+        <meta charset="UTF-8" />
+        <title>Biblioteca - Devoluções</title>
+        <link rel="stylesheet" href="/src/styles/main.css" />
+    </head>
+    <body>
+        <header></header>
+        <main id="app" class="container">
+            <section class="card">
+                <h2>Registrar devolução</h2>
+                <form id="form" class="toolbar">
+                    <label>ID do empréstimo<input name="empId" required autofocus /></label>
+                    <button type="submit">Devolver</button>
+                    <button type="button" id="btnRen" class="secondary">Renovar</button>
+                    <span id="msg"></span>
+                </form>
+
+                <!-- --- DETALHE DA OPERACAO (PREENCHIDO PELO JS) --- -->
+                <table id="detalhe" style="margin-top:1rem" hidden>
+                    <tr><th>Livro</th><td data-cell="livro"></td></tr>
+                    <tr><th>Exemplar</th><td data-cell="exemplar"></td></tr>
+                    <tr><th>Usuário</th><td data-cell="usuario"></td></tr>
+                    <tr><th>Status</th><td data-cell="status"></td></tr>
+                    <tr><th>Prev. devolução</th><td data-cell="prev"></td></tr>
+                    <tr><th>Devolvido em</th><td data-cell="devolvido"></td></tr>
+                    <tr><th>Dias de atraso</th><td data-cell="diasAtraso"></td></tr>
+                    <tr><th>Multa</th><td data-cell="multa"></td></tr>
+                    <tr><th>Renovações</th><td data-cell="renovacoes"></td></tr>
+                </table>
+            </section>
+        </main>
+
+        <script type="module" src="../../scripts/pages/biblioteca/devolucoes.js"></script>
+    </body>
+</html>
+

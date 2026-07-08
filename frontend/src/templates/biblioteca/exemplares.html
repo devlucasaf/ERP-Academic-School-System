@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+    <head>
+        <meta charset="UTF-8" />
+        <title>Biblioteca - Exemplares</title>
+        <link rel="stylesheet" href="/src/styles/main.css" />
+    </head>
+    <body>
+        <header></header>
+        <main id="app" class="container">
+            <!-- --- SELECIONAR LIVRO --- -->
+            <section class="card">
+                <h2>Selecionar livro</h2>
+                <form id="formBuscaLivro" class="toolbar">
+                    <label>Título<input name="titulo" required /></label>
+                    <button type="submit">Buscar</button>
+                </form>
+                <ul id="resultadosLivro"></ul>
+                <p id="buscaMsg" class="msg-error" hidden></p>
+            </section>
+
+            <!-- --- EXEMPLARES DO LIVRO SELECIONADO --- -->
+            <section class="card" id="cardExemplares" hidden>
+                <h2>Exemplares de <span id="tituloLivro"></span></h2>
+                <form id="formExemplar" class="toolbar">
+                    <label>Código de barras
+                        <input name="codigoBarras" placeholder="deixe vazio para gerar" />
+                    </label>
+                    <label>Localização<input name="localizacao" placeholder="ex.: Estante A3" /></label>
+                    <button type="button" id="btnGerar" class="secondary">Gerar código</button>
+                    <button type="submit">Adicionar exemplar</button>
+                    <span id="msgExemplar"></span>
+                </form>
+                <table>
+                    <thead>
+                        <tr><th>Código</th><th>Localização</th><th>Status</th><th>Criado</th><th></th></tr>
+                    </thead>
+                    <tbody id="tbodyEx"></tbody>
+                </table>
+            </section>
+        </main>
+
+        <!-- --- TEMPLATE: ITEM DE RESULTADO DE LIVRO --- -->
+        <template id="itemLivro">
+            <li><a href="#" data-action="selecionar"></a></li>
+        </template>
+
+        <!-- --- TEMPLATE: LINHA DE EXEMPLAR --- -->
+        <template id="rowExemplar">
+            <tr>
+                <td data-cell="codigo"></td>
+                <td data-cell="localizacao"></td>
+                <td data-cell="status"></td>
+                <td data-cell="criado"></td>
+                <td><button data-action="excluir" class="danger">Excluir</button></td>
+            </tr>
+        </template>
+
+        <template id="rowVazioLivro">
+            <li>Nenhum livro encontrado.</li>
+        </template>
+        <template id="rowVazioEx">
+            <tr><td colspan="5">Sem exemplares.</td></tr>
+        </template>
+
+        <script type="module" src="../../scripts/pages/biblioteca/exemplares.js"></script>
+    </body>
+</html>
+

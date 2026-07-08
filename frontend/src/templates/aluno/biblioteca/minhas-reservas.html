@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+    <head>
+        <meta charset="UTF-8" />
+        <title>Aluno - Minhas reservas</title>
+        <link rel="stylesheet" href="/src/styles/main.css" />
+    </head>
+    <body>
+        <header></header>
+        <main id="app" class="container">
+            <!-- --- AVISO EXIBIDO QUANDO NAO HA LOGIN --- -->
+            <p id="semLogin" class="msg-error" hidden>Faça login para visualizar suas reservas.</p>
+
+            <section class="card" id="secReservas" hidden>
+                <h2>Minhas reservas</h2>
+                <table>
+                    <thead>
+                        <tr><th>Livro</th><th>Data</th><th>Status</th><th>Posição fila</th><th></th></tr>
+                    </thead>
+                    <tbody id="tbody"></tbody>
+                </table>
+            </section>
+        </main>
+
+        <!-- --- TEMPLATE: LINHA DE RESERVA --- -->
+        <template id="rowReserva">
+            <tr>
+                <td data-cell="livro"></td>
+                <td data-cell="data"></td>
+                <td data-cell="status"></td>
+                <td data-cell="posicao"></td>
+                <td data-cell="acoes"><button data-action="cancelar" class="danger">Cancelar</button></td>
+            </tr>
+        </template>
+        <template id="rowVazio">
+            <tr><td colspan="5">Nenhuma reserva.</td></tr>
+        </template>
+
+        <script type="module" src="../../../scripts/pages/aluno/biblioteca/minhas-reservas.js"></script>
+    </body>
+</html>
+

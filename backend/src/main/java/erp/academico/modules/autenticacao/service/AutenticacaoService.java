@@ -25,6 +25,8 @@ import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.UUID;
+
 @Service
 @RequiredArgsConstructor
 public class AutenticacaoService {
@@ -79,6 +81,12 @@ public class AutenticacaoService {
         }
 
         return montarLoginResponse(usuario);
+    }
+
+    // --- RETORNA OS DADOS DO USUÁRIO AUTENTICADO ---
+    @Transactional(readOnly = true)
+    public UsuarioResponseDTO dadosDoUsuario(UUID usuarioId) {
+        return usuarioService.buscarPorId(usuarioId);
     }
 
     // --- GERA OS DOIS TOKENS E MONTA O DTO DE RESPOSTA COM OS DADOS DO USUÁRIO ---

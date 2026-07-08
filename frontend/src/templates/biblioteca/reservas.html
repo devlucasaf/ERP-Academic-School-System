@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+    <head>
+        <meta charset="UTF-8" />
+        <title>Biblioteca - Reservas</title>
+        <link rel="stylesheet" href="/src/styles/main.css" />
+    </head>
+    <body>
+        <header></header>
+        <main id="app" class="container">
+            <section class="card">
+                <h2>Fila de reservas de um livro</h2>
+                <form id="formFila" class="toolbar">
+                    <label>ID do livro<input name="livroId" required /></label>
+                    <button type="submit">Ver fila</button>
+                </form>
+                <table>
+                    <thead>
+                        <tr><th>Pos.</th><th>Usuário</th><th>Data</th><th>Status</th><th></th></tr>
+                    </thead>
+                    <tbody id="tbody"></tbody>
+                </table>
+            </section>
+        </main>
+
+        <!-- --- TEMPLATE: LINHA DA FILA DE RESERVAS --- -->
+        <template id="rowReserva">
+            <tr>
+                <td data-cell="posicao"></td>
+                <td data-cell="usuario"></td>
+                <td data-cell="data"></td>
+                <td data-cell="status"></td>
+                <td><button data-action="cancelar" class="danger">Cancelar</button></td>
+            </tr>
+        </template>
+        <template id="rowVazio">
+            <tr><td colspan="5">Fila vazia.</td></tr>
+        </template>
+
+        <script type="module" src="../../scripts/pages/biblioteca/reservas.js"></script>
+    </body>
+</html>
+

@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+    <head>
+        <meta charset="UTF-8" />
+        <title>Aluno - Meus empréstimos</title>
+        <link rel="stylesheet" href="/src/styles/main.css" />
+    </head>
+    <body>
+        <header></header>
+        <main id="app" class="container">
+            <!-- --- AVISO EXIBIDO QUANDO NAO HA LOGIN --- -->
+            <p id="semLogin" class="msg-error" hidden>Faça login para visualizar seus empréstimos.</p>
+
+            <!-- --- EMPRESTIMOS --- -->
+            <section class="card" id="secEmprestimos" hidden>
+                <h2>Meus empréstimos</h2>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Livro</th><th>Empréstimo</th><th>Devolução prevista</th>
+                            <th>Devolvido em</th><th>Status</th><th>Renovações</th><th></th>
+                        </tr>
+                    </thead>
+                    <tbody id="tbodyEmp"></tbody>
+                </table>
+            </section>
+
+            <!-- --- MULTAS PENDENTES --- -->
+            <section class="card" id="secMultas" hidden>
+                <h2>Minhas multas pendentes</h2>
+                <table>
+                    <thead>
+                        <tr><th>Livro</th><th>Dias atraso</th><th>Valor</th><th>Gerada em</th></tr>
+                    </thead>
+                    <tbody id="tbodyMulta"></tbody>
+                </table>
+            </section>
+        </main>
+
+        <!-- --- TEMPLATE: LINHA DE EMPRESTIMO --- -->
+        <template id="rowEmp">
+            <tr>
+                <td data-cell="livro"></td>
+                <td data-cell="emprestimo"></td>
+                <td data-cell="prev"></td>
+                <td data-cell="devolvido"></td>
+                <td data-cell="status"></td>
+                <td data-cell="renovacoes"></td>
+                <td data-cell="acoes"><button data-action="renovar">Renovar</button></td>
+            </tr>
+        </template>
+        <template id="rowEmpVazio">
+            <tr><td colspan="7">Nenhum empréstimo.</td></tr>
+        </template>
+
+        <!-- --- TEMPLATE: LINHA DE MULTA --- -->
+        <template id="rowMulta">
+            <tr>
+                <td data-cell="livro"></td>
+                <td data-cell="diasAtraso"></td>
+                <td data-cell="valor"></td>
+                <td data-cell="gerada"></td>
+            </tr>
+        </template>
+        <template id="rowMultaVazio">
+            <tr><td colspan="4">Sem multas pendentes.</td></tr>
+        </template>
+
+        <script type="module" src="../../../scripts/pages/aluno/biblioteca/meus-emprestimos.js"></script>
+    </body>
+</html>
+
