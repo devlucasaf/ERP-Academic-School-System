@@ -4,7 +4,6 @@ import org.springframework.stereotype.Component;
 
 import java.security.SecureRandom;
 
-// --- GERADOR DE SENHAS TEMPORÁRIAS PARA NOVOS USUÁRIOS ---
 @Component
 public class GeradorSenhaTemporaria {
 

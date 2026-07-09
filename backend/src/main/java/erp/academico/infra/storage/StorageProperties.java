@@ -13,7 +13,6 @@ import org.springframework.stereotype.Component;
 public class StorageProperties {
 
     private String type = "local";
-
     private Local local = new Local();
 
     @Getter

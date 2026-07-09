@@ -33,7 +33,7 @@ public class AlunoRequestDTO {
     @Size(max = 150)
     private String email;
 
-    // --- SENHA OPCIONAL: SE VAZIA, O SISTEMA GERA UMA TEMPORÁRIA E ENVIA POR E-MAIL ---
+    // --- SENHA OPCIONAL ---
     @Size(min = 6, max = 100)
     private String senha;
 

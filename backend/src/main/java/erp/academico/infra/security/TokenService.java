@@ -19,91 +19,93 @@ import java.time.ZoneOffset;
 @Service
 public class TokenService {
 
-    private static final String CLAIM_ROLE = "role";
-    private static final String CLAIM_USER_ID = "uid";
-    private static final String CLAIM_TYPE = "type";
+    // --- NOMES DAS CLAIMS ARMAZENADAS NO TOKEN ---
+    private static final String CLAIM_PERFIL = "role";
+    private static final String CLAIM_ID_USUARIO = "uid";
+    private static final String CLAIM_TIPO = "type";
 
-    private static final String TYPE_ACCESS = "access";
-    private static final String TYPE_REFRESH = "refresh";
+    // --- VALORES POSSIVEIS PARA A CLAIM DE TIPO ---
+    private static final String TIPO_ACESSO = "access";
+    private static final String TIPO_RENOVACAO = "refresh";
 
     @Value("${security.jwt.secret}")
-    private String secret;
+    private String segredo;
 
     @Value("${security.jwt.issuer}")
-    private String issuer;
+    private String emissor;
 
     @Value("${security.jwt.expiration-minutes}")
-    private long expirationMinutes;
+    private long minutosExpiracao;
 
     @Value("${security.jwt.refresh-expiration-minutes}")
-    private long refreshExpirationMinutes;
+    private long minutosExpiracaoRenovacao;
 
     // --- GERA O ACCESS TOKEN ---
     public String gerarToken(Usuario usuario) {
         return JWT.create()
-                .withIssuer(issuer)
+                .withIssuer(emissor)
                 .withSubject(usuario.getEmail())
-                .withClaim(CLAIM_USER_ID, usuario.getId().toString())
-                .withClaim(CLAIM_ROLE, usuario.getRole().name())
-                .withClaim(CLAIM_TYPE, TYPE_ACCESS)
+                .withClaim(CLAIM_ID_USUARIO, usuario.getId().toString())
+                .withClaim(CLAIM_PERFIL, usuario.getRole().name())
+                .withClaim(CLAIM_TIPO, TIPO_ACESSO)
                 .withIssuedAt(Instant.now())
-                .withExpiresAt(expiration(expirationMinutes))
-                .sign(algorithm());
+                .withExpiresAt(expiracao(minutosExpiracao))
+                .sign(algoritmo());
     }
 
     // --- GERA O REFRESH TOKEN USADO PARA RENOVAR O ACCESS TOKEN ---
     public String gerarRefreshToken(Usuario usuario) {
         return JWT.create()
-                .withIssuer(issuer)
+                .withIssuer(emissor)
                 .withSubject(usuario.getEmail())
-                .withClaim(CLAIM_USER_ID, usuario.getId().toString())
-                .withClaim(CLAIM_TYPE, TYPE_REFRESH)
+                .withClaim(CLAIM_ID_USUARIO, usuario.getId().toString())
+                .withClaim(CLAIM_TIPO, TIPO_RENOVACAO)
                 .withIssuedAt(Instant.now())
-                .withExpiresAt(expiration(refreshExpirationMinutes))
-                .sign(algorithm());
+                .withExpiresAt(expiracao(minutosExpiracaoRenovacao))
+                .sign(algoritmo());
     }
 
     // --- VALIDA UM ACCESS TOKEN E RETORNA O SUBJECT ---
     public String validarToken(String token) {
-        DecodedJWT decoded = verify(token);
-        String type = decoded.getClaim(CLAIM_TYPE).asString();
-        if (type != null && !TYPE_ACCESS.equals(type)) {
+        DecodedJWT decodificado = verificar(token);
+        String tipo = decodificado.getClaim(CLAIM_TIPO).asString();
+        if (tipo != null && !TIPO_ACESSO.equals(tipo)) {
             throw new BusinessException("Token informado não é um access token.");
         }
-        return decoded.getSubject();
+        return decodificado.getSubject();
     }
 
     // --- VALIDA UM REFRESH TOKEN E RETORNA O SUBJECT ---
     public String validarRefreshToken(String token) {
-        DecodedJWT decoded = verify(token);
-        String type = decoded.getClaim(CLAIM_TYPE).asString();
-        if (!TYPE_REFRESH.equals(type)) {
+        DecodedJWT decodificado = verificar(token);
+        String tipo = decodificado.getClaim(CLAIM_TIPO).asString();
+        if (!TIPO_RENOVACAO.equals(tipo)) {
             throw new BusinessException("Token informado não é um refresh token.");
         }
-        return decoded.getSubject();
+        return decodificado.getSubject();
     }
 
     // --- VERIFICA ASSINATURA E ISSUER DO TOKEN ---
-    private DecodedJWT verify(String token) {
+    private DecodedJWT verificar(String token) {
         try {
-            JWTVerifier verifier = JWT.require(algorithm())
-                    .withIssuer(issuer)
+            JWTVerifier verificador = JWT.require(algoritmo())
+                    .withIssuer(emissor)
                     .build();
-            return verifier.verify(token);
+            return verificador.verify(token);
         } catch (JWTVerificationException ex) {
             throw new BusinessException("Token JWT inválido ou expirado.");
         }
     }
 
     // --- HMAC256 USANDO O SECRET CONFIGURADO ---
-    private Algorithm algorithm() {
-        return Algorithm.HMAC256(secret);
+    private Algorithm algoritmo() {
+        return Algorithm.HMAC256(segredo);
     }
 
     // --- CALCULA O Instant DE EXPIRAÇÃO A PARTIR DE MINUTOS ---
-    private Instant expiration(long minutes) {
+    private Instant expiracao(long minutos) {
         return LocalDateTime.now()
-                .plusMinutes(minutes)
+                .plusMinutes(minutos)
                 .toInstant(ZoneOffset.of("-03:00"));
     }
 }

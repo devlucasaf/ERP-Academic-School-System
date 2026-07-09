@@ -3,8 +3,10 @@ package erp.academico.infra.seed;
 import erp.academico.modules.usuario.model.RoleUsuario;
 import erp.academico.modules.usuario.model.Usuario;
 import erp.academico.modules.usuario.repository.UsuarioRepository;
+
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;

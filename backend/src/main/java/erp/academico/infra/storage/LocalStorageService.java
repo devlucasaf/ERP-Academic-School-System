@@ -64,7 +64,7 @@ public class LocalStorageService implements StorageService {
             Path target = dir.resolve(safeName);
             Files.copy(file.getInputStream(), target, StandardCopyOption.REPLACE_EXISTING);
 
-            // --- URL PÚBLICA RELATIVA (EX.: /files/atividades/uuid-arquivo.pdf) ---
+            // --- URL PÚBLICA RELATIVA ---
             return properties.getLocal().getPublicBaseUrl() + "/" + sanitizeSubDir(subDir) + "/" + safeName;
         } catch (IOException ex) {
             log.error("Falha ao salvar arquivo no storage local", ex);

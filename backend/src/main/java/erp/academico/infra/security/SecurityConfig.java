@@ -1,6 +1,7 @@
 package erp.academico.infra.security;
 
 import lombok.RequiredArgsConstructor;
+
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
@@ -21,7 +22,7 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 @RequiredArgsConstructor
 public class SecurityConfig {
 
-    // --- ROTAS PÚBLICAS REGISTER E /me EXIGEM AUTENTICAÇÃO ---
+    // --- ROTAS PÚBLICAS REGISTER E EXIGEM AUTENTICAÇÃO ---
     private static final String[] PUBLIC_MATCHERS = {
             "/auth/login",
             "/auth/refresh",

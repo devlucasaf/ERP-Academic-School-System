@@ -14,8 +14,8 @@ import lombok.Setter;
 @Builder
 public class LoginResponseDTO {
 
-    private String token;
-    private String refreshToken;
-    private UsuarioResponseDTO usuario;
+    private String              token;
+    private String              refreshToken;
+    private UsuarioResponseDTO  usuario;
 }
 

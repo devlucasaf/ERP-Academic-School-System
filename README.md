@@ -35,7 +35,7 @@ ERP de um Sistema Acadêmico Escolar — gestão de alunos, professores, turmas,
 - **Java 17** + **Spring Boot 3.5**
 - **Spring Web**, **Spring Data JPA**, **Spring Security**, **Spring Validation**, **Spring Mail**
 - **SQL Server** (driver `mssql-jdbc`)
-- **Flyway** (migrations)
+- **Hibernate `ddl-auto`** (geração automática do schema a partir das entidades)
 - **Lombok**, **ModelMapper**
 - **SpringDoc OpenAPI** (Swagger UI)
 - **java-jwt (Auth0)** para autenticação JWT
@@ -64,11 +64,11 @@ ERP-Academic-School-System/
 │       │   │   ├── config/
 │       │   │   ├── security/
 │       │   │   ├── storage/
+│       │   │   ├── seed/
 │       │   │   └── mail/
 │       │   └── modules/
 │       └── resources/
-│           ├── application.yml
-│           └── db/migration/
+│           └── application.properties
 └── frontend/                      # SPA Vite
     ├── package.json
     ├── vite.config.js
@@ -181,13 +181,15 @@ ERP-Academic-School-System/
 
 ### 1. Clonar o repositório
 ```powershell
-git clone https://github.com/<seu-usuario>/ERP-Academic-School-System.git
+git clone https://github.com/devlucasaf/ERP-Academic-School-System.git
 cd ERP-Academic-School-System
 ```
 
 ### 2. Banco de dados (SQL Server + SSMS)
 
-O projeto usa **Flyway** para versionar o schema. Você só precisa criar o **banco, o login e as permissões** uma única vez — as tabelas são criadas automaticamente pela aplicação.
+O schema é gerado automaticamente pelo **Hibernate** (`spring.jpa.hibernate.ddl-auto=update`).
+Você só precisa criar o **banco, o login e as permissões** uma única vez — as tabelas são
+criadas/atualizadas pela aplicação a partir das entidades JPA.
 
 **Passo a passo no SSMS:**
 
@@ -204,26 +206,28 @@ O projeto usa **Flyway** para versionar o schema. Você só precisa criar o **ba
 > 💡 Em produção, troque a senha do script e defina as variáveis `DB_USER` / `DB_PASS`
 > (veja a seção do backend) em vez de usar os valores padrão.
 
-### 3. Como o Flyway aplica as migrations
+> ℹ️ O `setup-database.sql` é o **único** SQL do projeto e serve apenas para criar o
+> **banco e o login** (o Hibernate não faz isso). As **tabelas** não usam SQL manual.
 
-Ao subir o Spring Boot, o **Flyway roda automaticamente** e aplica, em ordem, todos os
-scripts em `backend/src/main/resources/db/migration/` que ainda não foram executados:
+### 3. Como o schema e o admin são criados
 
-- Config em `application.yml` (`spring.flyway`): `locations: classpath:db/migration`,
-  `baseline-on-migrate: true`, `validate-on-migrate: true`.
-- Cada migration `V1 … V15` é aplicada **uma única vez**; o Flyway registra o histórico
-  na tabela `flyway_schema_history` (criada por ele) e valida o checksum a cada boot.
-- **Não edite** uma migration já aplicada — isso causa erro de checksum. Para mudanças,
-  crie uma nova migration `V16__...sql`.
-- A migration **`V15__seed_admin.sql`** cria o usuário administrador inicial:
+Ao subir o Spring Boot:
+
+- O **Hibernate** lê as entidades JPA e **cria/atualiza as tabelas** automaticamente
+  (`spring.jpa.hibernate.ddl-auto=update`). Não há migrations `.sql` para o schema.
+- Um **seeder em Java** (`infra/seed/AdminSeeder.java`) cria o usuário administrador inicial
+  na primeira execução (idempotente — só cria se ainda não existir):
   - **email:** `admin@escola.com`
   - **senha:** `admin123` (armazenada como hash BCrypt)
 
   Troque essa senha após o primeiro login.
 
+> ⚠️ `ddl-auto=update` é ideal para **desenvolvimento**. Para produção/equipe, considere
+> uma ferramenta de migrations versionadas (ex.: Flyway/Liquibase).
+
 ### 4. Backend
 
-Defina as variáveis de ambiente (PowerShell) — opcional em dev, pois há defaults no `application.yml`:
+Defina as variáveis de ambiente (PowerShell) — opcional em dev, pois há defaults no `application.properties`:
 ```powershell
 $env:DB_USER = "erp_academic_user"
 $env:DB_PASS = "Erp@Academic#2025!"

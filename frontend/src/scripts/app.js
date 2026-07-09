@@ -7,7 +7,7 @@ import {
 } from "./auth.js";
 import { notificar } from "./util.js";
 
-const MODELOS = import.meta.glob("/src/templates/{shared,auth,dashboards,secretaria}/**/*.html", {
+const MODELOS = import.meta.glob("/src/templates/{shared,auth,dashboards,secretaria,site}/**/*.html", {
     query: "?raw",
     import: "default"
 });
@@ -22,11 +22,21 @@ async function carregarModelo(caminho) {
 
 // --- TABELA DE ROTAS ---
 const ROTAS = {
+    "#/home": {
+        modelo: "site/home.html",
+        modulo: () => import("./pages/site/home.js"),
+        publico: true,
+        modo: "limpo",
+        classe: "site-screen",
+        titulo: "Colégio Áurea"
+    },
+
     "#/login": {
         modelo: "auth/login.html",
         modulo: () => import("./pages/auth/login.js"),
         publico: true,
         modo: "limpo",
+        classe: "auth-screen",
         titulo: "Entrar"
     },
 
@@ -194,14 +204,14 @@ async function renderizar() {
     const hash = location.hash || "#/";
 
     if (hash === "#/" || hash === "") {
-        location.hash = estaAutenticado() ? dashboardDoPerfil(obterUsuario().role) : "#/login";
+        location.hash = estaAutenticado() ? dashboardDoPerfil(obterUsuario().role) : "#/home";
         return;
     }
 
     const rota = ROTAS[hash];
 
     if (!rota) {
-        location.hash = estaAutenticado() ? dashboardDoPerfil(obterUsuario().role) : "#/login";
+        location.hash = estaAutenticado() ? dashboardDoPerfil(obterUsuario().role) : "#/home";
         return;
     }
 
@@ -225,7 +235,7 @@ async function renderizar() {
 
     if (rota.modo === "limpo") {
         layoutMontado = false;
-        app.className = "auth-screen";
+        app.className = rota.classe || "auth-screen";
         app.innerHTML = await carregarModelo(rota.modelo);
         const modulo = await rota.modulo();
         modulo.montar?.(app, {

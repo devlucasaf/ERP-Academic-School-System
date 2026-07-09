@@ -4,7 +4,9 @@ import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+
 import lombok.RequiredArgsConstructor;
+
 import org.springframework.http.HttpHeaders;
 import org.springframework.lang.NonNull;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -24,21 +26,23 @@ public class SecurityFilter extends OncePerRequestFilter {
     private final TokenService tokenService;
     private final UsuarioDetailsService usuarioDetailsService;
 
+    // --- EXECUTA UMA VEZ POR REQUISICAO PARA AUTENTICAR VIA JWT ---
     @Override
     protected void doFilterInternal(@NonNull HttpServletRequest request,
                                     @NonNull HttpServletResponse response,
                                     @NonNull FilterChain filterChain) throws ServletException, IOException {
 
-        // --- EXTRAI O TOKEN DO HEADER ---
         String token = extrairToken(request);
         if (token != null) {
             try {
                 String email = tokenService.validarToken(token);
                 if (email != null && SecurityContextHolder.getContext().getAuthentication() == null) {
                     UserDetails userDetails = usuarioDetailsService.loadUserByUsername(email);
+
                     UsernamePasswordAuthenticationToken authentication =
                             new UsernamePasswordAuthenticationToken(
                                     userDetails, null, userDetails.getAuthorities());
+
                     SecurityContextHolder.getContext().setAuthentication(authentication);
                 }
             } catch (Exception ignored) {
@@ -49,7 +53,7 @@ public class SecurityFilter extends OncePerRequestFilter {
         filterChain.doFilter(request, response);
     }
 
-    // --- LÊ O HEADER Authorization E REMOVE O PREFIXO "Bearer " ---
+    // --- LE O HEADER E REMOVE O PREFIXO ---
     private String extrairToken(HttpServletRequest request) {
         String header = request.getHeader(HttpHeaders.AUTHORIZATION);
         if (header != null && header.startsWith(BEARER_PREFIX)) {
