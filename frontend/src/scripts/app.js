@@ -7,7 +7,7 @@ import {
 } from "./auth.js";
 import { notificar } from "./util.js";
 
-const MODELOS = import.meta.glob("/src/templates/{shared,auth,dashboards,secretaria,site}/**/*.html", {
+const MODELOS = import.meta.glob("/src/templates/{shared,auth,dashboards,secretaria,web}/**/*.html", {
     query: "?raw",
     import: "default"
 });
@@ -23,8 +23,8 @@ async function carregarModelo(caminho) {
 // --- TABELA DE ROTAS ---
 const ROTAS = {
     "#/home": {
-        modelo: "site/home.html",
-        modulo: () => import("./pages/site/home.js"),
+        modelo: "web/home.html",
+        modulo: () => import("./pages/web/home.js"),
         publico: true,
         modo: "limpo",
         classe: "site-screen",

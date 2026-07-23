@@ -34,8 +34,12 @@ a {
 /* --- TEMA CLARO --- */
 :root {
     /* CORES DE MARCA */
-    --color-primary: #1e3a8a;
+    --color-primary: #1e40af;
     --color-primary-hover: #1d4ed8;
+    --color-accent: #dc2626;
+    --color-accent-hover: #b91c1c;
+    --color-highlight: #facc15;
+    --color-highlight-hover: #eab308;
     --color-danger: #b91c1c;
     --color-success: #16a34a;
     --color-warning: #f59e0b;

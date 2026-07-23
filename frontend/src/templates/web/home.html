@@ -1,241 +1,344 @@
 <div class="site">
-
-    <header class="site-header" id="siteHeader">
+    <header id="siteHeader" class="site-header">
         <div class="site-container site-nav">
-            <a href="#/home" class="site-brand" data-scroll="inicio">
-                <span class="site-brand-mark">A</span>
+
+            <a href="#/home" class="site-brand" aria-label="Colégio Áurea - Página inicial">
+                <img
+                        src="/src/img/escola-aura.png"
+                        alt=""
+                        class="site-brand-logo"
+                />
                 <span class="site-brand-text">Colégio <strong>Áurea</strong></span>
             </a>
 
-            <button class="site-burger" id="siteBurger" aria-label="Abrir menu" aria-expanded="false">
-                <span></span><span></span><span></span>
-            </button>
-
-            <nav class="site-menu" id="siteMenu">
-                <a href="#/home" class="site-link" data-scroll="sobre">Sobre</a>
-                <a href="#/home" class="site-link" data-scroll="alunos">Alunos</a>
-                <a href="#/home" class="site-link" data-scroll="atendimento">Atendimento</a>
-                <a href="#/home" class="site-link" data-scroll="noticias">Notícias</a>
-                <a href="#/home" class="site-link" data-scroll="educacional">Educacional</a>
-                <button class="btn site-btn-entrar" id="btnPortal">Entrar no Portal</button>
+            <nav id="siteMenu" class="site-menu" aria-label="Navegação principal">
+                <a class="site-link" href="#sobre" data-scroll="sobre">Sobre</a>
+                <a class="site-link" href="#ensino" data-scroll="ensino">Ensino</a>
+                <a class="site-link" href="#noticias" data-scroll="noticias">Notícias</a>
+                <a class="site-link" href="#contato" data-scroll="contato">Contato</a>
             </nav>
+
+            <div class="site-actions">
+
+                <button
+                        id="btnTemaSite"
+                        class="site-tema-toggle"
+                        type="button"
+                        aria-label="Alternar tema claro e escuro"
+                        title="Alternar tema"
+                >
+                    <span class="site-tema-icone site-tema-sol" aria-hidden="true">
+                        <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <circle cx="12" cy="12" r="4"></circle>
+                            <path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M4.93 19.07l1.41-1.41M17.66 6.34l1.41-1.41"></path>
+                        </svg>
+                    </span>
+                    <span class="site-tema-icone site-tema-lua" aria-hidden="true">
+                        <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
+                        </svg>
+                    </span>
+                </button>
+
+                <button id="btnPortal" class="btn btn-primary site-btn-entrar" type="button">
+                    Portal do Aluno
+                </button>
+
+                <button id="siteBurger" class="site-burger" type="button" aria-label="Abrir menu" aria-expanded="false">
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                </button>
+            </div>
         </div>
     </header>
 
-    <!-- --- HERO --- -->
-    <section class="site-hero" id="inicio">
-        <div class="site-container site-hero-inner">
-            <div class="site-hero-text">
-                <span class="site-badge">Matrículas abertas 2027</span>
-                <h1>Educação que forma pessoas para o futuro</h1>
-                <p>
-                    Há mais de 30 anos transformando vidas por meio de um ensino de excelência,
-                    do Infantil ao Ensino Médio, com tecnologia, cultura e valores humanos.
-                </p>
-                <div class="site-hero-actions">
-                    <button class="btn btn-lg" id="btnPortalHero">Portal do Aluno</button>
-                    <a href="#/home" class="btn btn-lg btn-outline" data-scroll="educacional">Conheça a escola</a>
-                </div>
+    <section id="noticias" class="site-noticias-hero">
+        <div class="site-container">
+            <div class="site-noticias-slider">
+
+                <article class="site-noticia-slide ativo" data-slide="0">
+                    <div class="site-noticia-conteudo">
+                        <span class="site-noticia-tag">Matrículas 2027</span>
+                        <h1>Matrículas abertas para o ano letivo de 2027</h1>
+                        <p>Garanta a vaga do seu filho no Colégio Aura. Novos horários, novas turmas e o mesmo compromisso com a excelência educacional.</p>
+                        <div class="site-noticia-acoes">
+                            <button class="btn btn-primary btn-lg" type="button" data-scroll="contato">Fale com a secretaria</button>
+                            <button class="btn btn-outline btn-lg" type="button" data-scroll="ensino">Conheça nosso ensino</button>
+                        </div>
+                    </div>
+                    <div class="site-noticia-arte" data-arte="matriculas">
+                        <span class="site-noticia-icone" aria-hidden="true">
+                            <svg viewBox="0 0 24 24" width="72" height="72" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+                                <path d="M22 10 12 4 2 10l10 6 10-6Z"></path>
+                                <path d="M6 12v5c3 3 9 3 12 0v-5"></path>
+                                <path d="M22 10v6"></path>
+                            </svg>
+                        </span>
+                    </div>
+                </article>
+
+                <article class="site-noticia-slide" data-slide="1">
+                    <div class="site-noticia-conteudo">
+                        <span class="site-noticia-tag site-noticia-tag-accent">Evento</span>
+                        <h1>Feira de Ciências Aura 2026</h1>
+                        <p>Nossos alunos apresentam projetos incríveis sobre sustentabilidade, tecnologia e saúde. Confira as fotos e vídeos do evento.</p>
+                        <div class="site-noticia-acoes">
+                            <button class="btn btn-primary btn-lg" type="button" data-scroll="noticias">Ver galeria</button>
+                        </div>
+                    </div>
+                    <div class="site-noticia-arte" data-arte="ciencias">
+                        <span class="site-noticia-icone" aria-hidden="true">
+                            <svg viewBox="0 0 24 24" width="72" height="72" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+                                <path d="M9 2v6L3.5 18a2.5 2.5 0 0 0 2.2 3.5h12.6A2.5 2.5 0 0 0 20.5 18L15 8V2"></path>
+                                <path d="M8 2h8"></path>
+                                <path d="M7 14h10"></path>
+                            </svg>
+                        </span>
+                    </div>
+                </article>
+
+                <article class="site-noticia-slide" data-slide="2">
+                    <div class="site-noticia-conteudo">
+                        <span class="site-noticia-tag site-noticia-tag-highlight">Conquista</span>
+                        <h1>Alunos aprovados nas melhores universidades</h1>
+                        <p>98% dos nossos alunos do 3º ano do Ensino Médio foram aprovados em universidades públicas e privadas de todo o país.</p>
+                        <div class="site-noticia-acoes">
+                            <button class="btn btn-primary btn-lg" type="button" data-scroll="sobre">Nossa história</button>
+                        </div>
+                    </div>
+                    <div class="site-noticia-arte" data-arte="conquista">
+                        <span class="site-noticia-icone" aria-hidden="true">
+                            <svg viewBox="0 0 24 24" width="72" height="72" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+                                <path d="M6 9H4a2 2 0 0 1-2-2V5h4"></path>
+                                <path d="M18 9h2a2 2 0 0 0 2-2V5h-4"></path>
+                                <path d="M6 5h12v5a6 6 0 0 1-12 0V5Z"></path>
+                                <path d="M9 21h6"></path>
+                                <path d="M12 17v4"></path>
+                            </svg>
+                        </span>
+                    </div>
+                </article>
+
             </div>
-            <div class="site-hero-art" aria-hidden="true">
-                <div class="site-hero-card">
-                    <strong>+2.500</strong>
-                    <span>alunos matriculados</span>
+
+            <div class="site-slider-controles">
+                <button class="site-slider-btn" type="button" data-slider-anterior aria-label="Notícia anterior">‹</button>
+                <div class="site-slider-pontos" role="tablist">
+                    <button class="site-slider-ponto ativo" type="button" data-ponto="0" aria-label="Ir para notícia 1"></button>
+                    <button class="site-slider-ponto" type="button" data-ponto="1" aria-label="Ir para notícia 2"></button>
+                    <button class="site-slider-ponto" type="button" data-ponto="2" aria-label="Ir para notícia 3"></button>
                 </div>
-                <div class="site-hero-card">
-                    <strong>98%</strong>
-                    <span>aprovação no vestibular</span>
-                </div>
-                <div class="site-hero-card">
-                    <strong>150+</strong>
-                    <span>professores mestres e doutores</span>
-                </div>
+                <button class="site-slider-btn" type="button" data-slider-proximo aria-label="Próxima notícia">›</button>
             </div>
         </div>
     </section>
 
-    <!-- --- SOBRE --- -->
-    <section class="site-section" id="sobre">
+    <section id="sobre" class="site-section site-section-alt">
         <div class="site-container">
             <div class="site-section-head">
-                <span class="site-eyebrow">Sobre nós</span>
-                <h2>Uma escola completa para cada fase da vida</h2>
+                <span class="site-eyebrow">Nossa escola</span>
+                <h2>Sobre o Colégio Áurea</h2>
                 <p class="muted">
-                    Nossa proposta pedagógica une base sólida de conhecimento, pensamento crítico
-                    e desenvolvimento socioemocional.
+                    Há mais de 30 anos formando cidadãos preparados para os desafios do futuro, com educação de qualidade,
+                    valores sólidos e uma equipe apaixonada pelo que faz.
                 </p>
             </div>
 
-            <div class="site-cards">
-                <article class="site-card">
-                    <div class="site-card-icon">🎯</div>
+            <div class="site-sobre-grid">
+                <div class="site-sobre-item">
+                    <div class="site-sobre-icone" data-cor="azul">
+                        <svg viewBox="0 0 24 24" width="28" height="28" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                            <circle cx="12" cy="12" r="10"></circle>
+                            <circle cx="12" cy="12" r="6"></circle>
+                            <circle cx="12" cy="12" r="2"></circle>
+                        </svg>
+                    </div>
                     <h3>Missão</h3>
-                    <p>Formar cidadãos autônomos, éticos e preparados para os desafios do século XXI.</p>
-                </article>
-                <article class="site-card">
-                    <div class="site-card-icon">🌱</div>
+                    <p class="muted">Formar cidadãos críticos, éticos e preparados para transformar o mundo através do conhecimento.</p>
+                </div>
+                <div class="site-sobre-item">
+                    <div class="site-sobre-icone" data-cor="vermelho">
+                        <svg viewBox="0 0 24 24" width="28" height="28" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                            <path d="M9 18h6"></path>
+                            <path d="M10 22h4"></path>
+                            <path d="M12 2a7 7 0 0 0-4 12.7c.7.6 1 1.5 1 2.3v1h6v-1c0-.8.3-1.7 1-2.3A7 7 0 0 0 12 2Z"></path>
+                        </svg>
+                    </div>
+                    <h3>Visão</h3>
+                    <p class="muted">Ser referência em educação básica no Distrito Federal, unindo tradição, inovação e acolhimento.</p>
+                </div>
+                <div class="site-sobre-item">
+                    <div class="site-sobre-icone" data-cor="amarelo">
+                        <svg viewBox="0 0 24 24" width="28" height="28" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                            <path d="M12 2l3 6.5 7 1-5 4.8 1.2 7L12 17.8 5.8 21.3 7 14.3 2 9.5l7-1L12 2Z"></path>
+                        </svg>
+                    </div>
                     <h3>Valores</h3>
-                    <p>Respeito, responsabilidade, colaboração e amor pelo conhecimento.</p>
-                </article>
-                <article class="site-card">
-                    <div class="site-card-icon">🏆</div>
-                    <h3>Excelência</h3>
-                    <p>Metodologia reconhecida e resultados consistentes em avaliações nacionais.</p>
-                </article>
+                    <p class="muted">Respeito, responsabilidade, excelência acadêmica, empatia e compromisso com a comunidade.</p>
+                </div>
             </div>
         </div>
     </section>
 
-    <!-- --- EDUCACIONAL --- -->
-    <section class="site-section site-section-alt" id="educacional">
+    <section id="ensino" class="site-section">
         <div class="site-container">
             <div class="site-section-head">
                 <span class="site-eyebrow">Educacional</span>
-                <h2>Níveis de ensino</h2>
-                <p class="muted">Do primeiro passo à aprovação na universidade.</p>
+                <h2>Níveis de Ensino</h2>
+                <p class="muted">Do primeiro passo até a preparação para o vestibular.</p>
             </div>
 
             <div class="site-cards">
-                <article class="site-card site-card-level">
+                <article class="site-card site-card-level" data-cor="azul">
+                    <div class="site-card-icon">
+                        <svg viewBox="0 0 24 24" width="32" height="32" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                            <circle cx="12" cy="10" r="6"></circle>
+                            <path d="M9 9h.01"></path>
+                            <path d="M15 9h.01"></path>
+                            <path d="M10 13c.5.5 1.2.8 2 .8s1.5-.3 2-.8"></path>
+                            <path d="M6 20c1.5-2 4-3 6-3s4.5 1 6 3"></path>
+                        </svg>
+                    </div>
                     <h3>Educação Infantil</h3>
-                    <p>Acolhimento, ludicidade e primeiras descobertas para crianças de 2 a 5 anos.</p>
-                    <a href="#/home" class="site-card-link" data-scroll="atendimento">Saiba mais →</a>
+                    <p class="muted">De 2 a 5 anos. Desenvolvimento afetivo, cognitivo e social através de atividades lúdicas.</p>
                 </article>
 
-                <article class="site-card site-card-level">
+                <article class="site-card site-card-level" data-cor="vermelho">
+                    <div class="site-card-icon">
+                        <svg viewBox="0 0 24 24" width="32" height="32" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                            <path d="M4 4.5A2.5 2.5 0 0 1 6.5 2H20v18H6.5A2.5 2.5 0 0 0 4 22.5V4.5Z"></path>
+                            <path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"></path>
+                        </svg>
+                    </div>
                     <h3>Ensino Fundamental</h3>
-                    <p>Construção do conhecimento com projetos, tecnologia e protagonismo do aluno.</p>
-                    <a href="#/home" class="site-card-link" data-scroll="atendimento">Saiba mais →</a>
+                    <p class="muted">Do 1º ao 9º ano. Base sólida em linguagens, matemática e ciências, com projetos interdisciplinares.</p>
                 </article>
 
-                <article class="site-card site-card-level">
+                <article class="site-card site-card-level" data-cor="amarelo">
+                    <div class="site-card-icon">
+                        <svg viewBox="0 0 24 24" width="32" height="32" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                            <path d="M22 10 12 4 2 10l10 6 10-6Z"></path>
+                            <path d="M6 12v5c3 3 9 3 12 0v-5"></path>
+                        </svg>
+                    </div>
                     <h3>Ensino Médio</h3>
-                    <p>Preparação intensiva para o ENEM e vestibulares, com orientação de carreira.</p>
-                    <a href="#/home" class="site-card-link" data-scroll="atendimento">Saiba mais →</a>
+                    <p class="muted">Preparação completa para o ENEM e vestibulares, com foco em protagonismo juvenil.</p>
                 </article>
             </div>
         </div>
     </section>
 
-    <!-- --- ALUNOS --- -->
-    <section class="site-section" id="alunos">
-        <div class="site-container site-split">
-            <div class="site-split-text">
-                <span class="site-eyebrow">Alunos</span>
-                <h2>Tudo o que você precisa em um só lugar</h2>
-                <p class="muted">
-                    Pelo Portal do Aluno você acessa notas, frequência, materiais, atividades,
-                    biblioteca e muito mais.
-                </p>
+    <section id="portal" class="site-section site-section-alt">
+        <div class="site-container">
+            <div class="site-split">
+                <div class="site-split-text">
+                    <span class="site-eyebrow">Área do aluno</span>
+                    <h2>Portal do Aluno</h2>
+                    <p class="muted">Todo o dia a dia escolar em um só lugar, acessível 24 horas por dia.</p>
 
-                <ul class="site-list">
-                    <li>Boletim e histórico escolar online</li>
-                    <li>Atividades e materiais das disciplinas</li>
-                    <li>Reserva e empréstimo de livros na biblioteca</li>
-                    <li>Comunicados e calendário acadêmico</li>
-                </ul>
-                <button class="btn btn-lg" id="btnPortalAlunos">Acessar o Portal</button>
-            </div>
-            <div class="site-split-art" aria-hidden="true">
-                <div class="site-portal-mock">
-                    <div class="site-portal-mock-bar"></div>
-                    <div class="site-portal-mock-row"></div>
-                    <div class="site-portal-mock-row short"></div>
-                    <div class="site-portal-mock-grid">
-                        <span></span>
-                        <span></span>
-                        <span></span>
-                        <span></span>
+                    <ul class="site-list">
+                        <li>Notas e boletins em tempo real</li>
+                        <li>Controle de frequência</li>
+                        <li>Biblioteca online e reservas de livros</li>
+                        <li>Comunicados e avisos da coordenação</li>
+                        <li>Calendário escolar e eventos</li>
+                    </ul>
+
+                    <button id="btnPortalAlunos" class="btn btn-primary btn-lg" type="button">
+                        Acessar o Portal
+                    </button>
+                </div>
+
+                <div class="site-split-art">
+                    <div class="site-portal-mock" aria-hidden="true">
+                        <div class="site-portal-mock-bar"></div>
+                        <div class="site-portal-mock-row"></div>
+                        <div class="site-portal-mock-row short"></div>
+                        <div class="site-portal-mock-grid">
+                            <span></span>
+                            <span></span>
+                            <span></span>
+                            <span></span>
+                        </div>
                     </div>
                 </div>
             </div>
         </div>
     </section>
 
-    <!-- --- NOTICIAS --- -->
-    <section class="site-section site-section-alt" id="noticias">
+    <section id="contato" class="site-section">
         <div class="site-container">
             <div class="site-section-head">
-                <span class="site-eyebrow">Notícias</span>
-                <h2>Fique por dentro</h2>
-                <p class="muted">Novidades, eventos e conquistas da nossa comunidade.</p>
-            </div>
-
-            <div class="site-cards">
-                <article class="site-news">
-                    <div class="site-news-img" data-cat="Eventos"></div>
-                    <div class="site-news-body">
-                        <span class="site-news-tag">Eventos</span>
-                        <h3>Feira de Ciências 2027 movimenta o campus</h3>
-                        <p>Projetos dos alunos do Fundamental e Médio são apresentados à comunidade.</p>
-                    </div>
-                </article>
-
-                <article class="site-news">
-                    <div class="site-news-img" data-cat="Conquistas"></div>
-                    <div class="site-news-body">
-                        <span class="site-news-tag">Conquistas</span>
-                        <h3>Alunos são aprovados nas melhores universidades</h3>
-                        <p>Turma de 2026 celebra aprovações em medicina, engenharia e direito.</p>
-                    </div>
-                </article>
-
-                <article class="site-news">
-                    <div class="site-news-img" data-cat="Cultura"></div>
-                    <div class="site-news-body">
-                        <span class="site-news-tag">Cultura</span>
-                        <h3>Mostra cultural reúne teatro, música e artes</h3>
-                        <p>Semana especial valoriza os talentos e a criatividade dos estudantes.</p>
-                    </div>
-                </article>
-            </div>
-        </div>
-    </section>
-
-    <!-- --- ATENDIMENTO --- -->
-    <section class="site-section" id="atendimento">
-        <div class="site-container site-split">
-            <div class="site-split-text">
                 <span class="site-eyebrow">Atendimento</span>
-                <h2>Fale com a gente</h2>
-                <p class="muted">
-                    Nossa equipe está pronta para tirar suas dúvidas sobre matrículas,
-                    mensalidades e a proposta pedagógica.
-                </p>
-                <ul class="site-contact">
-                    <li><strong>Endereço:</strong> Av. das Nações, 1000 — Centro</li>
-                    <li><strong>Telefone:</strong> (61) 3333-0000</li>
-                    <li><strong>E-mail:</strong> contato@colegioaurea.com.br</li>
-                    <li><strong>Horário:</strong> Seg a Sex, 7h30 às 17h30</li>
-                </ul>
+                <h2>Fale Conosco</h2>
+                <p class="muted">Tire suas dúvidas, agende uma visita ou solicite mais informações.</p>
             </div>
-            <div class="site-split-art">
-                <form class="site-form" id="siteForm" novalidate>
-                    <h3>Solicite informações</h3>
+
+            <div class="site-split">
+                <div class="site-split-text">
+                    <ul class="site-contact">
+                        <li>
+                            <span class="site-contact-icone" aria-hidden="true">
+                                <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                    <path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z"></path>
+                                    <circle cx="12" cy="10" r="3"></circle>
+                                </svg>
+                            </span>
+                            <div><strong>Endereço</strong><br />SGAS 000, Bloco A, Brasília - DF</div>
+                        </li>
+                        <li>
+                            <span class="site-contact-icone" aria-hidden="true">
+                                <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                    <path d="M22 16.9v3a2 2 0 0 1-2.2 2 19.8 19.8 0 0 1-8.6-3.1 19.5 19.5 0 0 1-6-6A19.8 19.8 0 0 1 2.1 4.2 2 2 0 0 1 4.1 2h3a2 2 0 0 1 2 1.7c.1.9.3 1.8.6 2.6a2 2 0 0 1-.5 2.1L8 9.6a16 16 0 0 0 6 6l1.2-1.2a2 2 0 0 1 2.1-.5c.8.3 1.7.5 2.6.6a2 2 0 0 1 1.7 2Z"></path>
+                                </svg>
+                            </span>
+                            <div><strong>Telefone</strong><br />(61) 3000-0000</div>
+                        </li>
+                        <li>
+                            <span class="site-contact-icone" aria-hidden="true">
+                                <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                    <rect x="2" y="4" width="20" height="16" rx="2"></rect>
+                                    <path d="m2 7 10 6 10-6"></path>
+                                </svg>
+                            </span>
+                            <div><strong>E-mail</strong><br />contato@colegioaurea.com.br</div>
+                        </li>
+                        <li>
+                            <span class="site-contact-icone" aria-hidden="true">
+                                <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                    <circle cx="12" cy="12" r="10"></circle>
+                                    <path d="M12 6v6l4 2"></path>
+                                </svg>
+                            </span>
+                            <div><strong>Horário</strong><br />Segunda a sexta, das 7h às 18h</div>
+                        </li>
+                    </ul>
+                </div>
+
+                <form id="siteForm" class="site-form" novalidate>
                     <div class="field">
-                        <label for="siteNome">Nome</label>
-                        <input
-                                type="text"
-                                id="siteNome"
-                                name="nome"
-                                placeholder="Seu nome"
-                        />
+                        <label for="siteNome">Nome completo</label>
+                        <input type="text" id="siteNome" name="nome" required autocomplete="name" />
                     </div>
+
                     <div class="field">
                         <label for="siteEmail">E-mail</label>
-                        <input
-                                type="email"
-                                id="siteEmail"
-                                name="email"
-                                placeholder="voce@email.com"
-                        />
+                        <input type="email" id="siteEmail" name="email" required autocomplete="email" />
                     </div>
+
+                    <div class="field">
+                        <label for="siteTel">Telefone</label>
+                        <input type="tel" id="siteTel" name="telefone" autocomplete="tel" />
+                    </div>
+
                     <div class="field">
                         <label for="siteMsg">Mensagem</label>
-                        <textarea id="siteMsg" name="mensagem" rows="3" placeholder="Como podemos ajudar?"></textarea>
+                        <textarea id="siteMsg" name="mensagem" rows="4" required></textarea>
                     </div>
-                    <button type="submit" class="btn btn-block">Enviar</button>
-                    <p class="site-form-msg" id="siteFormMsg" hidden></p>
+
+                    <button type="submit" class="btn btn-primary btn-lg">Enviar mensagem</button>
+                    <p id="siteFormMsg" class="site-form-msg" hidden></p>
                 </form>
             </div>
         </div>
@@ -243,27 +346,59 @@
 
     <footer class="site-footer">
         <div class="site-container site-footer-inner">
+
             <div class="site-footer-brand">
-                <span class="site-brand-mark">A</span>
-                <span>Colégio Áurea</span>
-                <p class="muted">Educação que forma pessoas para o futuro.</p>
+                <div class="site-brand">
+                    <img
+                            src="/src/img/escola-aura.png"
+                            alt=""
+                            class="site-brand-logo"
+                    />
+                    <span class="site-brand-text">Colégio <strong>Áurea</strong></span>
+                </div>
+                <p class="muted">
+                    Educação que transforma vidas há mais de 30 anos.
+                </p>
             </div>
-            <nav class="site-footer-col">
+
+            <div class="site-footer-col">
                 <h4>Institucional</h4>
-                <a href="#/home" data-scroll="sobre">Sobre</a>
-                <a href="#/home" data-scroll="educacional">Educacional</a>
-                <a href="#/home" data-scroll="noticias">Notícias</a>
-            </nav>
-            <nav class="site-footer-col">
-                <h4>Acesso</h4>
-                <a href="#/home" data-scroll="alunos">Área do Aluno</a>
-                <a href="#/login">Portal do Sistema</a>
-                <a href="#/home" data-scroll="atendimento">Atendimento</a>
-            </nav>
+                <a href="#sobre" data-scroll="sobre">Sobre a escola</a>
+                <a href="#ensino" data-scroll="ensino">Níveis de ensino</a>
+                <a href="#noticias" data-scroll="noticias">Notícias</a>
+                <a href="#contato" data-scroll="contato">Contato</a>
+            </div>
+
+            <div class="site-footer-col">
+                <h4>Redes sociais</h4>
+                <a href="#" rel="noopener" aria-label="Facebook">
+                    <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                        <path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3Z"></path>
+                    </svg>
+                    Facebook
+                </a>
+                <a href="#" rel="noopener" aria-label="Instagram">
+                    <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                        <rect x="2" y="2" width="20" height="20" rx="5"></rect>
+                        <circle cx="12" cy="12" r="4"></circle>
+                        <path d="M17.5 6.5h.01"></path>
+                    </svg>
+                    Instagram
+                </a>
+                <a href="#" rel="noopener" aria-label="YouTube">
+                    <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                        <path d="M22.5 7a3 3 0 0 0-2.1-2.1C18.5 4.5 12 4.5 12 4.5s-6.5 0-8.4.4A3 3 0 0 0 1.5 7 31 31 0 0 0 1 12a31 31 0 0 0 .5 5 3 3 0 0 0 2.1 2.1c1.9.4 8.4.4 8.4.4s6.5 0 8.4-.4A3 3 0 0 0 22.5 17a31 31 0 0 0 .5-5 31 31 0 0 0-.5-5Z"></path>
+                        <path d="m10 15 5-3-5-3v6Z"></path>
+                    </svg>
+                    YouTube
+                </a>
+            </div>
         </div>
+
         <div class="site-footer-bottom">
-            <span>© 2026 Colégio Farma Aura. Todos os direitos reservados.</span>
+            © 2026 Colégio Áurea — Todos os direitos reservados.
         </div>
     </footer>
+
 </div>
 
